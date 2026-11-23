@@ -2,17 +2,14 @@
   {
     "id": 1,
     "chapter": 1,
-    "title": "Les yaourts dans les poches du métro",
-    "date": "",
+    "title": "Bouaké, novembre 1971",
+    "date": "24 novembre 1971",
     "type": "image",
     "media": "",
-    "caption": "Ce jour-là, Papa est entré dans le métro avec un pot de yaourt dans chaque poche. Les portes se sont refermées pile sur lui… et sur les deux yaourts. Résultat : du yaourt partout, sur lui, sur les portes, et sans doute sur quelques voyageurs !",
-    "minigame": "yaourt_metro",
-    "outcomeText": {
-      "success": "Il est monté dans la rame, digne, les deux yaourts intacts. Ce jour-là, l’histoire aurait été bien moins drôle…",
-      "fail": "Les portes ont refermé leurs mâchoires sur les poches : yaourt sur le pantalon, sur les portes, sur les voisins. Exactement comme le vrai jour !"
-    },
-    "funnyNote": "Depuis, les yaourts voyagent dans un sac. Ou directement dans le ventre.",
+    "caption": "Le 24 novembre 1971, à Bouaké, en Côte d’Ivoire, une petite lanterne s’est allumée pour la première fois : toi. Personne ne savait encore qu’elle éclairerait 55 années… et quelques belles bêtises.",
+    "minigame": "naissance_bouake",
+    "outcomeText": null,
+    "funnyNote": "Livré avec option bêtises, garantie à vie.",
     "position": {
       "x": -0.7,
       "z": -11.5
@@ -21,14 +18,14 @@
   {
     "id": 2,
     "chapter": 1,
-    "title": "La semoule sur la nappe",
+    "title": "La course tout nu",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "En préparant le repas, Papa a renversé la sauce de la semoule sur la nappe. Sa solution de génie : verser la semoule par-dessus pour éponger… puis servir à table comme si de rien n’était.",
-    "minigame": "semoule_nappe",
+    "caption": "Tout petit, tu as décidé de poursuivre le « boy » qui entretenait la maison… en tenue d’Adam. Il courait, tu courais, et toute la maison riait.",
+    "minigame": "course_tout_nu",
     "outcomeText": null,
-    "funnyNote": "Technique brevetée : le camouflage culinaire.",
+    "funnyNote": "Premier sprint de ta vie, zéro équipement.",
     "position": {
       "x": 13,
       "z": -16
@@ -37,14 +34,14 @@
   {
     "id": 3,
     "chapter": 1,
-    "title": "Le marteau sur le doigt",
+    "title": "Le singe, meilleur ami",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Une séance de bricolage, un clou, un marteau… et un doigt au mauvais endroit. Ce jour-là, le marteau a choisi le doigt.",
-    "minigame": "marteau_doigt",
+    "caption": "Un singe était devenu ton meilleur ami, et tu as tout tenté pour le garder à la maison. Mami, beaucoup moins fan, a fini par payer quelqu’un pour le faire partir.",
+    "minigame": "singe_ami",
     "outcomeText": null,
-    "funnyNote": "Le clou, lui, n’a jamais rien senti.",
+    "funnyNote": "Le singe ne t’a jamais rendu tes bananes.",
     "position": {
       "x": 19.8,
       "z": -25.2
@@ -53,14 +50,14 @@
   {
     "id": 4,
     "chapter": 1,
-    "title": "Le fil barbelé du verger",
+    "title": "La mygale évadée",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "En traversant le verger à toute allure, Papa n’a pas vu le fil barbelé tendu à hauteur de visage. Il se l’est pris en pleine figure !",
-    "minigame": "fil_barbele",
+    "caption": "Tu gardais une mygale dans un bocal à la maison… jusqu’au jour où elle s’est fait la malle pour aller se glisser sous le lit de Papi et Mami.",
+    "minigame": "mygale_evadee",
     "outcomeText": null,
-    "funnyNote": "Score final : le verger 1 – Papa 0. Revanche prévue.",
+    "funnyNote": "Papi et Mami ont très bien dormi. Ou pas.",
     "position": {
       "x": 21.1,
       "z": -37.7
@@ -69,14 +66,14 @@
   {
     "id": 5,
     "chapter": 1,
-    "title": "Le gâteau au bicarbonate",
+    "title": "Le voleur promeneur",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Pour faire un gâteau, Papa a mis 2 cuillères à SOUPE de bicarbonate de soude au lieu de 2 cuillères à CAFÉ. La pâte a gonflé… gonflé… et gonflé encore.",
-    "minigame": "gateau_bicarbonate",
+    "caption": "Un voleur s’est glissé dans le jardin. Attrapé par le gardien, il a juré, la main sur le cœur, qu’il… se promenait dans le coin.",
+    "minigame": "voleur_promeneur",
     "outcomeText": null,
-    "funnyNote": "Une cuillère à soupe, c’est juste une cuillère à café qui a de l’ambition.",
+    "funnyNote": "Une petite promenade digestive, sûrement.",
     "position": {
       "x": 17.8,
       "z": -47.7
@@ -85,14 +82,14 @@
   {
     "id": 6,
     "chapter": 1,
-    "title": "Le meilleur copain",
+    "title": "Le coup de pioche de Pilou",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
-    "minigame": "default",
+    "caption": "Pilou voulait casser un bijou de Mami pour récupérer des billes… et c’est ta tête qui a pris le coup de pioche. Ça expliquerait certaines choses.",
+    "minigame": "pioche_pilou",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Diagnostic officiel : ça explique tout.",
     "position": {
       "x": 5.5,
       "z": -56.1
@@ -101,14 +98,14 @@
   {
     "id": 7,
     "chapter": 1,
-    "title": "Les étés au bord de l'eau",
+    "title": "Les pétards et les margouillats",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
-    "minigame": "default",
+    "caption": "Armé de tes pétards, tu menais une guerre sans merci contre les margouillats, les lézards du jardin. Une époque bien différente…",
+    "minigame": "petards_margouillats",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Les margouillats en parlent encore, entre eux.",
     "position": {
       "x": -5.9,
       "z": -54.4
@@ -117,14 +114,14 @@
   {
     "id": 8,
     "chapter": 1,
-    "title": "Noël en famille",
+    "title": "Le fantôme du placard",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
-    "minigame": "default",
+    "caption": "Déguisé pour Halloween, tu t’étais caché la nuit dans les placards et tu faisais grincer la porte… Ta petite cousine en garde un souvenir très, très vif.",
+    "minigame": "fantome_placard",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Meilleur second rôle : la porte qui grince.",
     "position": {
       "x": -16.4,
       "z": -47.7
@@ -133,14 +130,14 @@
   {
     "id": 9,
     "chapter": 1,
-    "title": "La cabane secrète",
+    "title": "« Ish li bedich »",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
-    "minigame": "default",
+    "caption": "En 6e, tu as écrit « Ish li bedich » sur un petit papier pour une camarade. Mami t’a surpris… et l’a lu devant toute la classe.",
+    "minigame": "ish_li_bedich",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Le message est bien passé. À toute la classe.",
     "position": {
       "x": -22,
       "z": -36.3
@@ -149,14 +146,14 @@
   {
     "id": 10,
     "chapter": 1,
-    "title": "La première bêtise",
+    "title": "Le rôle aux oranges",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
-    "minigame": "default",
+    "caption": "Au lycée, en France, tu as joué un rôle de femme dans la pièce de théâtre. Pour la poitrine : deux oranges. Une prestation pleine de vitamines.",
+    "minigame": "theatre_oranges",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Molière n’avait pas prévu les agrumes.",
     "position": {
       "x": -21,
       "z": -24.9
@@ -165,14 +162,14 @@
   {
     "id": 11,
     "chapter": 1,
-    "title": "Le rêve d'enfant",
+    "title": "La motocross",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
-    "minigame": "default",
+    "caption": "Ta première motocross ! Tu as tellement encouragé Pilou à l’essayer… qu’il s’est ouvert la jambe.",
+    "minigame": "motocross_pilou",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Le moniteur le plus convaincant de Côte d’Ivoire.",
     "position": {
       "x": -11.5,
       "z": -16.5
@@ -181,14 +178,14 @@
   {
     "id": 12,
     "chapter": 2,
-    "title": "Les années lycée",
+    "title": "Les truites de Megève",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
-    "minigame": "default",
+    "caption": "À Megève, on venait de faire un lâcher de truites dans le lac. Avec tes cousins, vous les avez toutes assommées à coups de pierres pour les rapporter à Papi et Mami.",
+    "minigame": "truites_megeve",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "La pêche à la ligne ? Beaucoup trop lent.",
     "position": {
       "x": 54,
       "z": -70.5
@@ -197,14 +194,14 @@
   {
     "id": 13,
     "chapter": 2,
-    "title": "Le premier concert",
+    "title": "La bataille de spaghetti",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
-    "minigame": "default",
+    "caption": "Étudiant, une soirée dans l’appartement de Tonton Bernard à Port-Camargue a légèrement dérapé : bataille de spaghetti, debout sur la table à manger.",
+    "minigame": "spaghetti_bataille",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Al dente, et surtout en l’air.",
     "position": {
       "x": 51.4,
       "z": -81.8
@@ -213,14 +210,14 @@
   {
     "id": 14,
     "chapter": 2,
-    "title": "La bande d’amis",
+    "title": "Le trampoline américain",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
-    "minigame": "default",
+    "caption": "Aux États-Unis, dans ta famille d’accueil, dès que tu sautais sur le trampoline, le fils (bien costaud) de la maison arrivait pour te sauter dessus et t’écraser. Tu as vite appris à fuir en le voyant arriver.",
+    "minigame": "trampoline_usa",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Le rêve américain, version catapulte.",
     "position": {
       "x": 54.3,
       "z": -93.8
@@ -229,14 +226,14 @@
   {
     "id": 15,
     "chapter": 2,
-    "title": "Le permis de conduire",
+    "title": "Les malfrats de Marseille",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
-    "minigame": "default",
+    "caption": "À Marseille, devant ton appartement, des malfrats ont voulu te voler tes courses. Tu leur as tenu tête.",
+    "minigame": "malfrats_marseille",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Personne ne touche à tes courses.",
     "position": {
       "x": 62.8,
       "z": -103.7
@@ -245,14 +242,17 @@
   {
     "id": 16,
     "chapter": 2,
-    "title": "Le premier job d’été",
+    "title": "Les yaourts dans le métro",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
-    "minigame": "default",
-    "outcomeText": null,
-    "funnyNote": "",
+    "caption": "Aux Beaux-Arts, toujours pressé, tu as foncé dans le métro… et les portes se sont refermées sur tes poches. Les pots de yaourt ont explosé dans ton pantalon.",
+    "minigame": "yaourt_metro",
+    "outcomeText": {
+      "success": "Il est monté dans la rame, digne, les deux yaourts intacts. Ce jour-là, l’histoire aurait été bien moins drôle…",
+      "fail": "Les portes ont refermé leurs mâchoires sur les poches : yaourt sur le pantalon, sur les portes, sur les voisins. Exactement comme le vrai jour !"
+    },
+    "funnyNote": "Depuis, les yaourts voyagent dans un sac. Ou directement dans le ventre.",
     "position": {
       "x": 77.1,
       "z": -105.3
@@ -261,14 +261,14 @@
   {
     "id": 17,
     "chapter": 2,
-    "title": "Les années étudiantes",
+    "title": "Le cours de nu",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
-    "minigame": "default",
+    "caption": "Aux Beaux-Arts, pendant un cours de dessin de nu, une fille t’a laissé son numéro. L’art mène à tout.",
+    "minigame": "dessin_nu",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Il faut croire que le coup de crayon était bon.",
     "position": {
       "x": 89.1,
       "z": -98.5
@@ -277,14 +277,14 @@
   {
     "id": 18,
     "chapter": 2,
-    "title": "Le grand départ",
+    "title": "Les pizzas du commandant",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
-    "minigame": "default",
+    "caption": "À l’armée, de garde de nuit, tu as commandé des pizzas… au nom de ton commandant.",
+    "minigame": "pizzas_commandant",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Le commandant régalait. Il ne le savait juste pas.",
     "position": {
       "x": 95.6,
       "z": -89.2
@@ -293,14 +293,14 @@
   {
     "id": 19,
     "chapter": 2,
-    "title": "La première voiture",
+    "title": "Le motard et l’infirmier",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
-    "minigame": "default",
+    "caption": "Avant une opération, tu es arrivé en veste de moto, style motard bien vantard, en espérant croiser de jolies infirmières. C’est un grand infirmier baraqué qui est entré : « Mettez-vous tout nu, on vous prépare. »",
+    "minigame": "infirmier_motard",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Le blouson n’a pas fait le poids.",
     "position": {
       "x": 95.3,
       "z": -76.6
@@ -309,14 +309,14 @@
   {
     "id": 20,
     "chapter": 2,
-    "title": "Un été inoubliable",
+    "title": "Le coup de foudre soporifique",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
-    "minigame": "default",
+    "caption": "La première fois que tu as vu Maman, c’était en réunion. Tu parlais… et elle s’est endormie. Le début d’une grande histoire.",
+    "minigame": "reunion_soporifique",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Depuis, elle t’écoute. Parfois les yeux ouverts.",
     "position": {
       "x": 88.5,
       "z": -65.5
@@ -325,14 +325,14 @@
   {
     "id": 21,
     "chapter": 2,
-    "title": "La passion de toujours",
+    "title": "Chocolats, fleurs et couettes",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
-    "minigame": "default",
+    "caption": "Pour séduire Maman, tu déposais chaque matin des chocolats et des fleurs sur son bureau… et tu lui tirais les couettes. Méthode de cour de récré, efficacité prouvée.",
+    "minigame": "chocolats_couettes",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Ça a marché. La preuve : nous.",
     "position": {
       "x": 78.4,
       "z": -60.1
@@ -341,14 +341,14 @@
   {
     "id": 22,
     "chapter": 2,
-    "title": "Les premières responsabilités",
+    "title": "L’assiette sans fond",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
-    "minigame": "default",
+    "caption": "Le jour où tu as demandé la main de Maman à Diado, Mamina n’arrêtait pas de te resservir : en Bulgarie, quand on finit son assiette, on vous ressert.",
+    "minigame": "assiette_bulgare",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Leçon bulgare n°1 : toujours laisser une bouchée.",
     "position": {
       "x": 63.8,
       "z": -61.4
@@ -357,14 +357,14 @@
   {
     "id": 23,
     "chapter": 3,
-    "title": "La rencontre",
-    "date": "",
+    "title": "Le 14 juillet 2001",
+    "date": "14 juillet 2001",
     "type": "image",
     "media": "",
-    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
-    "minigame": "default",
+    "caption": "Le 14 juillet 2001, tu as épousé Eleonora, ton étincelle. Ce jour-là, même le feu d’artifice était pour vous.",
+    "minigame": "mariage_14_juillet",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Le seul 14 juillet tiré en votre honneur.",
     "position": {
       "x": 45.3,
       "z": -147
@@ -373,14 +373,14 @@
   {
     "id": 24,
     "chapter": 3,
-    "title": "Le premier rendez-vous",
+    "title": "Le requin d’Australie",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
-    "minigame": "default",
+    "caption": "En voyage de noces en Australie, tu as failli te faire manger par un requin. Jamais tu n’avais nagé aussi vite vers la plage.",
+    "minigame": "requin_australie",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Record personnel du 100 m nage libre.",
     "position": {
       "x": 55.2,
       "z": -154.7
@@ -389,14 +389,14 @@
   {
     "id": 25,
     "chapter": 3,
-    "title": "Le mariage",
+    "title": "Le casse du graffiti",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
-    "minigame": "default",
+    "caption": "Avec Maman, vous avez fait un « casse » dans la rue pour récupérer un graffiti… qui trône aujourd’hui, encadré, dans le salon.",
+    "minigame": "casse_graffiti",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "L’œuvre la mieux gardée de la maison.",
     "position": {
       "x": 61,
       "z": -168.3
@@ -405,14 +405,14 @@
   {
     "id": 26,
     "chapter": 3,
-    "title": "La première maison",
-    "date": "",
+    "title": "Séléna, ta princesse",
+    "date": "16 mai 2002",
     "type": "image",
     "media": "",
-    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
-    "minigame": "default",
+    "caption": "Le 16 mai 2002, tu es devenu papa pour la première fois : ta princesse Séléna est arrivée.",
+    "minigame": "naissance_selena",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Ton plus beau titre : Papa.",
     "position": {
       "x": 55.3,
       "z": -179.7
@@ -421,14 +421,14 @@
   {
     "id": 27,
     "chapter": 3,
-    "title": "Une naissance",
+    "title": "La princesse de Papa",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
-    "minigame": "default",
+    "caption": "Chez le médecin, quand on a demandé son nom à Séléna, elle a répondu très sérieusement : « la princesse de Papa ».",
+    "minigame": "princesse_de_papa",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Le médecin a dû mettre le dossier à jour.",
     "position": {
       "x": 46.7,
       "z": -190.1
@@ -437,14 +437,14 @@
   {
     "id": 28,
     "chapter": 3,
-    "title": "Les premiers mots",
-    "date": "",
+    "title": "Ylan, ton premier fils",
+    "date": "17 septembre 2003",
     "type": "image",
     "media": "",
-    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
-    "minigame": "default",
+    "caption": "Le 17 septembre 2003, tu es devenu papa pour la deuxième fois : Ylan, ton premier fils, est arrivé.",
+    "minigame": "naissance_ylan",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Deux enfants, deux fois plus de bêtises.",
     "position": {
       "x": 32.3,
       "z": -191.4
@@ -453,14 +453,14 @@
   {
     "id": 29,
     "chapter": 3,
-    "title": "Les dimanches en famille",
+    "title": "Le grigri du Bon Coin",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
-    "minigame": "default",
+    "caption": "Tu es allé acheter un grigri pour l’escalade sur Le Bon Coin… et tu as raconté toute ta vie au vendeur, jusqu’au film Vice-Versa qu’on était allés voir au cinéma l’après-midi même.",
+    "minigame": "grigri_leboncoin",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Le vendeur connaît maintenant toute la famille.",
     "position": {
       "x": 20.3,
       "z": -188.1
@@ -469,14 +469,14 @@
   {
     "id": 30,
     "chapter": 3,
-    "title": "Les vacances à la mer",
+    "title": "Goûteur de gâteaux",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
-    "minigame": "default",
+    "caption": "Au travail, tu étais goûteur de gâteaux. Chaque trimestre, tu rapportais à la maison toutes les nouveautés des marques pour qu’on les goûte. Le meilleur métier du monde (pour nous).",
+    "minigame": "gouteur_gateaux",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Le jury familial : exigeant, mais surtout gourmand.",
     "position": {
       "x": 14.1,
       "z": -175.8
@@ -485,14 +485,14 @@
   {
     "id": 31,
     "chapter": 3,
-    "title": "Les anniversaires",
+    "title": "La star de Lévis-Saint-Nom",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
-    "minigame": "default",
+    "caption": "Tu as failli gagner le tournoi de tennis de Lévis-Saint-Nom… et tu es devenu la star locale.",
+    "minigame": "tennis_levis",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Presque champion, totalement célèbre.",
     "position": {
       "x": 12.6,
       "z": -161.9
@@ -501,14 +501,14 @@
   {
     "id": 32,
     "chapter": 3,
-    "title": "Les fous rires à table",
+    "title": "La 20e tendinite",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
-    "minigame": "default",
+    "caption": "Ta 20e tendinite au pied. À ce stade, ce n’est plus une blessure, c’est un abonnement.",
+    "minigame": "tendinite_20",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "La 21e est déjà en route.",
     "position": {
       "x": 19.9,
       "z": -148.4
@@ -517,14 +517,14 @@
   {
     "id": 33,
     "chapter": 3,
-    "title": "Le cœur de la tribu",
+    "title": "« Mais Mami, c’est José ! »",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
-    "minigame": "default",
+    "caption": "Entendant bricoler dans le bureau, Mami lançait de tendres « mon chéri, mon chéri »… persuadée que c’était toi. C’était José, le bricoleur. Et nous : « Mais Mami, c’est José ! »",
+    "minigame": "mami_jose",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "José, lui, ne s’est jamais plaint.",
     "position": {
       "x": 31.6,
       "z": -144
@@ -533,14 +533,14 @@
   {
     "id": 34,
     "chapter": 4,
-    "title": "Le premier vrai travail",
-    "date": "",
+    "title": "Iordan, ton deuxième fils",
+    "date": "19 septembre 2010",
     "type": "image",
     "media": "",
-    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
-    "minigame": "default",
+    "caption": "Le 19 septembre 2010, tu es devenu papa pour la troisième fois : Iordan, ton deuxième fils, est arrivé. L’équipe était au complet.",
+    "minigame": "naissance_iordan",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Trois enfants : le compte est bon.",
     "position": {
       "x": -31.9,
       "z": -155.1
@@ -549,14 +549,14 @@
   {
     "id": 35,
     "chapter": 4,
-    "title": "Une grande fierté",
+    "title": "Opéré des fesses",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
-    "minigame": "default",
+    "caption": "En maternelle, Iordan a annoncé à tout le monde que son papa s’était fait « opérer des fesses ». Ta réputation te précède.",
+    "minigame": "operation_fesses",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Secret médical : zéro.",
     "position": {
       "x": -35.1,
       "z": -142.7
@@ -565,14 +565,14 @@
   {
     "id": 36,
     "chapter": 4,
-    "title": "Le voyage au bout du monde",
+    "title": "Candy Crush en douce",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
-    "minigame": "default",
+    "caption": "Tu jouais à Candy Crush sur l’iPad toute la journée… alors que nous, on n’avait pas le droit de jouer au téléphone.",
+    "minigame": "candy_crush",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Faites ce que je dis, pas ce que je fais.",
     "position": {
       "x": -41.8,
       "z": -132.3
@@ -581,14 +581,14 @@
   {
     "id": 37,
     "chapter": 4,
-    "title": "Les amis de toujours",
+    "title": "Le gâteau au Botox",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
-    "minigame": "default",
+    "caption": "Maman t’a dicté la recette : « deux cuillères à café de bicarbonate de soude ». Tu as compris « deux cuillères à soupe ». Résultat : un gâteau au Botox.",
+    "minigame": "gateau_bicarbonate",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Une cuillère à soupe, c’est juste une cuillère à café qui a de l’ambition.",
     "position": {
       "x": -55.2,
       "z": -129.3
@@ -597,14 +597,14 @@
   {
     "id": 38,
     "chapter": 4,
-    "title": "Le projet un peu fou",
+    "title": "« Je suis la maman de Séléna »",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
-    "minigame": "default",
+    "caption": "Au rendez-vous des parents pour l’échange de lycéens au Canada, tu t’es présenté avec aplomb : « Bonjour, je suis la maman de Séléna. »",
+    "minigame": "maman_de_selena",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Personne n’a osé te contredire.",
     "position": {
       "x": -68.3,
       "z": -132.7
@@ -613,14 +613,14 @@
   {
     "id": 39,
     "chapter": 4,
-    "title": "Une épreuve surmontée",
+    "title": "La semoule sur la nappe",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
-    "minigame": "default",
+    "caption": "Au moment de passer à table, tu as renversé la sauce de la semoule sur la nappe. Ta solution : éponger la sauce… avec la semoule, pour ne rien gâcher.",
+    "minigame": "semoule_nappe",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Technique brevetée : le camouflage culinaire.",
     "position": {
       "x": -76.7,
       "z": -143.2
@@ -629,14 +629,14 @@
   {
     "id": 40,
     "chapter": 4,
-    "title": "Le road-trip",
+    "title": "Le marteau et le doigt",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
-    "minigame": "default",
+    "caption": "Tu bricolais, tu visais le clou… et tu t’es tapé sur le doigt avec le marteau.",
+    "minigame": "marteau_doigt",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Le clou, lui, n’a jamais rien senti.",
     "position": {
       "x": -80.2,
       "z": -155.4
@@ -645,14 +645,14 @@
   {
     "id": 41,
     "chapter": 4,
-    "title": "Le bricolage du dimanche",
+    "title": "« The nouvelle vanne EGR »",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
-    "minigame": "default",
+    "caption": "Sur la route de la Bulgarie, la voiture est tombée en panne en Allemagne. Face au garagiste, ton anglais a tenu jusqu’à cette phrase historique : « The nouvelle vanne EGR ».",
+    "minigame": "vanne_egr",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Langue officielle : le franglais mécanique.",
     "position": {
       "x": -74.8,
       "z": -166.3
@@ -661,14 +661,14 @@
   {
     "id": 42,
     "chapter": 4,
-    "title": "Une rencontre marquante",
+    "title": "Le message à l’inconnu",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
-    "minigame": "default",
+    "caption": "Pour faire une blague à Séléna, tu as envoyé « Beaux nénés 👙 »… à un parfait inconnu sur Le Bon Coin.",
+    "minigame": "beaux_nenes",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "L’inconnu n’a jamais répondu.",
     "position": {
       "x": -63.4,
       "z": -173.6
@@ -677,14 +677,14 @@
   {
     "id": 43,
     "chapter": 4,
-    "title": "La transmission",
+    "title": "Le fil barbelé du verger",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
-    "minigame": "default",
+    "caption": "Tu courais dans le verger quand tu t’es pris le fil barbelé dans le visage. Tu as crié à Maman « Je saigne, je saigne ! »… et elle a entendu « Un cerf, un cerf ! ». Elle a donc cherché le cerf du regard.",
+    "minigame": "fil_barbele",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Score final : le verger 1 – Papa 0. Revanche prévue.",
     "position": {
       "x": -50.9,
       "z": -173.1
@@ -693,14 +693,14 @@
   {
     "id": 44,
     "chapter": 4,
-    "title": "La passion du week-end",
+    "title": "La fourrure du verger",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
-    "minigame": "default",
+    "caption": "Dans le verger, tu as ramassé ce qui ressemblait à une belle fourrure d’animal, pleine de poils… C’était un vieux caca moisi.",
+    "minigame": "fourrure_verger",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Le nez, lui, avait compris tout de suite.",
     "position": {
       "x": -38.3,
       "z": -167.5
@@ -709,14 +709,14 @@
   {
     "id": 45,
     "chapter": 5,
-    "title": "Aujourd'hui",
+    "title": "Le pigeon et la roue",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
-    "minigame": "default",
+    "caption": "Pendant que tu changeais la roue du vélo de Iordan, un pigeon t’a visé dans le dos. Tu as senti un truc, tu as touché… c’était bien une crotte. Iordan était mort de rire.",
+    "minigame": "pigeon_velo",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Le pigeon vise mieux que toi au marteau.",
     "position": {
       "x": -74.4,
       "z": -88.7
@@ -725,14 +725,14 @@
   {
     "id": 46,
     "chapter": 5,
-    "title": "Ce qu'il nous a appris",
+    "title": "Lasure ou crotte ?",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
-    "minigame": "default",
+    "caption": "Iordan peignait à la lasure quand une tache est apparue. « C’est de la lasure », disait Iordan. « C’est une crotte », disais-tu. Tu as gratté avec le doigt : c’était une crotte.",
+    "minigame": "lasure_crotte",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Tu avais raison. Tu aurais préféré avoir tort.",
     "position": {
       "x": -88.3,
       "z": -87.7
@@ -741,14 +741,14 @@
   {
     "id": 47,
     "chapter": 5,
-    "title": "Sa recette fétiche",
+    "title": "Le coup de fil à Jean-Yves",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
-    "minigame": "default",
+    "caption": "Tes coups de fil à Jean-Yves… passés depuis les toilettes.",
+    "minigame": "jean_yves_toilettes",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Jean-Yves sait désormais d’où tu l’appelles.",
     "position": {
       "x": -98.8,
       "z": -80.7
@@ -757,14 +757,14 @@
   {
     "id": 48,
     "chapter": 5,
-    "title": "Son endroit préféré",
+    "title": "La blague prémonitoire",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
-    "minigame": "default",
+    "caption": "Pour plaisanter, tu as dit à la maman d’une amie que son mari était « peut-être avec une autre femme »… Ce n’était pas une blague : il la trompait vraiment avec la prof de danse.",
+    "minigame": "blague_premonitoire",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Voyant extra-lucide, malgré toi.",
     "position": {
       "x": -103.7,
       "z": -67
@@ -773,14 +773,14 @@
   {
     "id": 49,
     "chapter": 5,
-    "title": "Sa phrase culte",
+    "title": "Cache-toi, la police !",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
-    "minigame": "default",
+    "caption": "Iordan pêchait tranquillement quand tu lui as dit de se cacher de la police. Puis, tout sourire, aux policiers : « Ah, c’est mon fils, il a peur de la police. »",
+    "minigame": "police_peche",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Complice et dénonciateur dans la même minute.",
     "position": {
       "x": -102.6,
       "z": -54.2
@@ -789,14 +789,14 @@
   {
     "id": 50,
     "chapter": 5,
-    "title": "Les moments simples",
+    "title": "Les savons gourmands",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
-    "minigame": "default",
+    "caption": "Maman t’avait offert des savons parfumés. Ils sentaient tellement bon… que tu les as mangés.",
+    "minigame": "savons_gourmands",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Haleine fraîche garantie.",
     "position": {
       "x": -93,
       "z": -42.3
@@ -805,14 +805,14 @@
   {
     "id": 51,
     "chapter": 5,
-    "title": "Ce qui le fait rire",
+    "title": "Les lèvres d’abeille",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
-    "minigame": "default",
+    "caption": "Les abeilles de tes ruches, au verger, t’ont piqué. Résultat : des lèvres gonflées dignes d’une star de cinéma.",
+    "minigame": "abeilles_levres",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Le Botox naturel, en direct du verger.",
     "position": {
       "x": -78.8,
       "z": -41.4
@@ -821,14 +821,14 @@
   {
     "id": 52,
     "chapter": 5,
-    "title": "Le regard vers demain",
+    "title": "Le meuble de Iordan (×3)",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
-    "minigame": "default",
+    "caption": "En montant le meuble de Iordan, tu as découpé une planche dans le mauvais sens. Puis une deuxième fois. Puis une troisième. La même bêtise, trois fois, avec la même conviction.",
+    "minigame": "meuble_iordan",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Jamais deux sans trois.",
     "position": {
       "x": -66.7,
       "z": -43.1
@@ -837,14 +837,14 @@
   {
     "id": 53,
     "chapter": 5,
-    "title": "Nos plus beaux moments",
+    "title": "Les câlins de Mami",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
-    "minigame": "default",
+    "caption": "Mami avait sa spécialité : le câlin surprise par derrière… avec pincement de tétons en prime.",
+    "minigame": "calins_mami",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Un amour de grand-mère, très tactile.",
     "position": {
       "x": -59.7,
       "z": -54
@@ -853,14 +853,14 @@
   {
     "id": 54,
     "chapter": 5,
-    "title": "Le mot de la famille",
+    "title": "« Michel, Michel, aidez-moi ! »",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
-    "minigame": "default",
+    "caption": "Une bestiole dans le dos, tu as soulevé ton t-shirt en appelant au secours : « Michel, Michel, aidez-moi ! » Et Michel est venu te toucher le dos pour chasser la bête.",
+    "minigame": "michel_bestiole",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Michel : garde-chasse, et désormais garde du dos.",
     "position": {
       "x": -56.3,
       "z": -67.2
@@ -869,14 +869,14 @@
   {
     "id": 55,
     "chapter": 5,
-    "title": "55 ans de lumière",
+    "title": "Les pâtisseries cachées",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
-    "minigame": "default",
+    "caption": "Tu venais d’acheter de superbes pâtisseries quand tu as vu Michel arriver. Réflexe : tu les as cachées… et tu lui as offert de vieux biscuits. Les pâtisseries, tu les as mangées après.",
+    "minigame": "patisseries_cachees",
     "outcomeText": null,
-    "funnyNote": "",
+    "funnyNote": "Michel, si tu lis ceci : désolé.",
     "position": {
       "x": -63.3,
       "z": -79.2

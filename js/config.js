@@ -23,11 +23,11 @@ export const INTRO = {
  * - landmark : petit élément de décor unique posé au sommet de l'île.
  */
 export const CHAPTERS = [
-  { id: 1, roman: 'I',   name: "L'Enfance",             subtitle: 'Les premières lueurs',        center: { x: 0,   z: -34 },  radius: 12, color: '#ffcf8a', landmark: 'tree' },
-  { id: 2, roman: 'II',  name: 'La Jeunesse',           subtitle: 'Le vent dans les voiles',     center: { x: 74,  z: -82 },  radius: 13, color: '#ffb08a', landmark: 'lighthouse' },
-  { id: 3, roman: 'III', name: "L'Amour & la Famille",  subtitle: 'Le cœur de la maison',        center: { x: 36,  z: -168 }, radius: 14, color: '#ff9fb4', landmark: 'house' },
-  { id: 4, roman: 'IV',  name: 'Les Chemins de la vie', subtitle: 'Travail, voyages et amitiés', center: { x: -56, z: -152 }, radius: 13, color: '#b9a8ff', landmark: 'arch' },
-  { id: 5, roman: 'V',   name: "Aujourd'hui",           subtitle: '55 ans de lumière',           center: { x: -80, z: -64 },  radius: 14, color: '#9fe3ff', landmark: 'stele' },
+  { id: 1, roman: 'I',   name: "L'Enfance",             subtitle: 'De Bouaké aux premières bêtises',        center: { x: 0,   z: -34 },  radius: 12, color: '#ffcf8a', landmark: 'tree' },
+  { id: 2, roman: 'II',  name: 'La Jeunesse',           subtitle: 'Études, aventures et coup de foudre',     center: { x: 74,  z: -82 },  radius: 13, color: '#ffb08a', landmark: 'lighthouse' },
+  { id: 3, roman: 'III', name: "L'Étincelle",           subtitle: 'Un mariage et deux merveilles',        center: { x: 36,  z: -168 }, radius: 14, color: '#ff9fb4', landmark: 'house' },
+  { id: 4, roman: 'IV',  name: 'La Tribu au complet',   subtitle: 'Papa à plein temps', center: { x: -56, z: -152 }, radius: 13, color: '#b9a8ff', landmark: 'arch' },
+  { id: 5, roman: 'V',   name: 'Le Verger',             subtitle: 'Abeilles, Michel et autres surprises',           center: { x: -80, z: -64 },  radius: 14, color: '#9fe3ff', landmark: 'stele' },
 ];
 
 /** Distance entre le rivage d'une île et son cercle de lanternes. */
