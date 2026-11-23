@@ -2,7 +2,6 @@
 /**
  * Génère (ou met à jour) data/memories.json.
  *
- *   node tools/generate-memories.mjs --force           → réécrit un modèle complet (⚠ écrase tes textes)
  *   node tools/generate-memories.mjs --positions-only  → garde tes textes, recalcule seulement les positions
  *   node tools/generate-memories.mjs --migrate         → garde tes textes, ajoute les champs manquants
  *                                                        (minigame, outcomeText, funnyNote)
@@ -51,8 +50,9 @@ if (args.has('--migrate')) {
   process.exit(0);
 }
 
-if (existsSync(file) && !args.has('--force')) {
-  console.log('data/memories.json existe déjà. Utilise --migrate, --positions-only, ou --force pour l’écraser.');
+if (existsSync(file) && !args.has('--i-really-want-to-erase')) {
+  console.log('data/memories.json contient les 55 vraies anecdotes : on ne le régénère plus.');
+  console.log('Utilise --positions-only ou --migrate (ils gardent tes textes).');
   process.exit(1);
 }
 

@@ -7,6 +7,6 @@
   "scripts": {
     "serve": "npx --yes http-server . -p 8080 -c-1",
     "positions": "node tools/generate-memories.mjs --positions-only",
-    "generate": "node tools/generate-memories.mjs --force"
+    "test": "node tools/test-minigames.mjs"
   }
 }

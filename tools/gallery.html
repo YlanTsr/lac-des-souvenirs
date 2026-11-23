@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Galerie des mini-jeux</title>
+<style>
+  body { margin: 0; padding: 16px; background: #14122b; color: #f3ead8; font: 14px/1.4 system-ui, sans-serif; }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  p { margin: 0 0 16px; opacity: .75; }
+  .game { margin: 0 0 22px; }
+  .game h2 { font-size: 15px; margin: 0 0 6px; }
+  .game h2 small { opacity: .6; font-weight: 400; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; }
+  canvas { width: 384px; max-width: 100%; aspect-ratio: 16 / 9; border-radius: 6px; background: #000; }
+  .err { color: #ff8a8a; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+<h1>Galerie des mini-jeux</h1>
+<p>Aperçus automatiques : écran d'intro, puis à 35 % et 75 % de la partie jouée au hasard. Filtrer : <code>?ids=yaourt_metro,fil_barbele</code></p>
+<div id="out"></div>
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }</script>
+<script type="module">
+import { drawAvatar2D } from '../js/avatar.js';
+import { listMiniGames } from '../js/minigames.js';
+
+const W = 960, H = 540, DT = 1 / 60;
+const params = new URLSearchParams(location.search);
+const ids = params.get('ids') ? params.get('ids').split(',') : listMiniGames();
+const out = document.getElementById('out');
+
+class SimInput {
+  constructor() { this._pressed = new Set(); this._held = {}; this.pointer = { x: W / 2, y: H / 2, down: false, pressed: false, released: false, active: true }; this.cursor = { x: W / 2, y: H / 2 }; }
+  pressed(n = 'action') { return this._pressed.has(n); }
+  held(n = 'action') { return n === 'action' ? !!this._held.action || this.pointer.down : !!this._held[n]; }
+  axis(w = 'x') { return w === 'x' ? (this.held('right') ? 1 : 0) - (this.held('left') ? 1 : 0) : (this.held('down') ? 1 : 0) - (this.held('up') ? 1 : 0); }
+  endFrame() { this._pressed.clear(); this.pointer.pressed = false; this.pointer.released = false; }
+}
+
+for (const id of ids) {
+  const box = document.createElement('div');
+  box.className = 'game';
+  out.appendChild(box);
+  try {
+    const def = (await import(`../js/minigames/${id}.js`)).default;
+    box.innerHTML = `<h2>${def.title} <small>· ${id} · ${def.duration}s · ${def.controls}</small></h2><div class="row"></div>`;
+    const row = box.querySelector('.row');
+    const shots = [0, 0.35, 0.75];
+    let t = 0, ended = false;
+    const api = {
+      W, H, get t() { return t; }, get timeLeft() { return Math.max(0, def.duration - t); }, get ended() { return ended; },
+      memory: { id: 0, title: def.title, minigame: id },
+      end: () => { ended = true; }, sfx: () => {}, avatar: (g, o) => drawAvatar2D(g, o), shake: () => {}, burst: () => {},
+      text: (g, str, x, y, o = {}) => {
+        g.font = `${o.weight ?? 700} ${o.size ?? 28}px ${o.font ?? '"Nunito Sans", system-ui, sans-serif'}`;
+        g.textAlign = o.align ?? 'center'; g.textBaseline = o.baseline ?? 'middle';
+        if (o.stroke) { g.lineWidth = o.strokeWidth ?? 6; g.strokeStyle = o.stroke; g.lineJoin = 'round'; g.strokeText(str, x, y); }
+        g.fillStyle = o.color ?? '#fff'; g.fillText(str, x, y);
+      },
+      roundRect: (g, x, y, w, h, r = 12) => { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); },
+      rand: (a = 0, b = 1) => a + Math.random() * (b - a), clamp: (v, a, b) => Math.max(a, Math.min(b, v)), lerp: (a, b, k) => a + (b - a) * k,
+    };
+    const snap = (game, label) => {
+      const c = document.createElement('canvas'); c.width = W; c.height = H; c.title = label;
+      const g = c.getContext('2d'); game.draw(g); row.appendChild(c);
+    };
+    snap(def.create(api), 'intro');
+    const game = def.create(api);
+    const inp = new SimInput();
+    let next = 1;
+    for (let f = 0; f < def.duration / DT && next < shots.length; f++) {
+      if (Math.random() < 0.1) { inp._held.action = Math.random() < 0.4; inp._held.left = Math.random() < 0.3; inp._held.right = Math.random() < 0.3; }
+      if (Math.random() < 0.05) inp._pressed.add('action');
+      if (Math.random() < 0.04) { inp.pointer.x = inp.cursor.x = Math.random() * W; inp.pointer.y = inp.cursor.y = Math.random() * H; }
+      t += DT;
+      game.update(DT, inp);
+      inp.endFrame();
+      if (t >= shots[next] * def.duration || ended) { snap(game, `t=${t.toFixed(1)}s`); next++; if (ended) break; }
+    }
+  } catch (e) {
+    box.innerHTML = `<h2>${id}</h2><div class="err">${e.stack || e}</div>`;
+  }
+}
+</script>
+</body>
+</html>

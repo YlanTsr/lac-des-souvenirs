@@ -17,15 +17,31 @@
  */
 const REGISTRY = {
   default: () => import('./minigames/default.js'),
-
-  // ── Lot 1 : anecdotes 1 à 5
+  naissance_bouake: () => import('./minigames/naissance_bouake.js'),
+  pioche_pilou: () => import('./minigames/pioche_pilou.js'),
+  petards_margouillats: () => import('./minigames/petards_margouillats.js'),
+  motocross_pilou: () => import('./minigames/motocross_pilou.js'),
   yaourt_metro: () => import('./minigames/yaourt_metro.js'),
+  dessin_nu: () => import('./minigames/dessin_nu.js'),
+  assiette_bulgare: () => import('./minigames/assiette_bulgare.js'),
+  princesse_de_papa: () => import('./minigames/princesse_de_papa.js'),
+  naissance_ylan: () => import('./minigames/naissance_ylan.js'),
+  grigri_leboncoin: () => import('./minigames/grigri_leboncoin.js'),
+  tendinite_20: () => import('./minigames/tendinite_20.js'),
+  mami_jose: () => import('./minigames/mami_jose.js'),
+  naissance_iordan: () => import('./minigames/naissance_iordan.js'),
+  gateau_bicarbonate: () => import('./minigames/gateau_bicarbonate.js'),
+  maman_de_selena: () => import('./minigames/maman_de_selena.js'),
   semoule_nappe: () => import('./minigames/semoule_nappe.js'),
   marteau_doigt: () => import('./minigames/marteau_doigt.js'),
+  vanne_egr: () => import('./minigames/vanne_egr.js'),
+  beaux_nenes: () => import('./minigames/beaux_nenes.js'),
   fil_barbele: () => import('./minigames/fil_barbele.js'),
-  gateau_bicarbonate: () => import('./minigames/gateau_bicarbonate.js'),
-
-  // ── Lot 2 : à venir…
+  lasure_crotte: () => import('./minigames/lasure_crotte.js'),
+  jean_yves_toilettes: () => import('./minigames/jean_yves_toilettes.js'),
+  blague_premonitoire: () => import('./minigames/blague_premonitoire.js'),
+  abeilles_levres: () => import('./minigames/abeilles_levres.js'),
+  meuble_iordan: () => import('./minigames/meuble_iordan.js'),
 };
 
 /** true si un mini-jeu personnalisé existe pour cet identifiant. */
