@@ -1,0 +1,12 @@
+{
+  "name": "les-55-lanternes",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Jeu 3D poétique pour les 55 ans de Papa (Three.js, site statique GitHub Pages).",
+  "type": "module",
+  "scripts": {
+    "serve": "npx --yes http-server . -p 8080 -c-1",
+    "positions": "node tools/generate-memories.mjs --positions-only",
+    "generate": "node tools/generate-memories.mjs --force"
+  }
+}

@@ -1,0 +1,11 @@
+# Dépendances et fichiers locaux
+node_modules/
+.claude/settings.local.json
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python
+__pycache__/

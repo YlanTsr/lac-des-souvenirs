@@ -1,0 +1,885 @@
+[
+  {
+    "id": 1,
+    "chapter": 1,
+    "title": "Les yaourts dans les poches du métro",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Ce jour-là, Papa est entré dans le métro avec un pot de yaourt dans chaque poche. Les portes se sont refermées pile sur lui… et sur les deux yaourts. Résultat : du yaourt partout, sur lui, sur les portes, et sans doute sur quelques voyageurs !",
+    "minigame": "yaourt_metro",
+    "outcomeText": {
+      "success": "Il est monté dans la rame, digne, les deux yaourts intacts. Ce jour-là, l’histoire aurait été bien moins drôle…",
+      "fail": "Les portes ont refermé leurs mâchoires sur les poches : yaourt sur le pantalon, sur les portes, sur les voisins. Exactement comme le vrai jour !"
+    },
+    "funnyNote": "Depuis, les yaourts voyagent dans un sac. Ou directement dans le ventre.",
+    "position": {
+      "x": -0.7,
+      "z": -11.5
+    }
+  },
+  {
+    "id": 2,
+    "chapter": 1,
+    "title": "La semoule sur la nappe",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "En préparant le repas, Papa a renversé la sauce de la semoule sur la nappe. Sa solution de génie : verser la semoule par-dessus pour éponger… puis servir à table comme si de rien n’était.",
+    "minigame": "semoule_nappe",
+    "outcomeText": null,
+    "funnyNote": "Technique brevetée : le camouflage culinaire.",
+    "position": {
+      "x": 13,
+      "z": -16
+    }
+  },
+  {
+    "id": 3,
+    "chapter": 1,
+    "title": "Le marteau sur le doigt",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Une séance de bricolage, un clou, un marteau… et un doigt au mauvais endroit. Ce jour-là, le marteau a choisi le doigt.",
+    "minigame": "marteau_doigt",
+    "outcomeText": null,
+    "funnyNote": "Le clou, lui, n’a jamais rien senti.",
+    "position": {
+      "x": 19.8,
+      "z": -25.2
+    }
+  },
+  {
+    "id": 4,
+    "chapter": 1,
+    "title": "Le fil barbelé du verger",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "En traversant le verger à toute allure, Papa n’a pas vu le fil barbelé tendu à hauteur de visage. Il se l’est pris en pleine figure !",
+    "minigame": "fil_barbele",
+    "outcomeText": null,
+    "funnyNote": "Score final : le verger 1 – Papa 0. Revanche prévue.",
+    "position": {
+      "x": 21.1,
+      "z": -37.7
+    }
+  },
+  {
+    "id": 5,
+    "chapter": 1,
+    "title": "Le gâteau au bicarbonate",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Pour faire un gâteau, Papa a mis 2 cuillères à SOUPE de bicarbonate de soude au lieu de 2 cuillères à CAFÉ. La pâte a gonflé… gonflé… et gonflé encore.",
+    "minigame": "gateau_bicarbonate",
+    "outcomeText": null,
+    "funnyNote": "Une cuillère à soupe, c’est juste une cuillère à café qui a de l’ambition.",
+    "position": {
+      "x": 17.8,
+      "z": -47.7
+    }
+  },
+  {
+    "id": 6,
+    "chapter": 1,
+    "title": "Le meilleur copain",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": 5.5,
+      "z": -56.1
+    }
+  },
+  {
+    "id": 7,
+    "chapter": 1,
+    "title": "Les étés au bord de l'eau",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -5.9,
+      "z": -54.4
+    }
+  },
+  {
+    "id": 8,
+    "chapter": 1,
+    "title": "Noël en famille",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -16.4,
+      "z": -47.7
+    }
+  },
+  {
+    "id": 9,
+    "chapter": 1,
+    "title": "La cabane secrète",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -22,
+      "z": -36.3
+    }
+  },
+  {
+    "id": 10,
+    "chapter": 1,
+    "title": "La première bêtise",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -21,
+      "z": -24.9
+    }
+  },
+  {
+    "id": 11,
+    "chapter": 1,
+    "title": "Le rêve d'enfant",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -11.5,
+      "z": -16.5
+    }
+  },
+  {
+    "id": 12,
+    "chapter": 2,
+    "title": "Les années lycée",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": 54,
+      "z": -70.5
+    }
+  },
+  {
+    "id": 13,
+    "chapter": 2,
+    "title": "Le premier concert",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": 51.4,
+      "z": -81.8
+    }
+  },
+  {
+    "id": 14,
+    "chapter": 2,
+    "title": "La bande d’amis",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": 54.3,
+      "z": -93.8
+    }
+  },
+  {
+    "id": 15,
+    "chapter": 2,
+    "title": "Le permis de conduire",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": 62.8,
+      "z": -103.7
+    }
+  },
+  {
+    "id": 16,
+    "chapter": 2,
+    "title": "Le premier job d’été",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": 77.1,
+      "z": -105.3
+    }
+  },
+  {
+    "id": 17,
+    "chapter": 2,
+    "title": "Les années étudiantes",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": 89.1,
+      "z": -98.5
+    }
+  },
+  {
+    "id": 18,
+    "chapter": 2,
+    "title": "Le grand départ",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": 95.6,
+      "z": -89.2
+    }
+  },
+  {
+    "id": 19,
+    "chapter": 2,
+    "title": "La première voiture",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": 95.3,
+      "z": -76.6
+    }
+  },
+  {
+    "id": 20,
+    "chapter": 2,
+    "title": "Un été inoubliable",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": 88.5,
+      "z": -65.5
+    }
+  },
+  {
+    "id": 21,
+    "chapter": 2,
+    "title": "La passion de toujours",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": 78.4,
+      "z": -60.1
+    }
+  },
+  {
+    "id": 22,
+    "chapter": 2,
+    "title": "Les premières responsabilités",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": 63.8,
+      "z": -61.4
+    }
+  },
+  {
+    "id": 23,
+    "chapter": 3,
+    "title": "La rencontre",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": 45.3,
+      "z": -147
+    }
+  },
+  {
+    "id": 24,
+    "chapter": 3,
+    "title": "Le premier rendez-vous",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": 55.2,
+      "z": -154.7
+    }
+  },
+  {
+    "id": 25,
+    "chapter": 3,
+    "title": "Le mariage",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": 61,
+      "z": -168.3
+    }
+  },
+  {
+    "id": 26,
+    "chapter": 3,
+    "title": "La première maison",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": 55.3,
+      "z": -179.7
+    }
+  },
+  {
+    "id": 27,
+    "chapter": 3,
+    "title": "Une naissance",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": 46.7,
+      "z": -190.1
+    }
+  },
+  {
+    "id": 28,
+    "chapter": 3,
+    "title": "Les premiers mots",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": 32.3,
+      "z": -191.4
+    }
+  },
+  {
+    "id": 29,
+    "chapter": 3,
+    "title": "Les dimanches en famille",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": 20.3,
+      "z": -188.1
+    }
+  },
+  {
+    "id": 30,
+    "chapter": 3,
+    "title": "Les vacances à la mer",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": 14.1,
+      "z": -175.8
+    }
+  },
+  {
+    "id": 31,
+    "chapter": 3,
+    "title": "Les anniversaires",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": 12.6,
+      "z": -161.9
+    }
+  },
+  {
+    "id": 32,
+    "chapter": 3,
+    "title": "Les fous rires à table",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": 19.9,
+      "z": -148.4
+    }
+  },
+  {
+    "id": 33,
+    "chapter": 3,
+    "title": "Le cœur de la tribu",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": 31.6,
+      "z": -144
+    }
+  },
+  {
+    "id": 34,
+    "chapter": 4,
+    "title": "Le premier vrai travail",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -31.9,
+      "z": -155.1
+    }
+  },
+  {
+    "id": 35,
+    "chapter": 4,
+    "title": "Une grande fierté",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -35.1,
+      "z": -142.7
+    }
+  },
+  {
+    "id": 36,
+    "chapter": 4,
+    "title": "Le voyage au bout du monde",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -41.8,
+      "z": -132.3
+    }
+  },
+  {
+    "id": 37,
+    "chapter": 4,
+    "title": "Les amis de toujours",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -55.2,
+      "z": -129.3
+    }
+  },
+  {
+    "id": 38,
+    "chapter": 4,
+    "title": "Le projet un peu fou",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -68.3,
+      "z": -132.7
+    }
+  },
+  {
+    "id": 39,
+    "chapter": 4,
+    "title": "Une épreuve surmontée",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -76.7,
+      "z": -143.2
+    }
+  },
+  {
+    "id": 40,
+    "chapter": 4,
+    "title": "Le road-trip",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -80.2,
+      "z": -155.4
+    }
+  },
+  {
+    "id": 41,
+    "chapter": 4,
+    "title": "Le bricolage du dimanche",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -74.8,
+      "z": -166.3
+    }
+  },
+  {
+    "id": 42,
+    "chapter": 4,
+    "title": "Une rencontre marquante",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -63.4,
+      "z": -173.6
+    }
+  },
+  {
+    "id": 43,
+    "chapter": 4,
+    "title": "La transmission",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -50.9,
+      "z": -173.1
+    }
+  },
+  {
+    "id": 44,
+    "chapter": 4,
+    "title": "La passion du week-end",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -38.3,
+      "z": -167.5
+    }
+  },
+  {
+    "id": 45,
+    "chapter": 5,
+    "title": "Aujourd'hui",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -74.4,
+      "z": -88.7
+    }
+  },
+  {
+    "id": 46,
+    "chapter": 5,
+    "title": "Ce qu'il nous a appris",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -88.3,
+      "z": -87.7
+    }
+  },
+  {
+    "id": 47,
+    "chapter": 5,
+    "title": "Sa recette fétiche",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -98.8,
+      "z": -80.7
+    }
+  },
+  {
+    "id": 48,
+    "chapter": 5,
+    "title": "Son endroit préféré",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -103.7,
+      "z": -67
+    }
+  },
+  {
+    "id": 49,
+    "chapter": 5,
+    "title": "Sa phrase culte",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -102.6,
+      "z": -54.2
+    }
+  },
+  {
+    "id": 50,
+    "chapter": 5,
+    "title": "Les moments simples",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -93,
+      "z": -42.3
+    }
+  },
+  {
+    "id": 51,
+    "chapter": 5,
+    "title": "Ce qui le fait rire",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -78.8,
+      "z": -41.4
+    }
+  },
+  {
+    "id": 52,
+    "chapter": 5,
+    "title": "Le regard vers demain",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Raconte ici l’anecdote : qui était là, ce qui s’est passé, et pourquoi on en rit (ou on en parle) encore aujourd’hui.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -66.7,
+      "z": -43.1
+    }
+  },
+  {
+    "id": 53,
+    "chapter": 5,
+    "title": "Nos plus beaux moments",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Une anecdote, une phrase entendue ce jour-là, un détail qui fait sourire… Remplace ce texte par le tien.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -59.7,
+      "z": -54
+    }
+  },
+  {
+    "id": 54,
+    "chapter": 5,
+    "title": "Le mot de la famille",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Écris quelques lignes simples, comme si tu la racontais au coin du feu.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -56.3,
+      "z": -67.2
+    }
+  },
+  {
+    "id": 55,
+    "chapter": 5,
+    "title": "55 ans de lumière",
+    "date": "",
+    "type": "image",
+    "media": "",
+    "caption": "Ce souvenir mérite sa lanterne : décris le lieu, le moment, la chute de l’histoire.",
+    "minigame": "default",
+    "outcomeText": null,
+    "funnyNote": "",
+    "position": {
+      "x": -63.3,
+      "z": -79.2
+    }
+  }
+]
