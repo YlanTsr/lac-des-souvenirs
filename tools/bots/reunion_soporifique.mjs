@@ -1,9 +1,14 @@
-// Robot : appuie la bonne flèche ~0,45 s après l'apparition de l'idée (≈ joueur attentif).
-let seen = null, since = 0, prevT = 0;
+// Robot : dès que la tête de Maman commence à tomber, attend ~0,25 s (réaction) puis
+// maintient Espace jusqu'à ce qu'elle se redresse, et relâche ~0,1 s plus tard.
+let prevPhase = 'awake', since = 0, releaseAt = -1, prevT = 0;
 export default function bot(s, t) {
-  if (t < prevT) { seen = null; since = 0; }
+  if (t < prevT) { prevPhase = 'awake'; since = 0; releaseAt = -1; }
   prevT = t;
-  if (s.want !== seen) { seen = s.want; since = t; }
-  if (s.want && t - since > 0.45 && t - since < 0.5) return { [s.want]: true };
-  return {};
+  if (s.phase !== prevPhase) {
+    if (s.phase === 'nod') since = t;
+    else releaseAt = t + 0.1;
+    prevPhase = s.phase;
+  }
+  const hold = (s.phase === 'nod' && t - since >= 0.25) || t < releaseAt;
+  return { hold };
 }

@@ -3,7 +3,8 @@
  * Pilou voulait casser un bijou de Mami pour récupérer les billes… et la pioche
  * a fini sur la tête de Papa. Ça expliquerait certaines choses.
  * Mécanique : les billes jaillissent du coffret cassé et roulent dans la cour ;
- * Papa court les ramasser (← → ou souris) en esquivant la pioche, annoncée par une ombre.
+ * Papa court les ramasser (← → ou souris) en esquivant la pioche, annoncée par une ombre (préavis court,
+ * Pilou anticipe la course de Papa, frappe parfois deux fois de suite ou feinte avant de bondir sur lui).
  * 8 billes = victoire ; 2 coups sur la tête = échec.
  */
 import { drawPerson, PEOPLE } from './people.js';
@@ -99,7 +100,7 @@ const MARBLE_COLORS = ['#3fa7f5', '#f5503f', '#4fd17a', '#ffd34d', '#b46cf0', '#
 export default {
   id: 'pioche_pilou',
   title: 'Le coup de pioche de Pilou',
-  instructions: 'Les billes du bijou de Mami roulent partout : ramasses-en 8, mais file dès que l’ombre de la pioche de Pilou apparaît sous tes pieds !',
+  instructions: 'Les billes du bijou de Mami roulent partout : ramasses-en 8, et file dès que l’ombre de la pioche apparaît — Pilou vise là où tu vas, et il triche !',
   controls: '← → / souris : courir',
   duration: 12,
   introExpression: 'worried',
@@ -116,10 +117,24 @@ export default {
       got: 0, hits: 0, dizzy: 0, flash: 0,
       marbles: [], spawnT: 0.5, n: 0,
       // cycle de la pioche : wait → aim (ombre) → strike → rest
-      phase: 'wait', phaseT: 1.0, tx: 600, pilouX: 760, pilouFrom: 760, side: 1, swing: 0,
+      phase: 'wait', phaseT: 0.8, tx: 600, pilouX: 760, pilouFrom: 760, side: 1, swing: 0,
+      aimAge: 0, feint: false, double: false,
       msg: '', msgT: 0, pops: [],
     };
-    const warnTime = () => Math.max(0.58, 0.8 - s.t * 0.02);
+    // préavis de l'ombre (avant les 0,1 s du coup lui-même) : court, et de plus en plus court
+    const warnTime = () => Math.max(0.3, 0.4 - s.t * 0.01);
+    const STRIKE = 0.1;
+
+    /** Pilou vise Papa… là où il sera au moment du coup (anticipation partielle). */
+    function aimAt(lead) {
+      const ahead = s.vx * (warnTime() + STRIKE) * lead;
+      s.tx = clamp(s.px + ahead + rand(-18, 18), 70, W - 70);
+      s.pilouFrom = s.pilouX;
+      s.side = s.pilouX >= s.tx ? 1 : -1;
+      if (s.tx + s.side * 56 > W - 30 || s.tx + s.side * 56 < 30) s.side = -s.side;
+      s.aimAge = 0;
+      api.sfx('whoosh');
+    }
 
     function spawnMarble() {
       const tx = rand(70, 890);
@@ -214,30 +229,50 @@ export default {
 
         // ── Pilou et sa pioche
         s.phaseT -= dt;
+        s.aimAge += dt;
         if (s.phase === 'aim') {
+          // feinte : l'ombre apparaît à côté… puis bondit sur Papa, avec un nouveau (court) préavis
+          if (s.feint && s.aimAge >= 0.26 && !api.ended) {
+            s.feint = false;
+            aimAt(0.6);
+            s.phaseT = warnTime();
+          }
           const k = clamp(1 - s.phaseT / warnTime(), 0, 1);
           s.pilouX = api.lerp(s.pilouFrom, s.tx + s.side * 56, Math.min(1, k * 3));
           s.swing = 0;
         } else if (s.phase === 'strike') {
-          s.swing = clamp(1 - s.phaseT / 0.12, 0, 1);
+          s.swing = clamp(1 - s.phaseT / STRIKE, 0, 1);
         }
         if (s.phaseT <= 0) {
           if (s.phase === 'wait' || s.phase === 'rest') {
             if (!api.ended) {
               s.phase = 'aim';
               s.phaseT = warnTime();
-              s.tx = clamp(s.px + rand(-25, 25), 70, W - 70);
-              s.pilouFrom = s.pilouX;
-              s.side = s.pilouX >= s.tx ? 1 : -1;
-              if (s.tx + s.side * 56 > W - 30 || s.tx + s.side * 56 < 30) s.side = -s.side;
-              api.sfx('whoosh');
+              s.feint = !s.double && s.t > 2.5 && Math.random() < 0.3;
+              if (s.feint) {
+                // fausse cible : un peu à côté de Papa, du côté où il ne va pas
+                const away = (s.vx ? -Math.sign(s.vx) : (Math.random() < 0.5 ? -1 : 1)) * rand(80, 130);
+                s.tx = clamp(s.px + away, 70, W - 70);
+                s.pilouFrom = s.pilouX;
+                s.side = s.pilouX >= s.tx ? 1 : -1;
+                if (s.tx + s.side * 56 > W - 30 || s.tx + s.side * 56 < 30) s.side = -s.side;
+                s.aimAge = 0;
+                // (elle bondit avant la fin de ce préavis, puis un nouveau préavis démarre)
+                api.sfx('whoosh');
+              } else {
+                aimAt(s.double ? 0.75 : 0.55);
+              }
             } else { s.phase = 'rest'; s.phaseT = 99; }
           } else if (s.phase === 'aim') {
-            s.phase = 'strike'; s.phaseT = 0.12;
+            s.phase = 'strike'; s.phaseT = STRIKE;
           } else if (s.phase === 'strike') {
             s.swing = 1;
+            const hitsBefore = s.hits;
             if (!api.ended) impact();
-            s.phase = 'rest'; s.phaseT = rand(0.45, 0.7);
+            s.phase = 'rest';
+            if (s.hits > hitsBefore) { s.double = false; s.phaseT = 1.2; } // le temps de reprendre ses esprits
+            else if (!s.double && s.t > 1.5 && Math.random() < 0.35) { s.double = true; s.phaseT = 0.08; } // coup double !
+            else { s.double = false; s.phaseT = rand(0.22, 0.42); }
           }
         }
         if (s.phase === 'rest') s.swing = Math.max(0, s.swing - dt * 2.5);

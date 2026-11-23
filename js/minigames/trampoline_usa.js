@@ -2,17 +2,17 @@
  * « Le trampoline américain » (trampoline_usa)
  * Aux États-Unis, dans sa famille d'accueil, dès que Papa faisait du trampoline,
  * le fils de la famille venait lui sauter dessus. Papa a appris à fuir en le voyant arriver.
- * Mécanique : Papa rebondit tout seul (1 point par rebond). Quand le « ! » apparaît
- * à la porte, appuyer pour sauter hors du trampoline ; Papa remonte tout seul quand la voie
- * est libre. Sauter pour rien fait perdre du temps (et parfois le fils sort juste… voir).
+ * Mécanique : Papa rebondit tout seul (1 point par rebond). Le fils surgit sans prévenir :
+ * seul indice, la porte claque (« BAM ! » + bruit, ~0,18 s), puis il fonce et saute aussitôt
+ * (~0,9 s en tout). Appuyer pour sauter hors du trampoline ; Papa remonte tout seul quand
+ * la voie est libre. Sauter pour rien fait perdre du temps. Fausse alerte : il regarde par la fenêtre.
  * Écrasé 2 fois = raté ; 12 rebonds = gagné.
  */
-import { drawPerson, PEOPLE } from './people.js';
 
 export default {
   id: 'trampoline_usa',
   title: 'Le trampoline américain',
-  instructions: 'Rebondis 12 fois sur le trampoline… et dès que tu vois le « ! », saute dehors avant que le fils de la famille d’accueil ne t’atterrisse dessus !',
+  instructions: 'Rebondis 12 fois sur le trampoline… et au moindre « BAM ! » de la porte, saute dehors avant que le fils de la famille d’accueil ne t’atterrisse dessus !',
   controls: 'Espace / clic / tap : sauter hors du trampoline',
   duration: 13,
   introExpression: 'happy',
@@ -29,25 +29,101 @@ export default {
     const RUN_TO = { x: 600, y: 478 };
     const GOAL = 12, MAX_CRUSH = 2;
     const PERIOD = 0.5, BOUNCE_H = 105;
-    const son = { ...PEOPLE.passant, hair: 'short', hairColor: '#d8b45a', skin: '#f1c8a8', shirt: '#c0392b', pants: '#2c3e6b', big: true, kind: 'adult' };
+    // durées de l'attaque (divisées par la vitesse) : claquement de porte → course → saut
+    const BANG_T = 0.18, RUN_T = 0.38, LEAP_T = 0.38;
+    const SON_FAR = 0.62;                    // échelle du fils au loin (porte)
 
-    // programme des apparitions du fils : 3 vraies attaques ; une fausse alerte possible avant la dernière
-    // (une attaque occupe ~3,1 s : porte → course → saut → rebond → retour)
+    // programme des apparitions du fils : 3 vraies attaques à intervalles imprévisibles ;
+    // une fausse alerte (tête à la fenêtre, sans bruit) possible avant la dernière
     const events = [];
-    let tt = rand(1.2, 1.5);
+    let tt = rand(1.0, 2.0);
     for (let i = 0; i < 3; i++) {
-      events.push({ at: tt, type: 'attack', speed: 1 + i * 0.3 });
-      tt += 3.2 + rand(0, 0.3);
-      if (i === 1 && Math.random() < 0.75) { events.push({ at: tt, type: 'feint' }); tt += 1.3; }
+      events.push({ at: tt, type: 'attack', speed: 1 + i * 0.12 });
+      tt += rand(2.7, 3.7);
+      if (i === 1 && Math.random() < 0.75) { events.push({ at: tt, type: 'feint' }); tt += 1.2; }
     }
     events.sort((a, b) => a.at - b.at);
 
     const s = {
       t: 0, bounces: 0, crushed: 0, ph: 0,
       papa: 'bounce', pk: 0, offT: 0, flatT: 0,
-      son: 'hidden', sk: 0, sx: DOOR.x, sy: DOOR.y, speed: 1, ev: 0,
-      matDip: 0, msg: '', msgT: 0, events,
+      son: 'hidden', sk: 0, sx: DOOR.x, sy: DOOR.y, speed: 1, ev: 0, alertT: 0, doorOpen: 0,
+      matDip: 0, boingT: 0, msg: '', msgT: 0, events,
     };
+
+    // ── le fils de la famille : grand gaillard tout rond, dessiné à la main (pieds en 0,0, ~215 px de haut à l'échelle 1)
+    const SKIN = '#f1c8a8', SHIRT = '#d0453a', SHORTS = '#2c4f8a', HAIR = '#e2bd5c', CAP = '#2a5fae';
+    function sonHead(g, expr, t) {
+      // tête : centre (0, -182), rayon 36
+      g.fillStyle = SKIN; g.beginPath(); g.arc(0, -182, 36, 0, Math.PI * 2); g.fill();
+      g.beginPath(); g.arc(-35, -180, 8, 0, Math.PI * 2); g.arc(35, -180, 8, 0, Math.PI * 2); g.fill();   // oreilles
+      // cheveux blonds + casquette à l'envers
+      g.fillStyle = HAIR; g.beginPath(); g.arc(0, -188, 36, Math.PI * 1.05, Math.PI * 1.95); g.fill();
+      g.fillStyle = CAP; g.beginPath(); g.arc(0, -194, 33, Math.PI, Math.PI * 2); g.fill();
+      g.fillRect(-46, -198, 22, 9);                         // visière (derrière)
+      g.fillStyle = '#fff'; g.beginPath(); g.arc(0, -224, 4, 0, Math.PI * 2); g.fill();
+      // joues
+      g.fillStyle = 'rgba(232,110,110,0.45)';
+      g.beginPath(); g.ellipse(-20, -170, 8, 5, 0, 0, Math.PI * 2); g.ellipse(20, -170, 8, 5, 0, 0, Math.PI * 2); g.fill();
+      // yeux
+      g.fillStyle = '#2a2320';
+      if (expr === 'laugh') {
+        g.strokeStyle = '#2a2320'; g.lineWidth = 3.5; g.lineCap = 'round';
+        for (const ex of [-13, 13]) { g.beginPath(); g.arc(ex, -183, 6, Math.PI * 1.1, Math.PI * 1.9); g.stroke(); }
+      } else {
+        for (const ex of [-13, 13]) { g.beginPath(); g.arc(ex, -185, 4, 0, Math.PI * 2); g.fill(); }
+      }
+      // bouche
+      if (expr === 'laugh') {
+        const o = 1 + Math.sin(t * 18) * 0.15;
+        g.fillStyle = '#7a2a26'; g.beginPath(); g.moveTo(-15, -168); g.quadraticCurveTo(0, -168 + 26 * o, 15, -168); g.closePath(); g.fill();
+        g.fillStyle = '#fff'; g.fillRect(-9, -168, 18, 4);
+      } else {
+        g.strokeStyle = '#7a2a26'; g.lineWidth = 3; g.lineCap = 'round';
+        g.beginPath(); g.arc(0, -172, 10, Math.PI * 0.15, Math.PI * 0.85); g.stroke();
+      }
+    }
+    function drawSon(g, x, y, k, o) {
+      const t = o.t, pose = o.pose;
+      g.save();
+      g.translate(x, y);
+      g.scale((o.flip ? -1 : 1) * k * (1 + (o.squash || 0) * 0.22), k * (1 - (o.squash || 0) * 0.28));
+      g.lineCap = 'round';
+      // ombre
+      g.fillStyle = 'rgba(30,60,20,0.25)'; g.beginPath(); g.ellipse(0, 2, 62, 10, 0, 0, Math.PI * 2); g.fill();
+      // jambes (courtes et costaudes)
+      const sw = pose === 'run' ? Math.sin(t * 16) : 0;
+      const tuck = pose === 'jump' ? 1 : 0;
+      g.strokeStyle = SKIN; g.lineWidth = 24;
+      const feet = [[-26 + sw * 24, -Math.max(0, -sw) * 16 - tuck * 18], [26 - sw * 24, -Math.max(0, sw) * 16 - tuck * 18]];
+      for (const [i, [fx, fy]] of feet.entries()) { g.beginPath(); g.moveTo(i ? 24 : -24, -50); g.lineTo(fx, fy - 8); g.stroke(); }
+      g.fillStyle = '#f4f4f4';
+      for (const [fx, fy] of feet) { g.beginPath(); g.ellipse(fx + 6, fy - 4, 20, 10, 0, 0, Math.PI * 2); g.fill(); }
+      g.fillStyle = '#d0453a'; for (const [fx, fy] of feet) g.fillRect(fx - 8, fy - 8, 26, 3);
+      // short
+      g.fillStyle = SHORTS; g.beginPath(); g.ellipse(0, -62, 60, 26, 0, 0, Math.PI * 2); g.fill();
+      // bras (derrière le ventre quand ils pendent)
+      const shY = -140, armL = pose === 'up' || pose === 'jump' ? [-88, -205] : pose === 'run' ? [-70 - sw * 20, -95 + sw * 18] : [-72, -92];
+      const armR = pose === 'up' || pose === 'jump' ? [88, -205] : pose === 'run' ? [70 - sw * 20, -95 - sw * 18] : [72, -92];
+      g.strokeStyle = SHIRT; g.lineWidth = 26;
+      g.beginPath(); g.moveTo(-50, shY); g.lineTo(-62, shY + 6); g.stroke();
+      g.beginPath(); g.moveTo(50, shY); g.lineTo(62, shY + 6); g.stroke();
+      g.strokeStyle = SKIN; g.lineWidth = 20;
+      for (const [ax, ay] of [armL, armR]) { const sx = ax < 0 ? -56 : 56; g.beginPath(); g.moveTo(sx, shY + 4); g.lineTo(ax, ay); g.stroke(); }
+      g.fillStyle = SKIN; for (const [ax, ay] of [armL, armR]) { g.beginPath(); g.arc(ax, ay, 13, 0, Math.PI * 2); g.fill(); }
+      // gros ventre rond en t-shirt
+      g.fillStyle = SHIRT; g.beginPath(); g.ellipse(0, -104, 66, 60, 0, 0, Math.PI * 2); g.fill();
+      g.fillStyle = 'rgba(255,255,255,0.18)'; g.beginPath(); g.ellipse(-22, -122, 20, 28, -0.4, 0, Math.PI * 2); g.fill();
+      // étoile blanche sur le t-shirt
+      g.fillStyle = '#fff'; g.beginPath();
+      for (let i = 0; i < 10; i++) { const rr = i % 2 ? 7 : 17, a = -Math.PI / 2 + (i / 10) * Math.PI * 2; i ? g.lineTo(Math.cos(a) * rr, -100 + Math.sin(a) * rr) : g.moveTo(Math.cos(a) * rr, -100 + Math.sin(a) * rr); }
+      g.fill();
+      // cou + tête
+      g.fillStyle = SKIN; g.fillRect(-14, -160, 28, 14);
+      sonHead(g, o.expr, t);
+      g.restore();
+    }
+    function matDipPx() { return s.matDip * 48; }
 
     // ── décor pré-rendu : jardin américain ──
     const bg = document.createElement('canvas');
@@ -98,13 +174,14 @@ export default {
     }
 
     function startEvent(e) {
-      s.son = e.type === 'attack' ? 'warn' : 'peek';
-      s.sk = 0; s.sx = DOOR.x; s.sy = DOOR.y; s.speed = e.speed || 1;
-      if (e.type === 'attack') api.sfx('beep');
+      s.son = e.type === 'attack' ? 'bang' : 'peek';
+      s.sk = 0; s.alertT = 0; s.sx = DOOR.x; s.sy = DOOR.y; s.speed = e.speed || 1;
+      if (e.type === 'attack') { api.sfx('clang'); api.shake(4); s.doorOpen = 1; }
     }
     function sonLands() {
-      s.matDip = 1;
-      api.sfx('boing'); api.shake(10);
+      s.matDip = 1; s.boingT = 0.8;
+      api.sfx('boing'); api.sfx('boing'); api.shake(20);
+      api.burst(TX + 10, MAT_Y + 10, { n: 10, color: ['#ffffff', '#cfe9fb'], speed: 260, gravity: 400, size: 6 });
       const onMat = s.papa === 'bounce' || s.papa === 'climb' || (s.papa === 'jumpoff' && s.pk < 0.35);
       if (onMat && !api.ended) {
         s.papa = 'flat'; s.flatT = 0; s.crushed++;
@@ -123,27 +200,36 @@ export default {
       update(dt, input) {
         s.t += dt;
         s.msgT = Math.max(0, s.msgT - dt);
-        s.matDip = Math.max(0, s.matDip - dt * 3);
+        s.matDip = Math.max(0, s.matDip - dt * 2.2);
+        s.boingT = Math.max(0, s.boingT - dt);
+        if (s.son === 'hidden') s.doorOpen = Math.max(0, s.doorOpen - dt * 3);
 
         // ── le fils
         if (!api.ended && s.son === 'hidden' && s.ev < events.length && s.t >= events[s.ev].at) startEvent(events[s.ev++]);
-        s.sk += dt;
+        s.sk += dt; s.alertT += dt;
         switch (s.son) {
           case 'peek': if (s.sk > 1.0) { s.son = 'hidden'; } break;
-          case 'warn': if (s.sk > 0.55 / s.speed) { s.son = 'run'; s.sk = 0; } break;
+          case 'bang': if (s.sk > BANG_T / s.speed) { s.son = 'run'; s.sk = 0; } break;
           case 'run': {
-            const k = clamp(s.sk / (0.65 / s.speed), 0, 1);
+            const k = clamp(s.sk / (RUN_T / s.speed), 0, 1);
             s.sx = DOOR.x + (RUN_TO.x - DOOR.x) * k; s.sy = DOOR.y + (RUN_TO.y - DOOR.y) * k;
             if (k >= 1) { s.son = 'leap'; s.sk = 0; api.sfx('whoosh'); }
             break;
           }
           case 'leap': {
-            const k = clamp(s.sk / (0.45 / s.speed), 0, 1);
-            s.sx = RUN_TO.x + (TX + 10 - RUN_TO.x) * k; s.sy = RUN_TO.y + (MAT_Y - RUN_TO.y) * k - Math.sin(k * Math.PI) * 150;
+            const k = clamp(s.sk / (LEAP_T / s.speed), 0, 1);
+            s.sx = RUN_TO.x + (TX + 10 - RUN_TO.x) * k; s.sy = RUN_TO.y + (MAT_Y - RUN_TO.y) * k - Math.sin(k * Math.PI) * 130;
             if (k >= 1) { s.son = 'onmat'; s.sk = 0; sonLands(); }
             break;
           }
-          case 'onmat': s.sx = TX + 10; s.sy = MAT_Y - Math.sin(clamp(s.sk / 0.5, 0, 1) * Math.PI) * 60; if (s.sk > 0.5) { s.son = 'hopoff'; s.sk = 0; } break;
+          case 'onmat': {
+            // il s'enfonce d'abord dans la toile, puis rebondit
+            const k = clamp(s.sk / 0.55, 0, 1);
+            s.sx = TX + 10;
+            s.sy = k < 0.3 ? MAT_Y + matDipPx() * 0.8 : MAT_Y - Math.sin((k - 0.3) / 0.7 * Math.PI) * 70;
+            if (s.sk > 0.55) { s.son = 'hopoff'; s.sk = 0; }
+            break;
+          }
           case 'hopoff': {
             const k = clamp(s.sk / 0.35, 0, 1);
             s.sx = TX + 10 + (RUN_TO.x + 30 - TX - 10) * k; s.sy = MAT_Y + (RUN_TO.y - MAT_Y) * k - Math.sin(k * Math.PI) * 70;
@@ -157,7 +243,7 @@ export default {
             break;
           }
         }
-        const danger = s.son === 'warn' || s.son === 'run' || s.son === 'leap' || s.son === 'onmat';
+        const danger = s.son === 'bang' || s.son === 'run' || s.son === 'leap' || s.son === 'onmat';
 
         // ── Papa
         if (s.papa === 'bounce') {
@@ -193,37 +279,61 @@ export default {
       },
       draw(g) {
         g.drawImage(bg, 0, 0, W, H);
-        const danger = s.son === 'warn' || s.son === 'run' || s.son === 'leap';
+        const danger = s.son === 'bang' || s.son === 'run' || s.son === 'leap';
 
-        // le fils à la porte (derrière la barrière du porche)
-        if (s.son === 'peek' || s.son === 'warn') {
-          drawPerson(g, { ...son, x: DOOR.x, y: DOOR.y, size: 50, t: s.t, expression: s.son === 'warn' ? 'laugh' : 'smile', pose: s.son === 'warn' ? 'arms_up' : 'stand' });
-          if (s.son === 'warn') {
-            const pulse = 1 + Math.sin(s.t * 20) * 0.08;
-            g.fillStyle = '#e8453c'; g.beginPath(); g.arc(DOOR.x, 210, 30 * pulse, 0, Math.PI * 2); g.fill();
-            api.text(g, '!', DOOR.x, 212, { size: 46 * pulse, color: '#fff', weight: 900 });
+        // la porte qui s'ouvre à la volée
+        if (s.doorOpen > 0) {
+          const o = s.doorOpen;
+          g.fillStyle = '#17110d'; g.fillRect(DOOR.x - 30, 300, 60, 112);
+          g.fillStyle = '#5a3f30';
+          g.beginPath(); g.moveTo(DOOR.x - 30, 300); g.lineTo(DOOR.x - 30 - 26 * o, 292); g.lineTo(DOOR.x - 30 - 26 * o, 420); g.lineTo(DOOR.x - 30, 412); g.fill();
+          g.fillStyle = '#ffd34d'; g.beginPath(); g.arc(DOOR.x - 30 - 20 * o, 360, 3, 0, Math.PI * 2); g.fill();
+        }
+        // le claquement : seul indice, très bref
+        if (s.son === 'bang' || (s.son === 'run' && s.sk < 0.1)) {
+          g.strokeStyle = '#ffe14d'; g.lineWidth = 5; g.lineCap = 'round';
+          for (let i = 0; i < 7; i++) {
+            const a = Math.PI * (1.05 + i * 0.15), r0 = 70, r1 = 98;
+            g.beginPath(); g.moveTo(DOOR.x + Math.cos(a) * r0, 356 + Math.sin(a) * r0); g.lineTo(DOOR.x + Math.cos(a) * r1, 356 + Math.sin(a) * r1); g.stroke();
           }
+          api.text(g, 'BAM !', DOOR.x - 20, 262, { size: 34, color: '#fff', stroke: '#a0302a' });
+          g.fillStyle = '#e8453c'; g.beginPath(); g.arc(DOOR.x + 44, 252, 15, 0, Math.PI * 2); g.fill();
+          api.text(g, '!', DOOR.x + 44, 253, { size: 24, color: '#fff', weight: 900 });
+        }
+        // fausse alerte : sa tête apparaît à la fenêtre, sans un bruit
+        if (s.son === 'peek') {
+          const up = Math.sin(clamp(s.sk / 1.0, 0, 1) * Math.PI);
+          g.save(); g.beginPath(); g.rect(852, 232, 46, 52); g.clip();
+          g.translate(875, 375 - up * 34); g.scale(0.42, 0.42);
+          sonHead(g, 'smile', s.t);
+          g.restore();
+          g.strokeStyle = '#fff'; g.lineWidth = 4; g.strokeRect(850, 230, 50, 56);
         }
 
-        // trampoline
-        const dip = s.matDip * 16 + (s.papa === 'bounce' && s.ph < 0.12 ? (0.12 - s.ph) * 120 : 0);
+        // trampoline (s'enfonce très fort sous le fils)
+        const dip = matDipPx() + (s.papa === 'bounce' && s.ph < 0.12 ? (0.12 - s.ph) * 120 : 0);
         g.strokeStyle = '#3a3f4a'; g.lineWidth = 7;
         for (const lx of [-110, -40, 40, 110]) { g.beginPath(); g.moveTo(TX + lx, MAT_Y + 6); g.lineTo(TX + lx * 1.05, MAT_Y + 62); g.stroke(); }
         g.fillStyle = 'rgba(40,80,30,0.35)'; g.beginPath(); g.ellipse(TX, MAT_Y + 64, 140, 14, 0, 0, Math.PI * 2); g.fill();
         g.fillStyle = '#2f7fd0'; g.beginPath(); g.ellipse(TX, MAT_Y, 140, 28, 0, 0, Math.PI * 2); g.fill();
         g.fillStyle = '#1f232b';
-        g.beginPath(); g.moveTo(TX - 118, MAT_Y); g.quadraticCurveTo(TX, MAT_Y - 22 + dip * 2.2, TX + 118, MAT_Y); g.quadraticCurveTo(TX, MAT_Y + 22 + dip, TX - 118, MAT_Y); g.fill();
+        g.beginPath(); g.moveTo(TX - 118, MAT_Y); g.quadraticCurveTo(TX, MAT_Y - 22 + dip * 1.6, TX + 118, MAT_Y); g.quadraticCurveTo(TX, MAT_Y + 22 + dip * 2, TX - 118, MAT_Y); g.fill();
 
-        // le fils en action
-        if (['run', 'leap', 'onmat', 'hopoff', 'leave'].includes(s.son)) {
+        // le fils en action (dessiné après Papa pour qu'il lui retombe dessus)
+        const drawSonNow = () => {
+          if (!['run', 'leap', 'onmat', 'hopoff', 'leave'].includes(s.son)) return;
+          let k = 1;
+          if (s.son === 'run') k = SON_FAR + (1 - SON_FAR) * clamp(s.sk / (RUN_T / s.speed), 0, 1);
+          else if (s.son === 'leave') k = 1 - (1 - SON_FAR) * clamp(s.sk / 0.6, 0, 1);
+          const squash = s.son === 'onmat' ? Math.max(0, 1 - s.sk / 0.18) : 0;
           const sitOnPapa = s.son === 'onmat' && s.papa === 'flat';
-          drawPerson(g, {
-            ...son, x: s.sx, y: s.sy + (sitOnPapa ? -8 : 0), size: 50, t: s.t, flipX: s.son === 'leave',
-            expression: s.son === 'leave' ? 'smile' : 'laugh',
-            pose: s.son === 'run' || s.son === 'leave' ? 'run' : 'arms_up',
+          drawSon(g, s.sx, s.sy + (sitOnPapa ? -6 : 0), k, {
+            t: s.t, flip: s.son === 'leave' || s.son === 'hopoff', squash,
+            expr: s.son === 'leave' ? 'smile' : 'laugh',
+            pose: s.son === 'run' || s.son === 'leave' ? 'run' : s.son === 'leap' ? 'jump' : 'up',
           });
-          if (s.son === 'leap') api.text(g, 'YAAAH !', s.sx, s.sy - 210, { size: 26, color: '#fff', stroke: '#a0302a' });
-        }
+          if (s.son === 'leap') api.text(g, 'YAAAH !', s.sx, s.sy - 240 * k, { size: 30, color: '#fff', stroke: '#a0302a' });
+        };
 
         // Papa
         let px = TX - 20, py = MAT_Y, pose = 'stand', expr = 'happy';
@@ -244,7 +354,7 @@ export default {
         }
         if (s.papa === 'flat') {
           // la crêpe cartoon
-          g.save(); g.translate(TX - 20, MAT_Y + 4); g.scale(1.6, 0.28);
+          g.save(); g.translate(TX - 20, MAT_Y + 4 + matDipPx() * 0.8); g.scale(1.6, 0.28);
           api.avatar(g, { x: 0, y: 0, size: 64, expression: 'ouch', pose: 'stand' });
           g.restore();
           for (let i = 0; i < 3; i++) {
@@ -255,6 +365,13 @@ export default {
           }
         } else {
           api.avatar(g, { x: px, y: py, size: 64, pose, expression: api.ended && s.bounces >= GOAL ? 'laugh' : expr, t: s.t, sweat: danger && s.papa === 'bounce', lookX: 0.6 });
+        }
+        drawSonNow();
+        if (s.boingT > 0) {
+          const k = s.boingT / 0.8, sz = 46 + (1 - k) * 22;
+          g.save(); g.globalAlpha = Math.min(1, k * 2);
+          api.text(g, 'BOING !', TX + 10, 250 - (1 - k) * 40, { size: sz, color: '#ffe14d', stroke: '#2f4f7a' });
+          g.restore();
         }
 
         // HUD

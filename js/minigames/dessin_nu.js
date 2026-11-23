@@ -1,7 +1,9 @@
 /**
  * « Le cours de nu » (dessin_nu)
  * Aux Beaux-Arts, pendant le cours de dessin de nu… une camarade lui a laissé son numéro.
- * (Le modèle du jour : une Vénus en plâtre, très drapée. Public familial oblige.)
+ * (Le modèle du jour : un modèle vivant caricatural, tout en rondeurs « à la Rubens »,
+ *  petite tête à chignon, moustache en guidon, pose prétentieuse. Public familial oblige :
+ *  aucun détail anatomique, tout est caché par des gags — feuille de vigne, bandeau CENSURÉ, chat.)
  * Mécanique : maintenir le clic (ou Espace + flèches) et suivre le contour en pointillés
  * sur le chevalet. Plus le trait est précis, plus la jauge « Ressemblance » se remplit.
  */
@@ -10,14 +12,14 @@ import { drawPerson, PEOPLE } from './people.js';
 export default {
   id: 'dessin_nu',
   title: 'Le cours de nu',
-  instructions: 'Cours de dessin aux Beaux-Arts : maintiens le crayon appuyé et suis les pointillés pour reproduire la Vénus drapée.',
+  instructions: 'Cours de dessin aux Beaux-Arts : maintiens le crayon appuyé et suis les pointillés pour croquer le modèle tout en rondeurs.',
   controls: 'Maintenir clic / doigt et suivre · ou Espace maintenu + flèches',
   duration: 12,
   introExpression: 'focus',
   successTitle: 'Un vrai coup de crayon !',
   failTitle: 'Période abstraite !',
-  successText: 'Vénus est parfaite… et la camarade d’à côté a glissé son numéro sur ton chevalet. L’art, ça ouvre des portes !',
-  failText: 'Ta Vénus ressemble à un Picasso un lundi matin… mais elle t’a quand même laissé son numéro. L’art mène à tout !',
+  successText: 'Rondeurs, moustache, feuille de vigne : tout y est ! Et la camarade d’à côté a glissé son numéro sur ton chevalet. L’art, ça ouvre des portes !',
+  failText: 'Ton modèle ressemble à un Picasso un lundi matin… mais la camarade t’a quand même laissé son numéro. L’art mène à tout !',
 
   create(api) {
     const { W, H, rand, clamp, lerp } = api;
@@ -27,14 +29,33 @@ export default {
     const PEN_SPEED = 210;   // vitesse du crayon aux flèches (px/s)
     const CAN = { x: 360, y: 108, w: 260, h: 300 }; // toile du chevalet
 
-    // ── contour de la Vénus (tête + drapé), en coordonnées écran sur la toile
-    const HC = { x: 490, y: 160, r: 28 };
-    const raw = [];
-    for (let k = 0; k <= 14; k++) {
-      const a = 2.1 + (k / 14) * (Math.PI * 2 + 1.05 - 2.1);
-      raw.push([HC.x + Math.cos(a) * HC.r, HC.y + Math.sin(a) * HC.r]);
+    // ── contour du modèle caricatural, en coordonnées écran sur la toile :
+    // petite tête à chignon, bras gauche levé derrière la tête, main droite sur la hanche,
+    // corps tout en rondeurs (épaules, bedaine, hanches XXL), petits pieds.
+    const HC = { x: 500, y: 155, r: 19 };
+    const key = [
+      [512, 180], [545, 186], [575, 200], [603, 228], [590, 250], [568, 262],   // épaule, bras sur la hanche
+      [600, 290], [607, 325], [592, 352], [565, 372], [559, 390], [572, 402],   // hanche XXL, cuisse, mollet
+      [530, 405], [500, 400], [470, 405], [428, 402],                           // petits pieds
+      [441, 390], [434, 372], [400, 350], [382, 318], [386, 282], [396, 250],   // cuisse, hanche, poignée d'amour
+      [410, 222], [424, 200], [404, 160], [408, 126], [440, 126], [470, 136],   // aisselle, bras levé, coude, main
+    ];
+    // tête : arc de cercle avec la bosse du chignon au sommet
+    for (let k = 0; k <= 15; k++) {
+      const a = Math.PI + 0.5 + (k / 15) * (Math.PI + 0.7);
+      const r = HC.r + 13 * Math.exp(-(((a - Math.PI * 1.5) / 0.3) ** 2));
+      key.push([HC.x + Math.cos(a) * r, HC.y + Math.sin(a) * r]);
     }
-    raw.push([504, 190], [552, 207], [566, 268], [546, 300], [572, 392], [408, 392], [434, 300], [414, 268], [428, 207], [476, 190]);
+    // lissage Catmull-Rom (contour fermé) : des courbes bien rebondies
+    const raw = [];
+    for (let i = 0; i < key.length; i++) {
+      const p0 = key[(i - 1 + key.length) % key.length], p1 = key[i], p2 = key[(i + 1) % key.length], p3 = key[(i + 2) % key.length];
+      for (let j = 0; j < 4; j++) {
+        const t = j / 4, t2 = t * t, t3 = t2 * t;
+        const cr = (c) => 0.5 * (2 * p1[c] + (p2[c] - p0[c]) * t + (2 * p0[c] - 5 * p1[c] + 4 * p2[c] - p3[c]) * t2 + (3 * p1[c] - p0[c] - 3 * p2[c] + p3[c]) * t3);
+        raw.push([cr(0), cr(1)]);
+      }
+    }
     raw.push(raw[0]);
     // points denses tous les 4 px
     const D = [];
@@ -57,6 +78,59 @@ export default {
     const gauge = () => s.sum / (N - 1);
     const classmate = { ...PEOPLE.passant, hair: 'ponytail', hairColor: '#8a4a2a', shirt: '#e0a040', pants: '#4a3a5a', skin: '#f1cdb0' };
 
+    // ── le modèle (ou son croquis) : silhouette + gags cache-tout. Coordonnées de la toile, décalées de (dx, dy).
+    const REAL = { skin: '#f4c4a0', line: '#b8785a', hair: '#4a2e22', leaf: '#5f9a3a', vein: '#3d6a24', cheek: 'rgba(232, 110, 110, 0.55)', band: '#1d1a1a', lw: 3 };
+    const SKETCH = { skin: 'rgba(244, 196, 160, 0.45)', line: 'rgba(60, 50, 45, 0.7)', hair: 'rgba(55, 42, 38, 0.85)', leaf: 'rgba(95, 154, 58, 0.75)', vein: 'rgba(40, 70, 30, 0.8)', cheek: 'rgba(232, 110, 110, 0.45)', band: 'rgba(30, 26, 26, 0.85)', lw: 2.5 };
+    function drawModel(g, dx, dy, P) {
+      g.save(); g.translate(dx, dy);
+      g.lineCap = 'round'; g.lineJoin = 'round';
+      // silhouette
+      g.fillStyle = P.skin; g.strokeStyle = P.line; g.lineWidth = P.lw;
+      g.beginPath(); raw.forEach(([x, y], i) => (i ? g.lineTo(x, y) : g.moveTo(x, y))); g.closePath(); g.fill(); g.stroke();
+      // rondeurs (plis comiques) : bourrelets, genoux, double menton
+      g.lineWidth = 2;
+      for (const [x0, y0, cx, cy, x1, y1] of [
+        [420, 290, 492, 322, 575, 288], [432, 262, 470, 274, 500, 266], [392, 300, 404, 310, 412, 300],
+        [440, 372, 448, 378, 456, 370], [540, 370, 548, 378, 556, 370], [490, 176, 500, 182, 510, 176], [575, 214, 582, 222, 588, 216],
+      ]) { g.beginPath(); g.moveTo(x0, y0); g.quadraticCurveTo(cx, cy, x1, y1); g.stroke(); }
+      // chignon + cheveux plaqués
+      g.fillStyle = P.hair;
+      g.beginPath(); g.arc(HC.x, HC.y - 24, 8.5, 0, Math.PI * 2); g.fill();
+      g.beginPath(); g.arc(HC.x, HC.y, HC.r + 0.5, Math.PI + 0.25, Math.PI * 2 - 0.25); g.closePath(); g.fill();
+      // visage : yeux fermés, air inspiré, joues roses, moustache en guidon
+      g.fillStyle = P.cheek;
+      for (const ex of [-11, 11]) { g.beginPath(); g.arc(HC.x + ex, HC.y + 6, 4, 0, Math.PI * 2); g.fill(); }
+      g.strokeStyle = P.hair; g.lineWidth = 2;
+      for (const ex of [-7, 7]) {
+        g.beginPath(); g.arc(HC.x + ex, HC.y - 1, 3.5, 0.3, Math.PI - 0.3); g.stroke();
+        g.beginPath(); g.moveTo(HC.x + ex - 4, HC.y - 8); g.lineTo(HC.x + ex + 4, HC.y - 9 - Math.sign(ex)); g.stroke();
+      }
+      g.fillStyle = P.line; g.beginPath(); g.arc(HC.x, HC.y + 4, 2.6, 0, Math.PI * 2); g.fill();
+      g.lineWidth = 3.5;
+      for (const sx of [-1, 1]) {
+        g.beginPath(); g.moveTo(HC.x, HC.y + 8);
+        g.quadraticCurveTo(HC.x + sx * 10, HC.y + 14, HC.x + sx * 19, HC.y + 6);
+        g.quadraticCurveTo(HC.x + sx * 22, HC.y + 1, HC.x + sx * 17, HC.y + 1);
+        g.stroke();
+      }
+      // bandeau « CENSURÉ » en travers de la poitrine
+      g.save(); g.translate(492, 226); g.rotate(-0.1);
+      g.fillStyle = P.band; g.fillRect(-64, -12, 128, 24);
+      api.text(g, 'CENSURÉ', 0, 1, { size: 15, color: '#fff', weight: 800 });
+      g.restore();
+      // feuille de vigne géante
+      g.save(); g.translate(494, 338); g.rotate(0.15);
+      g.fillStyle = P.leaf;
+      for (const [a, l] of [[-1.57, 20], [-0.7, 18], [-2.44, 18], [0.3, 14], [-3.44, 14]]) {
+        g.beginPath(); g.ellipse(Math.cos(a) * l * 0.6, Math.sin(a) * l * 0.6 + 6, l * 0.75, l * 0.5, a, 0, Math.PI * 2); g.fill();
+      }
+      g.beginPath(); g.arc(0, 6, 13, 0, Math.PI * 2); g.fill();
+      g.strokeStyle = P.vein; g.lineWidth = 1.6;
+      g.beginPath(); g.moveTo(0, 18); g.lineTo(0, -12); g.moveTo(0, 6); g.lineTo(-14, -6); g.moveTo(0, 6); g.lineTo(14, -6); g.stroke();
+      g.restore();
+      g.restore();
+    }
+
     // ── décor pré-rendu (atelier des Beaux-Arts)
     const bg = document.createElement('canvas'); bg.width = W; bg.height = H;
     {
@@ -75,8 +149,8 @@ export default {
       // bannière
       api.roundRect(g, 30, 22, 300, 34, 6); g.fillStyle = '#7a2e2e'; g.fill();
       api.text(g, 'ÉCOLE DES BEAUX-ARTS', 180, 40, { size: 18, color: '#f6e3c0', weight: 800 });
-      // tableaux accrochés
-      for (const [x, y, w, h, c] of [[40, 90, 70, 90, '#c97b4a'], [800, 120, 110, 80, '#5d7a9a']]) {
+      // tableau accroché
+      for (const [x, y, w, h, c] of [[800, 120, 110, 80, '#5d7a9a']]) {
         g.fillStyle = '#b08a4a'; g.fillRect(x - 6, y - 6, w + 12, h + 12);
         g.fillStyle = c; g.fillRect(x, y, w, h);
         g.fillStyle = 'rgba(255,255,255,0.35)'; g.beginPath(); g.arc(x + w * 0.4, y + h * 0.45, h * 0.22, 0, Math.PI * 2); g.fill();
@@ -93,32 +167,22 @@ export default {
       for (let y = GROUND + 12; y < H; y += 14) { g.beginPath(); g.moveTo(0, y); g.lineTo(W, y); g.stroke(); }
       for (let i = 0; i < 30; i++) { const x = (i * 97) % W, y = GROUND + (i % 3) * 14; g.beginPath(); g.moveTo(x, y); g.lineTo(x, y + 14); g.stroke(); }
 
-      // la Vénus drapée sur son socle (même silhouette que le modèle, décalée)
-      const dx = -310, dy = -2;
-      g.fillStyle = '#cbbfae'; g.fillRect(105, 390, 150, 110);
-      g.fillStyle = '#ddd2c2'; g.fillRect(95, 380, 170, 16);
-      api.roundRect(g, 128, 420, 104, 40, 4); g.fillStyle = '#f3ead8'; g.fill();
-      api.text(g, 'VÉNUS', 180, 432, { size: 13, color: '#5a4a3a', weight: 800 });
-      api.text(g, '(très drapée)', 180, 449, { size: 11, color: '#7a6a5a', weight: 600 });
-      g.fillStyle = '#f2ede4';
-      g.beginPath();
-      raw.slice(15).forEach(([x, y], i) => (i ? g.lineTo(x + dx, y + dy) : g.moveTo(x + dx, y + dy)));
-      g.closePath(); g.fill();
-      // plis du drapé
-      g.strokeStyle = 'rgba(150, 135, 115, 0.55)'; g.lineWidth = 3;
-      for (const [x0, y0, x1, y1] of [[126, 214, 236, 300], [132, 250, 238, 380], [118, 300, 200, 388], [150, 230, 248, 330], [160, 300, 250, 390]]) {
-        g.beginPath(); g.moveTo(x0, y0); g.quadraticCurveTo((x0 + x1) / 2 + 14, (y0 + y1) / 2 - 10, x1, y1); g.stroke();
-      }
-      // tête (chignon, yeux de statue)
-      g.fillStyle = '#f2ede4';
-      g.beginPath(); g.arc(HC.x + dx, HC.y + dy, HC.r, 0, Math.PI * 2); g.fill();
-      g.beginPath(); g.arc(HC.x + dx + 4, HC.y + dy - 30, 13, 0, Math.PI * 2); g.fill();
-      g.strokeStyle = 'rgba(140, 125, 105, 0.8)'; g.lineWidth = 2;
-      for (const ex of [-10, 10]) { g.beginPath(); g.arc(HC.x + dx + ex, HC.y + dy - 2, 5, 0.2, Math.PI - 0.2); g.stroke(); }
-      g.beginPath(); g.moveTo(HC.x + dx - 5, HC.y + dy + 14); g.quadraticCurveTo(HC.x + dx, HC.y + dy + 17, HC.x + dx + 5, HC.y + dy + 14); g.stroke();
-      // couronne de laurier
-      g.fillStyle = '#9cae6a';
-      for (let i = 0; i < 7; i++) { const a = Math.PI * (1.1 + i * 0.13); g.beginPath(); g.ellipse(HC.x + dx + Math.cos(a) * 27, HC.y + dy + Math.sin(a) * 27, 6, 3, a + 1.2, 0, Math.PI * 2); g.fill(); }
+      // rideau de velours derrière l'estrade du modèle
+      const cur = g.createLinearGradient(40, 0, 330, 0);
+      cur.addColorStop(0, '#6e1f2a'); cur.addColorStop(0.5, '#9a3442'); cur.addColorStop(1, '#6e1f2a');
+      g.fillStyle = cur; g.fillRect(40, 70, 290, 330);
+      g.strokeStyle = 'rgba(40, 8, 14, 0.35)'; g.lineWidth = 5;
+      for (let x = 62; x < 330; x += 34) { g.beginPath(); g.moveTo(x, 84); g.quadraticCurveTo(x + 8, 240, x - 2, 398); g.stroke(); }
+      g.fillStyle = '#c9a24a';
+      for (let x = 40; x < 330; x += 29) { g.beginPath(); g.arc(x + 14.5, 70, 14.5, 0, Math.PI); g.fill(); }
+      // estrade
+      g.fillStyle = '#7a4e30'; g.fillRect(55, 410, 260, GROUND - 410);
+      g.fillStyle = '#9a6a44'; g.fillRect(45, 396, 280, 16);
+      api.roundRect(g, 112, 428, 146, 46, 5); g.fillStyle = '#f3ead8'; g.fill();
+      api.text(g, 'MODÈLE VIVANT', 185, 443, { size: 14, color: '#5a3a2a', weight: 800 });
+      api.text(g, '(prière de ne pas rire)', 185, 461, { size: 11, color: '#7a5a4a', weight: 600 });
+      // le modèle lui-même, fier comme un paon (même silhouette que les pointillés, décalée)
+      drawModel(g, -310, -6, REAL);
 
       // chevalet (pieds + toile)
       g.strokeStyle = '#8a5a34'; g.lineWidth = 12; g.lineCap = 'round';
@@ -146,11 +210,11 @@ export default {
       if (ok) {
         api.sfx('catch');
         api.burst(CAN.x + CAN.w / 2, CAN.y + CAN.h / 2, { n: 24, shape: 'star', color: ['#ffd34d', '#fff3c4'], speed: 260, gravity: 200, size: 8 });
-        api.end(true, `Ressemblance ${Math.round(gauge() * 100)} % : Vénus est parfaite… et la camarade d’à côté a glissé son numéro sur ton chevalet. L’art, ça ouvre des portes !`);
+        api.end(true, `Ressemblance ${Math.round(gauge() * 100)} % : rondeurs, moustache, feuille de vigne, tout y est ! Et la camarade d’à côté a glissé son numéro sur ton chevalet.`);
       } else {
         api.sfx('splat');
         api.shake(6);
-        api.end(false, 'Ta Vénus ressemble à un Picasso un lundi matin… mais elle t’a quand même laissé son numéro. L’art mène à tout !');
+        api.end(false, 'Ton modèle ressemble à un Picasso un lundi matin… mais la camarade t’a quand même laissé son numéro. L’art mène à tout !');
       }
     }
 
@@ -220,9 +284,29 @@ export default {
       draw(g) {
         g.drawImage(bg, 0, 0);
 
+        // le chat de l'atelier se promène pile devant le modèle
+        {
+          const ph = api.t * 0.55, dir = Math.cos(ph) >= 0 ? 1 : -1;
+          const cx0 = 185 + Math.sin(ph) * 105, step = Math.sin(api.t * 12) * 1.5;
+          g.save(); g.translate(cx0, 396); g.scale(dir, 1);
+          g.strokeStyle = '#d07a2e'; g.lineWidth = 5; g.lineCap = 'round';
+          g.beginPath(); g.moveTo(-15, -12); g.quadraticCurveTo(-30, -16, -26, -34 + step); g.stroke();
+          g.lineWidth = 4;
+          for (const lx of [-10, 9]) { g.beginPath(); g.moveTo(lx, -8); g.lineTo(lx + step, 0); g.moveTo(lx + 4, -8); g.lineTo(lx + 4 - step, 0); g.stroke(); }
+          g.fillStyle = '#e08a3a';
+          g.beginPath(); g.ellipse(0, -13, 17, 8, 0, 0, Math.PI * 2); g.fill();
+          g.beginPath(); g.arc(17, -21, 7.5, 0, Math.PI * 2); g.fill();
+          g.beginPath(); g.moveTo(11, -26); g.lineTo(13, -34); g.lineTo(17, -27); g.moveTo(18, -28); g.lineTo(23, -34); g.lineTo(24, -25); g.fill();
+          g.strokeStyle = '#a85a20'; g.lineWidth = 2;
+          for (const sx of [-8, -2, 4]) { g.beginPath(); g.moveTo(sx, -20); g.lineTo(sx + 2, -12); g.stroke(); }
+          g.fillStyle = '#2a2a2a'; g.beginPath(); g.arc(20, -22, 1.4, 0, Math.PI * 2); g.fill();
+          g.restore();
+        }
+
         // contour à suivre (pointillés) + trait déjà fait
         g.save();
         g.beginPath(); g.rect(CAN.x, CAN.y, CAN.w, CAN.h); g.clip();
+        if (s.result === 'win') drawModel(g, 0, 0, SKETCH);   // le croquis réussi, gags compris
         if (s.result === 'fail') {
           // « période abstraite »
           for (const b of s.blobs) {
@@ -233,6 +317,14 @@ export default {
             g.fill();
           }
           g.globalAlpha = 1;
+          // un Picasso : moustache de travers, œil égaré, feuille de vigne en exil
+          g.save(); g.translate(CAN.x + 150, CAN.y + 120); g.rotate(0.6);
+          g.strokeStyle = 'rgba(55, 42, 38, 0.9)'; g.lineWidth = 4; g.lineCap = 'round';
+          for (const sx of [-1, 1]) { g.beginPath(); g.moveTo(0, 0); g.quadraticCurveTo(sx * 14, 8, sx * 26, -2); g.quadraticCurveTo(sx * 30, -9, sx * 23, -9); g.stroke(); }
+          g.restore();
+          g.fillStyle = '#fff'; g.beginPath(); g.ellipse(CAN.x + 70, CAN.y + 200, 16, 9, -0.4, 0, Math.PI * 2); g.fill();
+          g.fillStyle = '#2a2a2a'; g.beginPath(); g.arc(CAN.x + 74, CAN.y + 199, 5, 0, Math.PI * 2); g.fill();
+          g.fillStyle = 'rgba(95, 154, 58, 0.85)'; g.beginPath(); g.ellipse(CAN.x + 210, CAN.y + 250, 18, 11, 0.8, 0, Math.PI * 2); g.fill();
         }
         g.setLineDash([3, 7]); g.lineWidth = 3; g.strokeStyle = 'rgba(120, 110, 100, 0.55)'; g.lineCap = 'round';
         g.beginPath();
