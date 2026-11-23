@@ -69,6 +69,9 @@ const REGISTRY = {
   savons_gourmands: () => import('./minigames/savons_gourmands.js'),
   abeilles_levres: () => import('./minigames/abeilles_levres.js'),
   meuble_iordan: () => import('./minigames/meuble_iordan.js'),
+  calins_mami: () => import('./minigames/calins_mami.js'),
+  michel_bestiole: () => import('./minigames/michel_bestiole.js'),
+  patisseries_cachees: () => import('./minigames/patisseries_cachees.js'),
 };
 
 /** true si un mini-jeu personnalisé existe pour cet identifiant. */

@@ -41,14 +41,15 @@ les-55-lanternes/
 │       ├── engine.js       ← moteur Canvas 2D (intro → jeu → résultat, entrées, particules)
 │       ├── _template.js    ← modèle commenté pour créer une nouvelle anecdote
 │       ├── default.js      ← mini-jeu de secours (lucioles) pour les anecdotes sans jeu
-│       ├── yaourt_metro.js        #1
-│       ├── semoule_nappe.js       #2
-│       ├── marteau_doigt.js       #3
-│       ├── fil_barbele.js         #4
-│       └── gateau_bicarbonate.js  #5
+│       ├── people.js       ← les autres personnages (Mami, Maman, Pilou, Michel…)  ✏️ PEOPLE
+│       └── <id>.js         ← les 55 mini-jeux (un par anecdote, id = champ "minigame")
 └── tools/
     ├── serve.py            ← serveur local sans cache
-    └── generate-memories.mjs ← régénère memories.json / recalcule les positions
+    ├── gallery.html        ← galerie : aperçu en images de tous les mini-jeux
+    ├── test-minigames.mjs  ← banc de test automatique (robots joueurs)
+    ├── bots/               ← robots dédiés aux jeux d'adresse (pour le banc de test)
+    ├── register-minigames.mjs ← ajoute des ids au registre js/minigames.js
+    └── generate-memories.mjs ← recalcule les positions (--positions-only) sans toucher aux textes
 ```
 
 ## Tester en local
@@ -109,6 +110,13 @@ Champs de `data/memories.json` :
 
 Tester un mini-jeu sans naviguer : ouvre la console du navigateur (F12) et tape
 `__lanternes.game.testMiniGame('mon_id')`.
+
+Voir tous les jeux d'un coup : <http://localhost:8080/tools/gallery.html> (`?ids=a,b` pour filtrer).
+Vérifier qu'aucun jeu ne plante et qu'on peut gagner comme perdre (des robots jouent des centaines de parties) :
+
+```powershell
+node tools/test-minigames.mjs
+```
 
 Tu as déjà modifié ton `memories.json` ? Ajoute les nouveaux champs sans toucher à tes textes :
 
