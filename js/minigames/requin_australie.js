@@ -27,7 +27,7 @@ export default {
     };
     const X = () => X0 + s.p;
     const SX = () => X0 + s.sp;
-    const sharkSpeed = (t) => 120 + 8 * t;   // 2× plus rapide qu’avant : il faut un vrai sprint (≈ 6-7 coups alternés par seconde)
+    const sharkSpeed = (t) => 160 + 8 * t;   // 2× plus rapide qu’avant : il faut un vrai sprint (≈ 6-7 coups alternés par seconde)
 
     /* ───── décor pré-rendu ───── */
     const SC = 2;
