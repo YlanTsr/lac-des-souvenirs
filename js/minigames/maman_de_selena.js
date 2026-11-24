@@ -30,7 +30,7 @@ const PARENTS = [
   { ...PEOPLE.passant, hair: 'long', hairColor: '#a0703a', skin: '#f3d0b6', shirt: '#5a9a7b', pants: '#3a3550' },
   { ...PEOPLE.passant, hair: 'bald', hairColor: '#7a6a5e', shirt: '#b5774a', pants: '#40404c', mustache: true },
 ];
-const SPEEDS = [0.5, 0.7, 0.9];  // allers-retours par seconde (le curseur accélère)
+const SPEEDS = [0.7, 0.8, 0.9];  // allers-retours par seconde (le curseur accélère)
 const ZONE_W = 0.2;                  // largeur de la zone « le papa » (fraction de la réglette)
 const TX0 = 232, TX1 = 728, TY = 196; // réglette
 

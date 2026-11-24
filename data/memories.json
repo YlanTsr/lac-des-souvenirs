@@ -729,7 +729,7 @@
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Iordan peignait à la lasure quand une tache est apparue. « C’est de la lasure », disait Iordan. « C’est une crotte », disais-tu. Tu as gratté avec le doigt : c’était une crotte.",
+    "caption": "Iordan peignait avec le lasure quand une tache est apparue. « C’est du lasure », disait Iordan. Toi tu as dis « Non c’est une crotte ». Tu as gratté avec le doigt : c’était une crotte.",
     "minigame": "lasure_crotte",
     "outcomeText": null,
     "funnyNote": "Tu avais raison. Tu aurais préféré avoir tort.",
@@ -748,7 +748,7 @@
     "caption": "Tes coups de fil à Jean-Yves… passés depuis les toilettes.",
     "minigame": "jean_yves_toilettes",
     "outcomeText": null,
-    "funnyNote": "Jean-Yves sait désormais d’où tu l’appelles.",
+    "funnyNote": "Si seulement Jean-Yves savait d’où tu l’appelles.",
     "position": {
       "x": -98.8,
       "z": -80.7
@@ -761,10 +761,10 @@
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Pour plaisanter, tu as dit à la maman d’une amie que son mari était « peut-être avec une autre femme »… Ce n’était pas une blague : il la trompait vraiment avec la prof de danse.",
+    "caption": "Pour plaisanter, tu as dit à la maman d’Elfie que son mari était « peut-être avec une autre femme »… Ce n’était pas une blague : il la trompait vraiment avec la prof de danse.",
     "minigame": "blague_premonitoire",
     "outcomeText": null,
-    "funnyNote": "Voyant extra-lucide, malgré toi.",
+    "funnyNote": "Des dons de voyance, malgré toi.",
     "position": {
       "x": -103.7,
       "z": -67
@@ -777,10 +777,10 @@
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Iordan pêchait tranquillement quand tu lui as dit de se cacher de la police. Puis, tout sourire, aux policiers : « Ah, c’est mon fils, il a peur de la police. »",
+    "caption": "Iordan s'apprêtait à aller pêcher tranquillement quand tu lui as dit de se cacher de la police car il avait pas sa carte de pêche. Puis, tout sourire, aux policiers : « Ah, c’est mon fils, il a peur de la police. »",
     "minigame": "police_peche",
     "outcomeText": null,
-    "funnyNote": "Complice et dénonciateur dans la même minute.",
+    "funnyNote": "Complice et dénonciateur dans la même minute : on aurait pas aimé être ton voisin pendant la second guerre...",
     "position": {
       "x": -102.6,
       "z": -54.2
@@ -793,7 +793,7 @@
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Mami t’avait offert un calendrier de l’Avent. Derrière une petite porte : une jolie bille colorée. Tu l’as croquée comme un bonbon… c’était une perle de bain au savon.",
+    "caption": "Mami t’avait offert un calendrier de l’Avent. Dans une petite poche : une jolie bille colorée. Tu l’as croquée comme un bonbon… c’était une perle de bain au savon.",
     "minigame": "savons_gourmands",
     "outcomeText": null,
     "funnyNote": "Haleine fraîche garantie.",
@@ -809,7 +809,7 @@
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Les abeilles de tes ruches, au verger, t’ont piqué. Résultat : des lèvres gonflées dignes d’une star de cinéma.",
+    "caption": "Les abeilles au verger t’ont piqué. Résultat : des lèvres gonflées dignes d’une star de cinéma.",
     "minigame": "abeilles_levres",
     "outcomeText": null,
     "funnyNote": "Le Botox naturel, en direct du verger.",
@@ -860,7 +860,7 @@
     "caption": "Une bestiole dans le dos, tu as soulevé ton t-shirt en appelant au secours : « Michel, Michel, aidez-moi ! » Et Michel est venu te toucher le dos pour chasser la bête.",
     "minigame": "michel_bestiole",
     "outcomeText": null,
-    "funnyNote": "Michel : garde-chasse, et désormais garde du dos.",
+    "funnyNote": "Michou... le grand amour.",
     "position": {
       "x": -56.3,
       "z": -67.2
@@ -876,7 +876,7 @@
     "caption": "Tu venais d’acheter de superbes pâtisseries quand tu as vu Michel arriver. Réflexe : tu les as cachées… et tu lui as offert de vieux biscuits. Les pâtisseries, tu les as mangées après.",
     "minigame": "patisseries_cachees",
     "outcomeText": null,
-    "funnyNote": "Michel, si tu lis ceci : désolé.",
+    "funnyNote": "Michel, si tu lis ceci un jour : désolé.",
     "position": {
       "x": -63.3,
       "z": -79.2

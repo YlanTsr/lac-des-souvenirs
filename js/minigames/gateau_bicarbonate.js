@@ -24,7 +24,7 @@ export default {
       bubbles: Array.from({ length: 14 }, () => ({ x: rand(-1, 1), y: rand(0, 1), r: rand(4, 11), p: rand(0, 6) })),
       splats: [],
     };
-    const growth = (t) => 50 + 5.5 * t + 0.32 * t * t; // px/s, de plus en plus rapide
+    const growth = (t) => 65 + 5.5 * t + 0.32 * t * t; // px/s, de plus en plus rapide
 
     function overflow() {
       s.overflow = true;
