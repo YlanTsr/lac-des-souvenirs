@@ -30,6 +30,7 @@ les-55-lanternes/
 │   ├── world.js            ← ciel, lune, eau (shader), îles, décor, lucioles
 │   ├── boat.js             ← barque, lanterne de proue, physique, pilote auto, sillage
 │   ├── camera.js           ← caméra de suivi lissée + regarder autour
+│   ├── intro.js            ← séquence d'intro : bougies → tunnel des années → atterrissage (réglages : INTRO_SEQUENCE)
 │   ├── lanterns.js         ← les 55 lanternes (allumage, envol, formation « 55 »)
 │   ├── rings.js            ← anneaux-guides (impulsion + note)
 │   ├── audio.js            ← musique générative Web Audio
@@ -66,6 +67,9 @@ les fichiers en cache : fais Ctrl+F5 après une modification. Avec Node : `npx h
 
 **Outils de test** : ajoute `?debug` à l'adresse (<http://localhost:8080/?debug>) pour avoir les
 boutons « Allumer la suivante » (touche `L`) et « Tout allumer (finale) ».
+Ajoute `?nointro` pour sauter la séquence d'intro (gâteau, tunnel, arrivée) ; elle se règle dans
+`INTRO_SEQUENCE` (js/config.js : années, mots-clés, durées) et se revoit via « Revoir l'intro » (aide ou journal).
+En console : `__lanternes.intro._hold(true)` (souffler), `__lanternes.intro._step(1/60, 120)` (avancer), `__lanternes.intro.stats()`.
 La progression est sauvegardée dans le navigateur. « Recommencer le voyage » (dans le journal) la remet à zéro.
 
 ## Ajouter les vraies photos et vidéos

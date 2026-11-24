@@ -52,5 +52,30 @@ export const FINALE = {
   signature: 'Avec tout notre amour ♥',
 };
 
+/**
+ * Séquence d'introduction (après « Commencer le voyage ») :
+ *   1. Papa souffle les bougies du gâteau (maintenir Espace / clic / doigt) ;
+ *   2. il tombe dans un tunnel où défilent les années et les mots-clés de sa vie ;
+ *   3. il arrive par le ciel et atterrit dans la barque.
+ * « Passer l'intro » / Échap à tout moment. Ajoute ?nointro à l'adresse pour la sauter.
+ */
+export const INTRO_SEQUENCE = {
+  enabled: true,
+  startYear: 1971,
+  endYear: 2026,
+  yearStep: 5,            // un jalon 3D tous les N ans (le grand compteur, lui, défile année par année)
+  smallCandles: 8,        // petites bougies autour des deux bougies « 5 » « 5 »
+  blowTime: 3.2,          // secondes de souffle continu pour tout éteindre (à peu près)
+  tunnelDuration: 7,      // durée de la chute dans le tunnel (s)
+  fallDuration: 4.8,      // descente du ciel jusqu'à la barque (s)
+  cakeTitle: 'Joyeux anniversaire, Papa !',
+  // Mots-clés qui défilent dans le tunnel (dans l'ordre de sa vie). Chaîne ou { text, year }.
+  keywords: [
+    'Bouaké', 'Pilou', 'le singe', 'la mygale', 'Megève', 'les Beaux-Arts', 'Marseille', "l'armée",
+    'Eleonora', { text: '14 juillet 2001', year: 2001 }, "l'Australie", 'Séléna', 'Ylan', 'Iordan', 'Meudon',
+    'le tennis', 'Le Malade imaginaire', 'le verger', 'les abeilles', 'Michel',
+  ],
+};
+
 /** Clé de sauvegarde locale (progression dans le navigateur). */
 export const SAVE_KEY = 'les55lanternes.v1';

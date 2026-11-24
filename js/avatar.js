@@ -42,6 +42,7 @@ const hash = (i) => {
  *  - x, y        : avec body=true → position des PIEDS au sol ; avec body=false → centre de la tête
  *  - size        : diamètre de la tête en px (le corps est proportionnel)
  *  - expression  : 'smile' | 'happy' | 'laugh' | 'surprised' | 'ouch' | 'worried' | 'focus' | 'panic'
+ *                  | 'blow' (joues gonflées, yeux fermés, bouche en « o » — gonflement réglé par puff 0..1)
  *  - pose        : 'stand' | 'run' | 'duck' | 'sit' | 'cheer'
  *  - t           : temps (s) pour les animations de pose (course…)
  *  - hands       : { l:{x,y}, r:{x,y} } positions absolues des mains (sinon pose par défaut)
@@ -252,6 +253,19 @@ function drawHead(g, x, y, r, o) {
   }
   g.restore();
 
+  // joues gonflées (souffler les bougies) : elles débordent un peu de la silhouette
+  if (ex === 'blow') {
+    const k = 0.55 + 0.45 * (o.puff ?? 1);
+    for (const s of [-1, 1]) {
+      const cg = g.createRadialGradient(s * 0.56 * r, 0.22 * r, 0.02 * r, s * 0.64 * r, 0.3 * r, 0.44 * r * k);
+      cg.addColorStop(0, L.skinLight);
+      cg.addColorStop(0.7, L.skin);
+      cg.addColorStop(1, L.skinShade);
+      g.fillStyle = cg;
+      g.beginPath(); g.ellipse(s * 0.64 * r, 0.3 * r, 0.4 * r * k, 0.32 * r * k, 0, 0, Math.PI * 2); g.fill();
+    }
+  }
+
   // reflet sur le crâne
   g.fillStyle = 'rgba(255, 255, 255, 0.38)';
   g.beginPath(); g.ellipse(-0.3 * r, -0.68 * r, 0.27 * r, 0.11 * r, -0.45, 0, Math.PI * 2); g.fill();
@@ -270,7 +284,7 @@ function drawHead(g, x, y, r, o) {
   g.lineWidth = 0.075 * r;
   const brows = {
     smile: [-0.24, -0.25], happy: [-0.27, -0.26], laugh: [-0.27, -0.26], surprised: [-0.38, -0.36], panic: [-0.38, -0.34],
-    ouch: [-0.17, -0.31], worried: [-0.32, -0.22], focus: [-0.17, -0.25],
+    ouch: [-0.17, -0.31], worried: [-0.32, -0.22], focus: [-0.17, -0.25], blow: [-0.21, -0.29],
   }[ex] || [-0.24, -0.25];
   for (const s of [-1, 1]) {
     g.beginPath();
@@ -288,6 +302,9 @@ function drawHead(g, x, y, r, o) {
     const cx = s * 0.34 * r;
     if (ex === 'happy' || ex === 'laugh') {
       g.beginPath(); g.arc(cx, eyeY + 0.04 * r, 0.09 * r, Math.PI * 1.1, Math.PI * 1.9); g.stroke();
+    } else if (ex === 'blow') {
+      // yeux plissés par l'effort
+      g.beginPath(); g.moveTo(cx - 0.1 * r, eyeY - 0.01 * r); g.quadraticCurveTo(cx, eyeY + 0.05 * r, cx + 0.1 * r, eyeY - 0.01 * r); g.stroke();
     } else if (ex === 'ouch') {
       g.beginPath();
       g.moveTo(cx - s * 0.1 * r, eyeY - 0.07 * r); g.lineTo(cx + s * 0.06 * r, eyeY); g.lineTo(cx - s * 0.1 * r, eyeY + 0.07 * r);
@@ -328,7 +345,7 @@ function drawHead(g, x, y, r, o) {
   g.beginPath(); g.ellipse(-0.06 * r, 0.24 * r, 0.05 * r, 0.03 * r, 0, 0, Math.PI * 2); g.fill();
 
   // joues
-  const blush = 0.18 + (o.blush || 0) * 0.45;
+  const blush = 0.18 + (o.blush || 0) * 0.45 + (ex === 'blow' ? 0.22 * (o.puff ?? 1) : 0);
   g.fillStyle = `rgba(230, 120, 110, ${blush})`;
   for (const s of [-1, 1]) { g.beginPath(); g.ellipse(s * 0.55 * r, 0.25 * r, 0.16 * r, 0.1 * r, 0, 0, Math.PI * 2); g.fill(); }
 
@@ -367,6 +384,12 @@ function drawHead(g, x, y, r, o) {
       g.moveTo(-0.18 * r, my + 0.04 * r);
       g.bezierCurveTo(-0.08 * r, my - 0.04 * r, 0.06 * r, my + 0.1 * r, 0.18 * r, my + 0.02 * r);
       g.stroke();
+      break;
+    case 'blow': // lèvres en « o » (on souffle)
+      g.fillStyle = L.lips;
+      g.beginPath(); g.ellipse(0.02 * r, my + 0.02 * r, 0.12 * r, 0.1 * r, 0, 0, Math.PI * 2); g.fill();
+      g.fillStyle = '#5a201c';
+      g.beginPath(); g.ellipse(0.03 * r, my + 0.02 * r, 0.055 * r, 0.045 * r, 0, 0, Math.PI * 2); g.fill();
       break;
     case 'focus':
       g.beginPath(); g.moveTo(-0.14 * r, my); g.lineTo(0.14 * r, my); g.stroke();
@@ -532,6 +555,7 @@ export class Avatar3D {
    *  - rowPhase, rowing (0..1) : cycle de rame
    *  - roll, pitch : tangage de la barque (pour compenser la tête)
    *  - lookUp (0..1)
+   *  - spread (0..1) : bras écartés (chute dans le tunnel de l'intro)
    */
   update(dt, t, s) {
     this._cheerTimer = Math.max(0, this._cheerTimer - dt);
@@ -561,6 +585,11 @@ export class Avatar3D {
       }
       this._tmpB.set(a.s * (0.3 + Math.sin(t * 9) * 0.03), 1.08, 0.08); // bras en l'air
       a.target.lerpVectors(this._tmpA, this._tmpB, this.cheer);
+      if (s.spread) {
+        // bras grands ouverts, qui ondulent un peu (comme en chute libre)
+        this._tmpB.set(a.s * 0.72, 0.56 + Math.sin(t * 3 + a.s) * 0.06, 0.06);
+        a.target.lerp(this._tmpB, s.spread);
+      }
       this._solveArm(a);
     }
   }

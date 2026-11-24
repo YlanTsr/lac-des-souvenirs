@@ -6,14 +6,16 @@
  * ═══════════════════════════════════════════════════════════
  *
  *  États (state.mode) :
- *    loading → intro → play → minigame → lighting → card → play … → finale → play
- *                         ⇄ journal (→ card → minigame « rejouer » → card)
+ *    loading → intro → introSeq → play → minigame → lighting → card → play … → finale → play
+ *                                   ⇄ journal (→ card → minigame « rejouer » → card)
+ *    play → introSeq (« Revoir l'intro ») → play
  *
  *  Pendant « minigame », la scène 3D n'est plus rendue : le GPU ne dessine
- *  que le petit canvas 2D du mini-jeu.
+ *  que le petit canvas 2D du mini-jeu. Pendant « introSeq » (js/intro.js), le lac
+ *  n'est rendu que pour la phase d'arrivée (gâteau = canvas 2D, tunnel = scène dédiée).
  */
 import * as THREE from 'three';
-import { CHAPTERS, WORLD, TOTAL_LANTERNS, SAVE_KEY } from './config.js';
+import { CHAPTERS, WORLD, TOTAL_LANTERNS, SAVE_KEY, INTRO_SEQUENCE } from './config.js';
 import { computeLanternPositions, chapterForIndex, ringRadius } from './layout.js';
 import { clamp, angleDiff, makeGlowTexture } from './utils.js';
 import { World, MAX_WATER_GLOWS } from './world.js';
@@ -25,8 +27,11 @@ import { AmbientAudio } from './audio.js';
 import { UI } from './ui.js';
 import { MiniGameRunner } from './minigames/engine.js';
 import { loadMiniGame } from './minigames.js';
+import { IntroSequence } from './intro.js';
 
-const DEBUG = new URLSearchParams(location.search).has('debug');
+const PARAMS = new URLSearchParams(location.search);
+const DEBUG = PARAMS.has('debug');
+const NO_INTRO = PARAMS.has('nointro') || !INTRO_SEQUENCE?.enabled; // ?nointro : on saute la séquence d'intro
 const INTERACT_RADIUS = 6;     // distance pour allumer une lanterne
 const PREFETCH_RADIUS = 22;    // distance de pré-chargement de la photo
 
@@ -137,6 +142,7 @@ async function init() {
     onCloseFinale: () => game?.closeFinale(),
     onVideoPlaying: (on) => audio.duck(on),
     onReplayMiniGame: () => game?.replayMiniGame(),
+    onReplayIntro: () => game?.replayIntro(),
     onDebugNext: () => game?.debugNext(),
     onDebugAll: () => game?.debugAll(),
   });
@@ -217,6 +223,14 @@ async function init() {
       }
     },
   });
+  // Séquence d'introduction (bougies → tunnel → arrivée dans la barque)
+  const intro = new IntroSequence({
+    config: INTRO_SEQUENCE, renderer, scene, camera, boat, rig, audio, glowTex,
+    fade: (fn) => ui.fadeThrough(fn),
+    step: (dt) => tick(dt),
+    onDone: () => game._enterPlay(),
+  });
+
   // Curseur « main » au survol d'une lanterne
   let hoverThrottle = 0;
   canvas.addEventListener('pointermove', (e) => {
@@ -238,6 +252,10 @@ async function init() {
   window.addEventListener('keydown', (e) => {
     if (e.target instanceof HTMLInputElement) return;
     if (runner.active) return; // le mini-jeu gère ses propres touches (Échap = passer)
+    if (state.mode === 'introSeq') { // l'intro gère Espace (souffler) ; Échap = passer l'intro
+      if (e.code === 'Escape') { e.preventDefault(); intro.skip(); }
+      return;
+    }
     const k = e.key.toLowerCase();
     if (e.code === 'Escape' || k === 'escape') {
       if (ui.memoryOpen) game.closeMemory();
@@ -289,15 +307,46 @@ async function init() {
   game = {
     start() {
       if (state.mode !== 'intro') return;
+      // le clic sur « Commencer le voyage » débloque l'audio (politique autoplay)
       audio.start().then(() => audio.setProgress(lanterns.litCount / TOTAL_LANTERNS));
-      ui.hideIntro();
+      rig.cinematic = null;
+      if (NO_INTRO) {
+        ui.hideIntro();
+        this._enterPlay();
+        return;
+      }
+      ui.hideIntro({ hud: false });
+      state.mode = 'introSeq';
+      intro.start();
+    },
+
+    /** Passage en exploration (après l'écran d'accueil ou la séquence d'intro). */
+    _enterPlay() {
       state.mode = 'play';
       rig.cinematic = null;
-      if (state.lit.size === 0) {
+      ui.showHud();
+      if (!this._helpShown && state.lit.size === 0) { // aide affichée au tout premier départ seulement
+        this._helpShown = true;
         ui.toggleHelp(true);
-        setTimeout(() => ui.toggleHelp(false), 16000);
+        clearTimeout(this._helpTimer);
+        this._helpTimer = setTimeout(() => ui.toggleHelp(false), 16000);
       }
       if (DEBUG) ui.showDebug();
+    },
+
+    /** « Revoir l'intro » (aide / journal) : bougies → tunnel → atterrissage, là où est la barque. */
+    replayIntro() {
+      if (ui.journalOpen) this.toggleJournal(false);
+      if (state.mode !== 'play' || !INTRO_SEQUENCE?.enabled) return;
+      clearTimeout(this._helpTimer);
+      ui.toggleHelp(false);
+      ui.showPrompt(null);
+      ui.compass(0, 0, false);
+      ui.hideHud();
+      state.pendingLight = null;
+      boat.cancelAutopilot();
+      state.mode = 'introSeq';
+      intro.start();
     },
 
     /** Touche E / bouton d'invite : joue l'anecdote de la lanterne la plus proche. */
@@ -575,12 +624,18 @@ async function init() {
 
   function frame() {
     requestAnimationFrame(frame);
-    const raw = clock.getDelta();
+    tick(clock.getDelta());
+  }
+
+  /** Une image de jeu (raw = durée écoulée en s). Appelée aussi par intro._step() pour les tests. */
+  function tick(raw) {
     const dt = Math.min(raw, 0.05);
     const mode = state.mode;
     // Mini-jeu en cours : la 3D est en pause (le dernier rendu reste affiché sous le voile)
     if (mode === 'minigame') { audio.update(t); return; }
     t += dt;
+    // Intro : gâteau (canvas 2D) et tunnel (scène dédiée) remplacent le rendu du lac
+    if (mode === 'introSeq' && !intro.update(dt, t)) { audio.update(t); return; }
 
     // Entrées
     input.throttle = (pressed(MOVE.forward) ? 1 : 0) - (pressed(MOVE.back) ? 1 : 0);
@@ -598,8 +653,11 @@ async function init() {
         speed: 0.6,
       };
     }
-    rig.focus = (mode === 'lighting' || mode === 'card') && state.focusItem ? lanterns.worldPosition(state.focusItem) : null;
-    rig.update(dt, boat);
+    if (mode === 'introSeq') intro.lateUpdate(dt, t); // arrivée : l'intro place Papa et la caméra
+    else {
+      rig.focus = (mode === 'lighting' || mode === 'card') && state.focusItem ? lanterns.worldPosition(state.focusItem) : null;
+      rig.update(dt, boat);
+    }
 
     // Lanternes, anneaux, monde
     lanterns.update(dt, t);
@@ -658,7 +716,7 @@ async function init() {
 
     // Qualité adaptative : si on passe durablement sous ~40 i/s, on baisse la résolution interne
     // (on ignore les frames > 200 ms : onglet en arrière-plan / navigateur qui bride l'animation)
-    if (mode !== 'intro' && mode !== 'loading' && raw < 0.2) {
+    if (mode !== 'intro' && mode !== 'loading' && mode !== 'introSeq' && raw < 0.2) {
       perf.warm += raw;
       if (perf.warm > 4) {
         perf.acc += raw;
@@ -684,7 +742,7 @@ async function init() {
   frame();
 
   // Accès console pour bidouiller : window.__lanternes
-  window.__lanternes = { state, boat, lanterns, world, rings, audio, game, camera, renderer, runner, memories };
+  window.__lanternes = { state, boat, lanterns, world, rings, audio, game, camera, renderer, runner, memories, intro };
 }
 
 init().catch((err) => {

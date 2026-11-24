@@ -3,7 +3,7 @@
  * chargement paresseux des médias), journal + carte du lac, finale, fondus.
  * Ce module ne connaît pas Three.js : il reçoit des données et émet des callbacks.
  */
-import { CHAPTERS, WORLD, INTRO, FINALE, TOTAL_LANTERNS } from './config.js';
+import { CHAPTERS, WORLD, INTRO, FINALE, TOTAL_LANTERNS, INTRO_SEQUENCE } from './config.js';
 import { avatarPortrait } from './avatar.js';
 import { hasMiniGame } from './minigames.js';
 
@@ -61,6 +61,13 @@ export class UI {
     });
     el.replay.addEventListener('click', () => h.onReplayFinale());
     $('finale-close').addEventListener('click', () => h.onCloseFinale());
+    // « Revoir l'intro » (panneau d'aide + journal)
+    for (const id of ['help-replay-intro', 'journal-replay-intro']) {
+      const b = $(id);
+      if (!b) continue;
+      b.hidden = !INTRO_SEQUENCE?.enabled;
+      b.addEventListener('click', () => h.onReplayIntro?.());
+    }
     $('debug-next').addEventListener('click', () => h.onDebugNext());
     $('debug-all').addEventListener('click', () => h.onDebugAll());
     el.map.addEventListener('click', (e) => {
@@ -81,11 +88,14 @@ export class UI {
     this.el.introError.hidden = false;
     this.el.introError.innerHTML = html;
   }
-  hideIntro() {
+  /** @param {{hud?: boolean}} o  hud=false : le HUD reste caché (séquence d'intro jouée ensuite) */
+  hideIntro({ hud = true } = {}) {
     this.el.intro.classList.add('leaving');
-    this.el.hud.hidden = false;
+    if (hud) this.el.hud.hidden = false;
     setTimeout(() => (this.el.intro.hidden = true), 1700);
   }
+  showHud() { this.el.hud.hidden = false; }
+  hideHud() { this.el.hud.hidden = true; }
 
   /* ─────────── HUD ─────────── */
   setCount(n, animate = false) {

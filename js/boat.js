@@ -26,6 +26,7 @@ export class Boat {
     this.rowPhase = 0;
     this.rowing = 0;
     this.lookUp = 0;             // Papa lève les yeux (lanterne qui s'envole)
+    this.avatarFree = false;     // true : l'avatar est piloté ailleurs (intro : chute depuis le ciel)
 
     this.group = new THREE.Group();
     this._buildModel(glowTex);
@@ -271,6 +272,7 @@ export class Boat {
       o.pivot.rotation.z = o.s * dip;
     }
     this.model.updateMatrixWorld(true);
+    if (this.avatarFree) return;
     const hands = this.oars.map((o) => o.handle.getWorldPosition(o.world));
     // l'avatar est tourné de 180° : sa main gauche tient la rame de droite (+x) et inversement
     this.avatar.update(dt, t, {

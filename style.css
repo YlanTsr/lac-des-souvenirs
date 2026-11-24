@@ -98,6 +98,45 @@ code { font-size: 0.85em; background: rgba(255, 255, 255, 0.08); padding: 0.1em 
 @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 #start-btn { font-size: 1.08rem; padding: 0.9em 2.2em; }
 
+/* ─────────── Séquence d'intro (bougies → tunnel → arrivée) ─────────── */
+.introseq {
+  position: fixed; inset: 0; z-index: 29; overflow: hidden;
+  touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+  animation: fadeIn 0.6s ease;
+}
+#introseq-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: pointer; }
+.introseq-veil { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: #05061a; }
+.introseq-year {
+  position: absolute; left: 50%; top: max(9vh, 56px); transform: translateX(-50%); pointer-events: none;
+  font-family: var(--sans); font-weight: 800; font-size: clamp(3rem, 11vw, 6.5rem); line-height: 1;
+  letter-spacing: 0.06em; font-variant-numeric: tabular-nums lining-nums; color: #fff3df;
+  text-shadow: 0 0 30px rgba(255, 190, 120, 0.75), 0 0 80px rgba(255, 150, 90, 0.4);
+}
+.introseq-bottom {
+  position: absolute; left: 0; right: 0; bottom: max(22px, env(safe-area-inset-bottom)); pointer-events: none;
+  display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 0 16px;
+}
+.introseq-candles { display: flex; gap: 7px; }
+.introseq-candles span {
+  width: 10px; height: 14px; border-radius: 45% 45% 40% 40%;
+  background: radial-gradient(circle at 50% 60%, #fff4d0, #ffc685 55%, #e98a3c);
+  box-shadow: 0 0 10px rgba(255, 180, 100, 0.8); transition: background 0.4s, box-shadow 0.4s, opacity 0.4s;
+}
+.introseq-candles span.out { background: rgba(200, 195, 220, 0.25); box-shadow: none; opacity: 0.7; }
+.introseq-hint {
+  margin: 0; max-width: 640px; padding: 10px 20px; border-radius: 999px; text-align: center; line-height: 1.5;
+  background: rgba(10, 11, 30, 0.6); border: 1px solid var(--line); font-size: 0.98rem; color: var(--ink);
+}
+.introseq-hint.nudge { animation: nudge 1.6s ease-in-out infinite; border-color: rgba(255, 200, 140, 0.6); }
+@keyframes nudge { 50% { transform: scale(1.05); box-shadow: 0 0 30px -4px rgba(255, 170, 90, 0.6); } }
+.introseq-skip {
+  position: absolute; right: 16px; top: max(16px, env(safe-area-inset-top)); z-index: 2;
+  padding: 0.45em 0.95em; font-size: 0.85rem; background: rgba(10, 11, 30, 0.55); opacity: 0.72;
+}
+.introseq-skip:hover, .introseq-skip:focus-visible { opacity: 1; }
+.introseq-skip kbd { font-size: 0.72rem; }
+.help-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
 /* ─────────── HUD ─────────── */
 .hud { position: fixed; inset: 0; z-index: 10; pointer-events: none; }
 .hud > * { pointer-events: auto; }
@@ -332,6 +371,8 @@ code { font-size: 0.85em; background: rgba(255, 255, 255, 0.08); padding: 0.1em 
   #volume { display: none; }
   .counter { font-size: 0.95rem; }
   .help { bottom: 80px; }
+  .introseq-hint { font-size: 0.88rem; border-radius: 16px; }
+  .introseq-skip kbd { display: none; }
   .minigame { padding: 0; }
   .mg-frame { width: 100%; border-radius: 0; }
   .mg-screen { align-items: end; padding: 8px; }

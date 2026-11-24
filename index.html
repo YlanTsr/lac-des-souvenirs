@@ -37,6 +37,18 @@
     </div>
   </section>
 
+  <!-- ═════════════ SÉQUENCE D'INTRO : bougies → tunnel → arrivée (js/intro.js) ═════════════ -->
+  <div id="introseq" class="introseq" hidden>
+    <canvas id="introseq-canvas" aria-label="Le gâteau d'anniversaire de Papa"></canvas>
+    <div id="introseq-veil" class="introseq-veil" aria-hidden="true"></div>
+    <div id="introseq-year" class="introseq-year" aria-live="off" hidden>1971</div>
+    <div class="introseq-bottom">
+      <div id="introseq-candles" class="introseq-candles" role="img" aria-label="Bougies allumées"></div>
+      <p id="introseq-hint" class="introseq-hint" aria-live="polite"></p>
+    </div>
+    <button id="introseq-skip" class="btn btn-ghost introseq-skip" type="button">Passer l'intro <kbd>Échap</kbd></button>
+  </div>
+
   <!-- ═════════════ HUD ═════════════ -->
   <div id="hud" class="hud" hidden>
     <div class="hud-top">
@@ -84,7 +96,10 @@
         <li><span><kbd>J</kbd></span> journal &amp; carte · <kbd>M</kbd> son</li>
       </ul>
       <p>Suis les anneaux lumineux : ils mènent à l'île suivante.</p>
-      <button class="btn btn-ghost" id="help-close">J'ai compris</button>
+      <div class="help-actions">
+        <button class="btn btn-ghost" id="help-close">J'ai compris</button>
+        <button class="btn btn-ghost" id="help-replay-intro">Revoir l'intro</button>
+      </div>
     </aside>
 
     <div id="debug-bar" class="debug-bar" hidden>
@@ -175,6 +190,7 @@
         <div class="journal-list" id="journal-list"></div>
       </div>
       <footer class="journal-foot">
+        <button class="btn btn-ghost" id="journal-replay-intro">Revoir l'intro</button>
         <button class="btn btn-ghost" id="replay-finale" hidden>Revoir la finale</button>
         <button class="btn btn-ghost danger" id="reset-btn">Recommencer le voyage</button>
       </footer>
