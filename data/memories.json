@@ -297,10 +297,10 @@
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Avant une opération, tu es arrivé en veste de moto, style motard bien vantard, en espérant croiser de jolies infirmières. C’est un grand infirmier baraqué qui est entré : « Mettez-vous tout nu, on vous prépare. »",
+    "caption": "On se souvient quand, avant ton opération, tu es arrivé en frimant avec ta veste de moto, en espérant croiser de jolies infirmières. C’est un grand infirmier baraqué qui est entré : « Allez met-toi tout nu, on va t'opérer. »",
     "minigame": "infirmier_motard",
     "outcomeText": null,
-    "funnyNote": "Le blouson n’a pas fait le poids.",
+    "funnyNote": "La tenue de motard n'a pas eu l'effet escompté...",
     "position": {
       "x": 95.3,
       "z": -76.6
@@ -313,10 +313,10 @@
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "La première fois que tu as vu Maman, c’était en réunion. Tu parlais… et elle s’est endormie. Le début d’une grande histoire.",
+    "caption": "La première fois que tu as vu Maman, c’était en réunion. Tu parlais… et elle s’est (contre toute attente) endormie. Le début d’une grande histoire.",
     "minigame": "reunion_soporifique",
     "outcomeText": null,
-    "funnyNote": "Depuis, elle t’écoute. Parfois les yeux ouverts.",
+    "funnyNote": "Depuis, elle t’écoute. Parfois les yeux ouverts, parfois fermés.",
     "position": {
       "x": 88.5,
       "z": -65.5
@@ -329,10 +329,10 @@
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Pour séduire Maman, tu déposais chaque matin des chocolats et des fleurs sur son bureau… et tu lui tirais les couettes. Méthode de cour de récré, efficacité prouvée.",
+    "caption": "Pour séduire Maman, tu déposais chaque matin des chocolats et des fleurs sur son bureau… et tu lui tirais les couettes. Visiblement ça a marché...",
     "minigame": "chocolats_couettes",
     "outcomeText": null,
-    "funnyNote": "Ça a marché. La preuve : nous.",
+    "funnyNote": "A ne pas reproduire avec des inconnues, en général on risque plus une baffe en tirant les couettes.",
     "position": {
       "x": 78.4,
       "z": -60.1
@@ -345,7 +345,7 @@
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Le jour où tu as demandé la main de Maman à Diado, Mamina n’arrêtait pas de te resservir : en Bulgarie, quand on finit son assiette, on vous ressert.",
+    "caption": "Le jour où tu as demandé la main de Maman à Diado, Mamina n’arrêtait pas de te resservir jusqu'à ce que t'en tombes malade : si tu finis ton assiette, on te ressert.",
     "minigame": "assiette_bulgare",
     "outcomeText": null,
     "funnyNote": "Leçon bulgare n°1 : toujours laisser une bouchée.",
@@ -361,10 +361,10 @@
     "date": "14 juillet 2001",
     "type": "image",
     "media": "",
-    "caption": "Le 14 juillet 2001, tu as épousé Eleonora, ton étincelle. Ce jour-là, même le feu d’artifice était pour vous.",
+    "caption": "Le 14 juillet 2001, tu as épousé maman, ton étincelle. Ce jour-là, même le feu d’artifice était pour vous.",
     "minigame": "mariage_14_juillet",
     "outcomeText": null,
-    "funnyNote": "Le seul 14 juillet tiré en votre honneur.",
+    "funnyNote": "C'est beau l'amour... mais maman, accroche-toi, c'est que le début des bêtises !",
     "position": {
       "x": 45.3,
       "z": -147
@@ -377,10 +377,10 @@
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "En voyage de noces en Australie, tu as failli te faire manger par un requin. Jamais tu n’avais nagé aussi vite vers la plage.",
+    "caption": "En voyage de noces en Australie, tu as failli te faire manger par un requin. Tu n’avais jamais nagé aussi vite vers la plage, Léon Marchand a du soucis à se faire.",
     "minigame": "requin_australie",
     "outcomeText": null,
-    "funnyNote": "Record personnel du 100 m nage libre.",
+    "funnyNote": "Record international du 100 m nage libre.",
     "position": {
       "x": 55.2,
       "z": -154.7
@@ -396,7 +396,7 @@
     "caption": "Avec Maman, vous avez fait un « casse » dans la rue pour récupérer un graffiti… qui trône aujourd’hui, encadré, dans le salon.",
     "minigame": "casse_graffiti",
     "outcomeText": null,
-    "funnyNote": "L’œuvre la mieux gardée de la maison.",
+    "funnyNote": "Les voleurs du Louvre sont des petits joueurs à côté.",
     "position": {
       "x": 61,
       "z": -168.3
