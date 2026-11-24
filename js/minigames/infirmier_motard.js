@@ -133,7 +133,7 @@ export default {
           g.fillStyle = '#e2e8ea'; g.fillRect(DX, DY, DW * (1 - open * 0.85), DH);
           if (open > 0.5) {
             const ix = lerp(DX + 60, DX - 10, clamp((s.endT - 0.2) / 0.5, 0, 1));
-            const info = drawPerson(g, { ...PEOPLE.infirmier, x: ix, y: FLOOR, size: 70, expression: 'smile', hands: { l: { x: ix - 70, y: FLOOR - 170 }, r: { x: ix + 40, y: FLOOR - 120 } } });
+            const info = drawPerson(g, { ...PEOPLE.infirmier, x: ix, y: FLOOR, size: 140, expression: 'smile', hands: { l: { x: ix - 70, y: FLOOR - 170 }, r: { x: ix + 40, y: FLOOR - 120 } } });
             // blouse d'hôpital tendue
             const hx = info.handL.x, hy = info.handL.y;
             g.fillStyle = '#b8d8f0'; g.beginPath(); g.moveTo(hx - 30, hy); g.lineTo(hx + 26, hy); g.lineTo(hx + 34, hy + 90); g.lineTo(hx - 38, hy + 90); g.closePath(); g.fill();
