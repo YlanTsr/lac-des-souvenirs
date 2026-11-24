@@ -261,14 +261,14 @@
   {
     "id": 17,
     "chapter": 2,
-    "title": "Le cours de nu",
+    "title": "La barre de traction",
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Aux Beaux-Arts, pendant un cours de dessin de nu, une fille t’a laissé son numéro. L’art mène à tout.",
-    "minigame": "dessin_nu",
+    "caption": "Tu avais acheté une barre de traction pour te faire les muscles, coincée dans le couloir entre deux murs. En pleine série de tractions, la barre a lâché… et tu t’es cassé la figure. La vengeance contre les malfrats de Marseille, ce ne sera pas pour tout de suite.",
+    "minigame": "barre_traction",
     "outcomeText": null,
-    "funnyNote": "Il faut croire que le coup de crayon était bon.",
+    "funnyNote": "Les malfrats de Marseille peuvent dormir tranquilles.",
     "position": {
       "x": 89.1,
       "z": -98.5
