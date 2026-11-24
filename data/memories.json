@@ -281,10 +281,10 @@
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "À l’armée, de garde de nuit, tu as commandé des pizzas… au nom de ton commandant.",
+    "caption": "Pendant ton service militaire au quartier général de la marine, de garde de nuit, tu as commandé des pizzas… mais ton commandant est arrivé ! Est-ce que le jeu en valait la chandelle ? En tout cas il y a dû y avoir, sans aucun doute, une réflexion très approfondie sur la balance bénéfice/risque en amont...",
     "minigame": "pizzas_commandant",
     "outcomeText": null,
-    "funnyNote": "Le commandant régalait. Il ne le savait juste pas.",
+    "funnyNote": "Les pizzas, ça pouvait pas attendre.",
     "position": {
       "x": 95.6,
       "z": -89.2
