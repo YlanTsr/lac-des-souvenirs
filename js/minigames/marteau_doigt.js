@@ -23,7 +23,7 @@ export default {
     const FINGER_MIN = 456, FINGER_MAX = 540;
     const s = {
       nails: 0, fingers: 0, misses: 0,
-      swingT: 0, speed: 1.2,
+      swingT: 0, speed: 3,
       strike: 0, striking: false, strikeX: 0, hitType: null, hitT: 0,
       fingerSwell: 0, throb: 0, dents: [], t: 0, msg: '', msgT: 0,
     };

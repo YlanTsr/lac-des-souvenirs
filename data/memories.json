@@ -633,10 +633,10 @@
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Tu bricolais, tu visais le clou… et tu t’es tapé sur le doigt avec le marteau.",
+    "caption": "Avant-propos : cette anecdote est arrivée au moins 98725 fois. Tu bricolais, tu visais le clou… et tu t’es tapé sur le doigt avec le marteau.",
     "minigame": "marteau_doigt",
     "outcomeText": null,
-    "funnyNote": "Le clou, lui, n’a jamais rien senti.",
+    "funnyNote": "Séléna était contente que, toi aussi, tu ai un pouce aplati.",
     "position": {
       "x": -80.2,
       "z": -155.4
