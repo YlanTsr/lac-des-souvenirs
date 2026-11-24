@@ -133,7 +133,7 @@ export default {
           const tx = s.feinted ? PX + s.side * 62 : endX;
           s.mx = s.feinted ? lerp(s.mx, tx, Math.min(1, dt * 9)) : lerp(s.startSide < 0 ? 150 : 810, tx, Math.min(1, p * 1.15));
           // trop tôt (avant tout indice) = au hasard : Mami en profite
-          if (turn) { s.turnSide = turn; resolve(turn === s.side && s.phaseT > 0.22); if (s.phaseT <= 0.22) s.msg = 'CALIN !'; }
+          if (turn) { s.turnSide = turn; resolve(turn === s.side && s.phaseT > 0.22); }
           else if (p >= 1) resolve(false);
         } else if (s.phase === 'result') {
           if (s.phaseT > 0.65) next();
