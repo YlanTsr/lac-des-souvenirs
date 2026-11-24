@@ -1,10 +1,10 @@
 /**
  * Chapitre I — « Ish li bedich » (ish_li_bedich)
  * En 6e, Papa a écrit « Ish li bedich » sur un petit papier pour une camarade…
- * La maîtresse, c'était Mami. Elle l'a surpris et l'a lu devant toute la classe.
- * Mécanique « 1, 2, 3, soleil » : Mami écrit au tableau morceau par morceau ;
+ * Une collègue prof l'a surpris avec le mot… et l'a rapporté à Mami par la suite.
+ * Mécanique « 1, 2, 3, soleil » : la prof écrit au tableau morceau par morceau ;
  * chaque appui fait passer le mot au pupitre suivant (≈ 0,5 s). Quand la craie s'arrête,
- * elle se retourne : si le mot bouge à ce moment-là, il est confisqué… et lu à voix haute.
+ * elle se retourne : si le mot bouge à ce moment-là, il est confisqué… et Mami saura tout.
  */
 import { drawPerson, PEOPLE } from './people.js';
 
@@ -21,6 +21,8 @@ const PUPILS = [
   { x: 810, row: 2, hair: '#6a4a30', shirt: '#9fd0a0' },
 ];
 const PAPA = { x: 150, y: 566, size: 70 };
+// la prof (une collègue de Mami) : chignon brun, lunettes, robe verte
+const PROF = { ...PEOPLE.passant, hair: 'bun', hairColor: '#4a2e20', shirt: '#4f8a72', pants: '#3a3a48', glasses: true, dress: true };
 const deskPt = (p) => { const R = ROWS[p.row]; return { x: p.x + 40 * R.k, y: R.y - 18 * R.k }; };
 // trajet du mot : Papa → 6 pupitres → la camarade
 const PATH = [{ x: 205, y: 470 }, ...[8, 4, 5, 1, 2, 3].map((i) => deskPt(PUPILS[i]))];
@@ -55,7 +57,7 @@ function background(W, H) {
   g.fillStyle = fl; g.fillRect(0, 250, W, H - 250);
   g.strokeStyle = 'rgba(90, 60, 30, 0.25)'; g.lineWidth = 2;
   for (let i = -8; i < 16; i++) { g.beginPath(); g.moveTo(480 + i * 40, 250); g.lineTo(480 + i * 110, H); g.stroke(); }
-  // bureau de la maîtresse
+  // bureau de la prof
   g.fillStyle = '#8a5a34'; g.fillRect(90, 220, 120, 16); g.fillRect(96, 236, 10, 40); g.fillRect(194, 236, 10, 40);
   g.fillStyle = '#d8453c'; g.beginPath(); g.arc(130, 212, 9, 0, Math.PI * 2); g.fill();
   BG = c;
@@ -99,14 +101,14 @@ function drawNote(g, x, y, rot) {
 export default {
   id: 'ish_li_bedich',
   title: '« Ish li bedich »',
-  instructions: 'Fais passer ton petit mot de pupitre en pupitre jusqu’à ta camarade… mais quand la craie de Mami s’arrête, elle se retourne : plus rien ne bouge !',
+  instructions: 'Fais passer ton petit mot de pupitre en pupitre jusqu’à ta camarade… mais quand la craie de la prof s’arrête, elle se retourne : plus rien ne bouge !',
   controls: 'Espace / clic / tap : passer le mot au pupitre suivant',
   duration: 13,
   introExpression: 'smile',
   successTitle: 'Message transmis !',
   failTitle: 'Confisqué !',
-  successText: 'Le mot est arrivé ! Ta camarade a rougi jusqu’aux oreilles. Mami, elle, n’a rien vu… cette fois.',
-  failText: 'Mami a confisqué le papier et l’a lu devant toute la classe : « Ish li bedich ! » Fou rire général, et toi tout rouge au fond de la classe.',
+  successText: 'Le mot est arrivé ! Ta camarade a rougi jusqu’aux oreilles. La prof n’a rien vu… et Mami n’en saura rien. Cette fois.',
+  failText: 'La prof a confisqué le papier : « Ish li bedich »… « Je vais en parler à ta mère. » Et le soir même, Mami savait tout.',
 
   create(api) {
     const { W, H, rand, clamp } = api;
@@ -134,7 +136,7 @@ export default {
         if (s.caught) s.readT += dt;
         for (const h of s.hearts) { h.t += dt; h.y -= 40 * dt; }
 
-        // ── Mami : écrit → s'arrête → se retourne → se remet à écrire
+        // ── la prof : écrit → s'arrête → se retourne → se remet à écrire
         if (s.phase === 'write') {
           s.chars += s.rate * dt;
           s.writeLeft = Math.max(0, (chunkLen() - s.chars) / s.rate);
@@ -187,26 +189,23 @@ export default {
           if (i === s.chunk) api.text(g, full, 250, lineY(i), { size: 22, align: 'left', color: 'rgba(255,255,255,0.13)', font: '"Comic Sans MS", "Segoe Print", cursive', weight: 400 });
           api.text(g, done, 250, lineY(i), { size: 22, align: 'left', color: '#f4f4ea', font: '"Comic Sans MS", "Segoe Print", cursive', weight: 400 });
         }
-        if (s.caught && s.readT > 0.2) {
-          api.text(g, 'Ish li bedich', 480, 176, { size: 24, color: '#ffd0dc', font: '"Comic Sans MS", "Segoe Print", cursive', weight: 700 });
-        }
 
-        // ── Mami
+        // ── la prof
         const cur = Math.min(s.chunk, CHUNKS.length - 1);
         const writeX = 250 + Math.min(CHUNKS[cur].length, s.chars) * 11.5;
         const mx = clamp(writeX + 34, 300, 700);
         const turned = s.phase === 'look' || s.caught;
         const handUp = s.phase === 'write' || s.phase === 'pause';
         const info = drawPerson(g, {
-          ...PEOPLE.mami, x: s.caught ? 480 : mx, y: 300, size: 64, t: s.t,
-          expression: s.caught ? (s.readT > 0.4 ? 'laugh' : 'surprised') : 'angry',
+          ...PROF, x: s.caught ? 480 : mx, y: 300, size: 64, t: s.t,
+          expression: s.caught ? (s.readT > 0.4 ? 'angry' : 'surprised') : 'angry',
           pose: s.caught ? 'stand' : 'stand',
           hands: handUp ? { r: { x: writeX + 4, y: lineY(cur) + 6 }, l: { x: mx - 24, y: 270 } }
             : s.caught ? { l: { x: 455, y: 236 }, r: { x: 505, y: 236 } } : undefined,
         });
         if (!turned) {
           // vue de dos : on recouvre le visage par les cheveux
-          g.fillStyle = PEOPLE.mami.hairColor;
+          g.fillStyle = PROF.hairColor;
           g.beginPath(); g.arc(info.hx, info.hy, info.r * 1.02, 0, Math.PI * 2); g.fill();
           g.fillStyle = 'rgba(0,0,0,0.08)';
           g.beginPath(); g.arc(info.hx, info.hy + info.r * 0.3, info.r * 0.7, 0, Math.PI); g.fill();
@@ -219,16 +218,35 @@ export default {
         if (s.phase === 'pause' && !api.ended) api.text(g, '…', info.hx + 46, info.hy - 30, { size: 34, color: '#fff', stroke: '#000a' });
         if (s.phase === 'look' && !s.caught) api.text(g, '?!', info.hx + 44, info.hy - 30, { size: 30, color: '#ffd34d', stroke: '#000a', weight: 900 });
         if (s.caught) {
-          // le papier confisqué, lu à voix haute
-          drawNote(g, 480, 232, 0);
-          if (s.readT > 0.4) {
-            api.roundRect(g, 560, 120, 250, 56, 16); g.fillStyle = 'rgba(255,255,255,0.95)'; g.fill();
-            api.text(g, '« Ish li bedich ! »', 685, 148, { size: 26, color: '#b0303a', weight: 800 });
+          // le papier confisqué, déplié entre ses mains
+          if (s.readT < 0.25) drawNote(g, 480, 232, 0);
+          else {
+            g.fillStyle = '#fffdf4'; g.fillRect(430, 218, 100, 32);
+            g.strokeStyle = '#b8b0a0'; g.lineWidth = 1.2; g.strokeRect(430, 218, 100, 32);
+            g.beginPath(); g.moveTo(480, 218); g.lineTo(480, 250); g.stroke();
+            api.text(g, 'Ish li bedich', 480, 235, { size: 15, color: '#d0305a', font: '"Comic Sans MS", "Segoe Print", cursive', weight: 700 });
+          }
+          if (s.readT > 0.35) {
+            // bulle : elle ne dit rien à la classe… mais elle préviendra Mami
+            api.roundRect(g, 530, 116, 350, 56, 16); g.fillStyle = 'rgba(255,255,255,0.95)'; g.fill();
+            g.beginPath(); g.moveTo(534, 134); g.lineTo(info.hx + info.r + 6, info.hy + 4); g.lineTo(534, 156); g.closePath(); g.fill();
+            api.text(g, '« Je vais en parler à ta mère… »', 705, 144, { size: 21, color: '#7a2a20', weight: 800 });
+          }
+          if (s.readT > 0.8) {
+            // plus tard, à la maison : Mami sait tout
+            const k = Math.min(1, (s.readT - 0.8) / 0.25);
+            g.save(); g.globalAlpha = k;
+            api.roundRect(g, 24, 54, 180, 150, 18); g.fillStyle = '#fff3d6'; g.fill();
+            g.strokeStyle = '#a0603a'; g.lineWidth = 4; g.stroke();
+            api.text(g, 'Le soir, à la maison…', 114, 74, { size: 15, color: '#7a3a10', weight: 700 });
+            drawPerson(g, { ...PEOPLE.mami, x: 114, y: 132, size: 62, body: false, expression: 'angry', t: s.t });
+            api.text(g, '« Ish li bedich », hein ?!', 114, 190, { size: 15, color: '#b0303a', weight: 800 });
+            g.restore();
           }
         }
 
         // ── la classe (de dos), du fond vers l'avant
-        const laugh = s.caught && s.readT > 0.5;
+        const laugh = s.caught && s.readT > 0.3;
         for (const p of PUPILS) {
           if (p.crush && s.won) {
             const R = ROWS[p.row];
@@ -239,7 +257,7 @@ export default {
         if (laugh) {
           for (let i = 0; i < 6; i++) {
             const p = PUPILS[(i * 3) % PUPILS.length], R = ROWS[p.row];
-            api.text(g, i % 2 ? 'HA HA' : 'Hi hi !', p.x + 20, R.y - 120 * R.k - Math.abs(Math.sin(s.t * 6 + i)) * 8, { size: 18 + R.k * 6, color: '#fff', stroke: '#7a3a10', strokeWidth: 4 });
+            api.text(g, i % 2 ? 'Ouuuh !' : 'Hi hi…', p.x + 20, R.y - 120 * R.k - Math.abs(Math.sin(s.t * 6 + i)) * 8, { size: 18 + R.k * 6, color: '#fff', stroke: '#7a3a10', strokeWidth: 4 });
           }
         }
         for (const h of s.hearts) if (h.t > 0) api.text(g, '♥', h.x, h.y, { size: 26, color: `rgba(230, 60, 100, ${Math.max(0, 1 - h.t)})` });

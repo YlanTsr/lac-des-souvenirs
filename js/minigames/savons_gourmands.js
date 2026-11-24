@@ -1,166 +1,229 @@
 /**
- * « Les savons gourmands » (savons_gourmands)
- * Maman avait offert à Papa de jolis savons parfumés… qu'il a mangés, croyant à des bonbons.
- * Mécanique : sur une assiette tournante, bonbons et savons se ressemblent beaucoup ;
- * viser et cliquer pour manger les vrais bonbons (indices : les savons font des bulles et
- * portent une petite étiquette « Lavande », les bonbons scintillent de sucre).
- * 6 bonbons = victoire ; 2 savons avalés = échec (bulles par la bouche).
+ * « Le calendrier de l’Avent » (savons_gourmands)
+ * Mami avait offert à Papa un calendrier de l'Avent… rempli de petites perles de bain au savon.
+ * Papa a cru que c'étaient des bonbons et en a croqué une.
+ * Mécanique : 24 petites portes. Ouvrir une porte (clic / flèches + Espace) révèle un vrai
+ * bonbon ou une perle de bain presque identique (indices : reflet nacré qui tourne, petite bulle,
+ * volute de parfum fleuri). Re-cliquer une porte ouverte = manger. 5 vrais bonbons = victoire ;
+ * une seule perle croquée = bulles par la bouche, échec (comme dans la vraie histoire).
  */
 export default {
   id: 'savons_gourmands',
-  title: 'Les savons gourmands',
-  instructions: 'Mange 6 vrais bonbons sur l’assiette sans croquer dans les savons parfumés de Maman (eux font des bulles et portent une étiquette) !',
-  controls: 'Clic / tap : manger · ou flèches pour viser + Espace',
-  duration: 12,
+  title: 'Le calendrier de l’Avent',
+  instructions: 'Ouvre les petites portes et mange 5 vrais bonbons, mais laisse les perles de bain de Mami : elles ont un reflet nacré, font des bulles et sentent la fleur !',
+  controls: 'Clic / tap : ouvrir puis manger · ou flèches + Espace',
+  duration: 13,
   introExpression: 'happy',
   successTitle: 'Gourmand… mais malin !',
-  failTitle: 'Haleine fraîche garantie !',
-  successText: 'Six bonbons savourés, zéro savon croqué : les cadeaux de Maman sont saufs… cette fois-ci.',
-  failText: 'Deux savons avalés : tu fais des bulles en parlant et tu sens bon la lavande. Haleine fraîche garantie !',
+  failTitle: 'Ça mousse !',
+  successText: 'Cinq vrais bonbons, zéro perle de bain : ce Noël, ton haleine sent le chocolat, pas la rose.',
+  failText: 'Crounch… ça mousse ! C’était une perle de bain : tu fais des bulles en parlant. Merci Mami !',
 
   create(api) {
     const { W, H, rand } = api;
-    const PCX = 575, PCY = 300, PR = 205;
-    const GOAL = 6, MAX_SOAP = 2, HIT = 32;
-    const PASTELS = ['#f6b7c8', '#c9b3f0', '#b5e3c8', '#ffe0a3', '#a9d8f5', '#f9c9a6'];
-    const SCENTS = ['Lavande', 'Rose', 'Vanille', 'Amande'];
-    const slots = [];
-    for (let i = 0; i < 8; i++) slots.push({ a: (i / 8) * Math.PI * 2, d: 150 });
-    for (let i = 0; i < 4; i++) slots.push({ a: (i / 4) * Math.PI * 2 + 0.4, d: 66 });
+    const GOAL = 5;
+    const COLS = 6, ROWS = 4, X0 = 322, Y0 = 142, CW = 99, CH = 90, DW = 86, DH = 80;
+    const COLORS = ['#f4b6c8', '#c9b3f0', '#b5e3c8', '#e8c860', '#f3e6cf', '#7a4a2e'];
+    const DOORC = ['#c0392b', '#2e7d4f', '#d4a24c', '#efe3c8'];
+    const SCENTS = ['rose', 'lavande', 'fleur d’oranger', 'violette', 'jasmin'];
+    const YUM = ['Miam, praliné !', 'Hmm, framboise !', 'Chocolat noir !', 'Guimauve !', 'Caramel !', 'Pâte d’amande !'];
+
+    // 13 bonbons, 11 perles de bain, numéros mélangés comme un vrai calendrier
+    const kinds = Array.from({ length: 24 }, (_, i) => (i < 13 ? 'bonbon' : 'perle'));
+    const nums = Array.from({ length: 24 }, (_, i) => i + 1);
+    const shuffle = (a) => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+    shuffle(kinds); shuffle(nums);
+    const doors = kinds.map((kind, i) => {
+      const c = i % COLS, r = Math.floor(i / COLS);
+      return {
+        i, kind, num: nums[i], x: X0 + c * CW + DW / 2, y: Y0 + r * CH + DH / 2,
+        color: COLORS[Math.floor(rand(0, COLORS.length))], doorC: DOORC[(c + r) % 4], deco: (c * 3 + r) % 3,
+        open: 0, opening: false, eaten: false, seed: rand(0, 6.28), bubbleT: rand(0.2, 0.9), scent: SCENTS[Math.floor(rand(0, SCENTS.length))],
+      };
+    });
 
     const s = {
-      t: 0, rot: 0, candies: 0, soaps: 0, cooldown: 0, items: [], flying: [], bubbles: [],
-      msg: '', msgT: 0, msgGood: true, chew: 0, outcome: null, cursor: { x: PCX, y: PCY },
+      t: 0, doors, sel: 0, candies: 0, outcome: null, flying: null, bubbles: [], cooldown: 0,
+      msg: '', msgT: 0, msgGood: true, chew: 0, lastPtr: null, endT: 0,
     };
-    const newItem = (slot, kind) => ({
-      slot, kind, shape: Math.floor(rand(0, 3)), color: PASTELS[Math.floor(rand(0, PASTELS.length))],
-      scent: SCENTS[Math.floor(rand(0, SCENTS.length))], bubbleT: rand(0.3, 2), refill: 0, seed: rand(0, 6.28), tilt: rand(-0.4, 0.4),
-    });
-    {
-      const kinds = ['bonbon', 'savon', 'bonbon', 'savon', 'bonbon', 'savon', 'bonbon', 'savon', 'bonbon', 'savon', 'bonbon', 'bonbon'];
-      for (let i = kinds.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [kinds[i], kinds[j]] = [kinds[j], kinds[i]]; }
-      slots.forEach((sl, i) => s.items.push(newItem(i, kinds[i])));
-    }
-    const posOf = (it) => { const sl = slots[it.slot]; const a = sl.a + s.rot; return { x: PCX + Math.cos(a) * sl.d, y: PCY + Math.sin(a) * sl.d * 0.82 }; };
+    const say = (m, d, good) => { s.msg = m; s.msgT = d; s.msgGood = good; };
+    const doorAt = (x, y) => doors.find((d) => Math.abs(x - d.x) <= DW / 2 && Math.abs(y - d.y) <= DH / 2) || null;
 
-    // ── décor précalculé : table, nappe, boîte cadeau de Maman
+    /* ───────── décor pré-rendu ───────── */
     const bg = document.createElement('canvas'); bg.width = W; bg.height = H;
     {
       const g = bg.getContext('2d');
-      g.fillStyle = '#f3e3c8'; g.fillRect(0, 0, W, H);
-      g.fillStyle = 'rgba(200, 120, 90, 0.18)';
-      for (let x = 0; x < W; x += 48) g.fillRect(x, 0, 24, H);
-      for (let y = 0; y < H; y += 48) g.fillRect(0, y, W, 24);
-      // ombre et assiette
-      g.fillStyle = 'rgba(90, 60, 30, 0.18)'; g.beginPath(); g.ellipse(PCX + 8, PCY + 14, PR + 6, PR * 0.82 + 6, 0, 0, Math.PI * 2); g.fill();
-      g.fillStyle = '#ffffff'; g.beginPath(); g.ellipse(PCX, PCY, PR, PR * 0.82, 0, 0, Math.PI * 2); g.fill();
-      g.strokeStyle = '#7fb0d8'; g.lineWidth = 5; g.beginPath(); g.ellipse(PCX, PCY, PR - 14, PR * 0.82 - 12, 0, 0, Math.PI * 2); g.stroke();
-      g.strokeStyle = '#e6eef5'; g.lineWidth = 2; g.beginPath(); g.ellipse(PCX, PCY, PR - 40, PR * 0.82 - 34, 0, 0, Math.PI * 2); g.stroke();
-      // napperon au centre
-      g.fillStyle = '#fbf3e4';
-      g.beginPath();
-      for (let k = 0; k <= 24; k++) { const a = (k / 24) * Math.PI * 2, r = k % 2 ? 26 : 32; k ? g.lineTo(PCX + Math.cos(a) * r, PCY + Math.sin(a) * r * 0.82) : g.moveTo(PCX + Math.cos(a) * r, PCY + Math.sin(a) * r * 0.82); }
-      g.fill();
-      // boîte cadeau ouverte
-      g.fillStyle = '#c8486b'; g.fillRect(808, 410, 120, 90);
-      g.fillStyle = '#f2c14e'; g.fillRect(860, 410, 16, 90);
-      g.fillStyle = '#b03a5b'; g.beginPath(); g.moveTo(800, 410); g.lineTo(936, 410); g.lineTo(950, 380); g.lineTo(814, 380); g.closePath(); g.fill();
-      g.fillStyle = '#fffdf6'; g.save(); g.translate(868, 470); g.rotate(-0.06);
-      g.fillRect(-52, -14, 104, 28);
-      g.fillStyle = '#c8486b'; g.font = '800 13px sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
-      g.fillText('Pour toi ♥ Maman', 0, 1);
-      g.restore();
-    }
-
-    function drawSweet(g, it, x, y, scale = 1) {
-      const r = 21 * scale;
-      g.save(); g.translate(x, y); g.rotate(it.tilt);
-      g.fillStyle = it.color;
-      g.beginPath();
-      if (it.shape === 0) g.ellipse(0, 0, r, r * 0.8, 0, 0, Math.PI * 2);
-      else if (it.shape === 1) { g.moveTo(0, r * 0.8); g.bezierCurveTo(-r * 1.3, -r * 0.1, -r * 0.6, -r * 1.1, 0, -r * 0.4); g.bezierCurveTo(r * 0.6, -r * 1.1, r * 1.3, -r * 0.1, 0, r * 0.8); }
-      else { g.moveTo(-r + 6, -r * 0.75); g.arcTo(r, -r * 0.75, r, r * 0.75, 7 * scale); g.arcTo(r, r * 0.75, -r, r * 0.75, 7 * scale); g.arcTo(-r, r * 0.75, -r, -r * 0.75, 7 * scale); g.arcTo(-r, -r * 0.75, r, -r * 0.75, 7 * scale); }
-      g.closePath(); g.fill();
-      // ombre douce + reflet (les deux en ont)
-      g.fillStyle = 'rgba(0,0,0,0.08)'; g.beginPath(); g.ellipse(r * 0.2, r * 0.35, r * 0.6, r * 0.25, 0, 0, Math.PI * 2); g.fill();
-      g.fillStyle = 'rgba(255,255,255,0.55)'; g.beginPath(); g.ellipse(-r * 0.35, -r * 0.3, r * 0.3, r * 0.14, -0.5, 0, Math.PI * 2); g.fill();
-      if (it.kind === 'savon') {
-        // petite étiquette gravée
-        g.fillStyle = 'rgba(90, 70, 90, 0.55)';
-        g.font = `700 ${Math.round(8.5 * scale)}px "Nunito Sans", system-ui, sans-serif`; g.textAlign = 'center'; g.textBaseline = 'middle';
-        g.fillText(it.scent, 0, r * 0.12);
-      } else {
-        // cristaux de sucre qui scintillent
-        for (let k = 0; k < 4; k++) {
-          const tw = 0.5 + 0.5 * Math.sin(s.t * 5 + it.seed + k * 1.7);
-          g.fillStyle = `rgba(255,255,255,${0.35 + 0.6 * tw})`;
-          g.beginPath(); g.arc(Math.cos(k * 2.1 + it.seed) * r * 0.5, Math.sin(k * 2.1 + it.seed) * r * 0.45, 1.6 * scale + tw, 0, Math.PI * 2); g.fill();
-        }
+      // mur rouge sombre à motifs, parquet
+      g.fillStyle = '#6e2a2a'; g.fillRect(0, 0, W, 470);
+      g.fillStyle = 'rgba(255, 220, 160, 0.06)';
+      for (let x = 0; x < W; x += 40) for (let y = 20; y < 460; y += 40) { g.beginPath(); g.arc(x + ((y / 40) % 2) * 20, y, 3, 0, Math.PI * 2); g.fill(); }
+      g.fillStyle = '#5a2020'; g.fillRect(0, 456, W, 14);
+      g.fillStyle = '#8a5a3a'; g.fillRect(0, 470, W, H - 470);
+      g.strokeStyle = 'rgba(0,0,0,0.2)'; g.lineWidth = 2;
+      for (let y = 486; y < H; y += 18) { g.beginPath(); g.moveTo(0, y); g.lineTo(W, y); g.stroke(); }
+      // fenêtre enneigée
+      g.fillStyle = '#20345e'; g.fillRect(40, 70, 170, 150);
+      g.fillStyle = '#eef4ff';
+      for (let i = 0; i < 30; i++) { g.beginPath(); g.arc(46 + (i * 53) % 160, 76 + (i * 31) % 140, 1.6 + (i % 3) * 0.6, 0, Math.PI * 2); g.fill(); }
+      g.beginPath(); g.moveTo(40, 220); g.quadraticCurveTo(120, 190, 210, 214); g.lineTo(210, 220); g.closePath(); g.fill();
+      g.strokeStyle = '#f2e8d8'; g.lineWidth = 8; g.strokeRect(40, 70, 170, 150);
+      g.lineWidth = 5; g.beginPath(); g.moveTo(125, 70); g.lineTo(125, 220); g.moveTo(40, 145); g.lineTo(210, 145); g.stroke();
+      // guirlande lumineuse
+      g.strokeStyle = '#2f5a2f'; g.lineWidth = 4; g.beginPath(); g.moveTo(0, 30);
+      for (let x = 0; x <= 780; x += 130) g.quadraticCurveTo(x + 65, 62, x + 130, 30);
+      g.stroke();
+      const LC = ['#ffe14d', '#ff6b6b', '#6bd0ff', '#9cff8a'];
+      for (let i = 0; i < 24; i++) { const x = 20 + i * 32; const k = ((x % 130) / 130); const y = 30 + Math.sin(k * Math.PI) * 24; g.fillStyle = LC[i % 4]; g.beginPath(); g.arc(x, y + 6, 5, 0, Math.PI * 2); g.fill(); }
+      // sapin
+      g.fillStyle = '#5a3a24'; g.fillRect(232, 400, 18, 70);
+      g.fillStyle = '#2e6b3a';
+      for (let k = 0; k < 4; k++) { const y = 210 + k * 50; g.beginPath(); g.moveTo(241, y - 40); g.lineTo(241 - 30 - k * 12, y + 50); g.lineTo(241 + 30 + k * 12, y + 50); g.closePath(); g.fill(); }
+      g.fillStyle = '#ffe14d'; g.beginPath();
+      for (let k = 0; k < 10; k++) { const a = -Math.PI / 2 + (k / 10) * Math.PI * 2, rr = k % 2 ? 6 : 14; g.lineTo(241 + Math.cos(a) * rr, 172 + Math.sin(a) * rr); } g.fill();
+      for (const [x, y, c] of [[222, 250, '#ff6b6b'], [258, 300, '#6bd0ff'], [215, 345, '#ffe14d'], [266, 380, '#ff6b6b'], [240, 220, '#9cff8a']]) { g.fillStyle = c; g.beginPath(); g.arc(x, y, 6, 0, Math.PI * 2); g.fill(); }
+      // le calendrier : cadre doré, fond rouge à flocons
+      g.fillStyle = 'rgba(0,0,0,0.3)'; g.fillRect(306, 86, 626, 430);
+      g.fillStyle = '#c9a04a'; g.fillRect(298, 76, 628, 432);
+      g.fillStyle = '#a3262b'; g.fillRect(308, 86, 608, 412);
+      g.strokeStyle = 'rgba(255,255,255,0.22)'; g.lineWidth = 2;
+      for (let i = 0; i < 26; i++) {
+        const x = 318 + (i * 97) % 590, y = 96 + (i * 59) % 395, r = 5 + (i % 3) * 2;
+        g.beginPath(); for (let k = 0; k < 3; k++) { const a = (k / 3) * Math.PI; g.moveTo(x - Math.cos(a) * r, y - Math.sin(a) * r); g.lineTo(x + Math.cos(a) * r, y + Math.sin(a) * r); } g.stroke();
       }
+      // bandeau titre
+      g.fillStyle = '#efe3c8'; g.fillRect(500, 92, 404, 40);
+      g.strokeStyle = '#c9a04a'; g.lineWidth = 3; g.strokeRect(500, 92, 404, 40);
+      g.fillStyle = '#a3262b'; g.font = 'italic 800 24px Georgia, serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+      g.fillText('Calendrier de l’Avent', 702, 113);
+      // étiquette cadeau de Mami
+      g.save(); g.translate(400, 112); g.rotate(-0.08);
+      g.strokeStyle = '#efe3c8'; g.lineWidth = 2; g.beginPath(); g.moveTo(-90, -4); g.lineTo(-104, -30); g.stroke();
+      g.fillStyle = '#fffaf0'; g.beginPath(); g.moveTo(-90, -16); g.lineTo(84, -16); g.lineTo(84, 16); g.lineTo(-90, 16); g.lineTo(-100, 0); g.closePath(); g.fill();
+      g.fillStyle = '#c9a04a'; g.beginPath(); g.arc(-88, 0, 3, 0, Math.PI * 2); g.fill();
+      g.fillStyle = '#7a1f2b'; g.font = 'italic 700 15px Georgia, serif';
+      g.fillText('Pour mon chéri — Mami', -4, 1);
+      g.restore();
+      // niches (fond des portes)
+      for (const d of doors) {
+        g.fillStyle = '#3a1c18'; g.fillRect(d.x - DW / 2, d.y - DH / 2, DW, DH);
+        g.fillStyle = '#d9b46a';
+        g.beginPath(); g.moveTo(d.x - 18, d.y + 6); g.lineTo(d.x + 18, d.y + 6); g.lineTo(d.x + 13, d.y + 22); g.lineTo(d.x - 13, d.y + 22); g.closePath(); g.fill();
+        g.strokeStyle = '#b8924a'; g.lineWidth = 1.5;
+        for (let k = -2; k <= 2; k++) { g.beginPath(); g.moveTo(d.x + k * 7, d.y + 7); g.lineTo(d.x + k * 5.5, d.y + 21); g.stroke(); }
+      }
+    }
+
+    /* ───────── dessins ───────── */
+    function drawItem(g, d, x, y, sc = 1) {
+      const r = 15 * sc;
+      g.fillStyle = d.color;
+      g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill();
+      g.fillStyle = 'rgba(0,0,0,0.12)'; g.beginPath(); g.arc(x + r * 0.25, y + r * 0.25, r * 0.7, 0, Math.PI * 2); g.fill();
+      g.fillStyle = d.color; g.beginPath(); g.arc(x - r * 0.08, y - r * 0.08, r * 0.78, 0, Math.PI * 2); g.fill();
+      if (d.kind === 'perle') {
+        // reflet nacré irisé qui tourne lentement
+        const a = s.t * 2.2 + d.seed;
+        const IR = ['rgba(255,170,220,0.75)', 'rgba(160,230,255,0.75)', 'rgba(255,250,190,0.8)'];
+        for (let k = 0; k < 3; k++) {
+          g.strokeStyle = IR[k]; g.lineWidth = 2.2 * sc;
+          g.beginPath(); g.arc(x, y, r * (0.52 + k * 0.1), a + k * 0.25, a + k * 0.25 + 0.9); g.stroke();
+        }
+        g.fillStyle = 'rgba(255,255,255,0.8)'; g.beginPath(); g.arc(x - r * 0.38, y - r * 0.38, r * 0.17, 0, Math.PI * 2); g.fill();
+      } else {
+        // reflet mat et fixe, quelques grains de sucre / cacao
+        g.fillStyle = 'rgba(255,255,255,0.55)'; g.beginPath(); g.ellipse(x - r * 0.38, y - r * 0.4, r * 0.28, r * 0.15, -0.6, 0, Math.PI * 2); g.fill();
+        g.fillStyle = d.color === '#7a4a2e' ? 'rgba(60,30,15,0.6)' : 'rgba(255,255,255,0.5)';
+        for (let k = 0; k < 4; k++) { g.beginPath(); g.arc(x + Math.cos(d.seed + k * 1.9) * r * 0.5, y + Math.sin(d.seed + k * 1.9) * r * 0.45, 1.2 * sc, 0, Math.PI * 2); g.fill(); }
+      }
+    }
+    function drawScent(g, d) {
+      // volute de parfum fleuri (petite fleur rose au bout)
+      const k = (s.t * 0.7 + d.seed) % 1;
+      const a = Math.sin(k * Math.PI) * 0.75;
+      if (a < 0.05) return;
+      const x = d.x + Math.sin(k * 6 + d.seed) * 5, y = d.y - 18 - k * 20;
+      g.globalAlpha = a;
+      g.strokeStyle = '#f7c6e0'; g.lineWidth = 1.6;
+      g.beginPath(); g.moveTo(d.x + 2, d.y - 14); g.quadraticCurveTo(d.x + 9, (d.y - 14 + y) / 2, x, y); g.stroke();
+      g.fillStyle = '#ff9fcf';
+      for (let p = 0; p < 5; p++) { const an = (p / 5) * Math.PI * 2 + s.t; g.beginPath(); g.arc(x + Math.cos(an) * 2.6, y + Math.sin(an) * 2.6, 1.8, 0, Math.PI * 2); g.fill(); }
+      g.fillStyle = '#fff2a0'; g.beginPath(); g.arc(x, y, 1.3, 0, Math.PI * 2); g.fill();
+      g.globalAlpha = 1;
+    }
+    function drawDoor(g, d) {
+      const x0 = d.x - DW / 2, y0 = d.y - DH / 2;
+      const w = DW * (1 - d.open * 0.82);
+      if (d.open > 0) {
+        // porte entrouverte, rabattue à gauche (vue de biais)
+        g.fillStyle = 'rgba(0,0,0,0.25)'; g.fillRect(x0 + w, y0, 4, DH);
+      }
+      g.save();
+      g.beginPath(); g.rect(x0, y0, w, DH); g.clip();
+      g.fillStyle = d.doorC; g.fillRect(x0, y0, w, DH);
+      if (d.open > 0) { g.fillStyle = `rgba(0,0,0,${0.35 * d.open})`; g.fillRect(x0, y0, w, DH); }
+      g.translate(x0, y0); g.scale(w / DW, 1);
+      g.strokeStyle = 'rgba(255,255,255,0.35)'; g.lineWidth = 2; g.strokeRect(4, 4, DW - 8, DH - 8);
+      const light = d.doorC === '#efe3c8' || d.doorC === '#d4a24c';
+      if (d.deco === 0) { g.fillStyle = light ? '#2e7d4f' : '#ffe14d'; g.beginPath(); for (let k = 0; k < 10; k++) { const a = -Math.PI / 2 + (k / 10) * Math.PI * 2, rr = k % 2 ? 4 : 9; g.lineTo(DW - 16 + Math.cos(a) * rr, 16 + Math.sin(a) * rr); } g.fill(); }
+      else if (d.deco === 1) { g.fillStyle = '#2e7d4f'; g.beginPath(); g.ellipse(DW - 20, 16, 7, 4, 0.5, 0, Math.PI * 2); g.ellipse(DW - 11, 16, 7, 4, -0.5, 0, Math.PI * 2); g.fill(); g.fillStyle = '#e53935'; g.beginPath(); g.arc(DW - 15, 19, 3, 0, Math.PI * 2); g.fill(); }
+      else { g.fillStyle = light ? 'rgba(160,40,40,0.5)' : 'rgba(255,255,255,0.5)'; g.beginPath(); g.arc(14, DH - 14, 4, 0, Math.PI * 2); g.arc(26, DH - 12, 3, 0, Math.PI * 2); g.fill(); }
+      g.fillStyle = light ? '#7a1f2b' : '#fffaf0';
+      g.font = '800 28px Georgia, serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+      g.fillText(String(d.num), DW / 2, DH / 2 + 2);
+      g.fillStyle = '#c9a04a'; g.beginPath(); g.arc(DW - 9, DH / 2, 3, 0, Math.PI * 2); g.fill();
       g.restore();
     }
 
-    function eat(it) {
-      const p = posOf(it);
-      s.flying.push({ it: { ...it }, x0: p.x, y0: p.y, k: 0 });
-      it.refill = 0.6;
-      s.cooldown = 0.3;
+    let mouth = { x: 150, y: 330 };
+
+    function act(d) {
+      if (!d || api.ended) return;
+      if (d.open === 0 && !d.opening) {
+        d.opening = true;
+        api.sfx('pop');
+        return;
+      }
+      if (d.open < 1 || d.eaten || s.flying || s.cooldown > 0) return;
+      s.flying = { d, k: 0 };
+      d.eaten = true;
+      api.sfx('whoosh');
     }
-    function swallow(it) {
+    function swallow(d) {
       if (api.ended) return;
-      if (it.kind === 'bonbon') {
+      if (d.kind === 'bonbon') {
         s.candies++;
-        s.msg = ['Miam !', 'Délicieux !', 'Hmm, fraise !', 'Encore !', 'Guimauve !', 'Le paradis !'][(s.candies - 1) % 6]; s.msgT = 0.8; s.msgGood = true;
         s.chew = 0.5;
+        say(YUM[(s.candies - 1) % YUM.length], 0.9, true);
         api.sfx('catch');
-        api.burst(mouth.x, mouth.y, { n: 8, shape: 'star', color: ['#ffe14d', '#ffffff', it.color], speed: 160, gravity: 200, size: 6 });
+        api.burst(mouth.x, mouth.y, { n: 10, shape: 'star', color: ['#ffe14d', '#ffffff', d.color], speed: 170, gravity: 220, size: 6 });
         if (s.candies >= GOAL) {
           s.outcome = 'win';
-          api.end(true, s.soaps
-            ? 'Six bonbons… et un petit goût de lavande au milieu. Rien de grave : ton haleine n’a jamais été aussi fraîche !'
-            : 'Six bonbons savourés, zéro savon croqué : les cadeaux de Maman sont saufs… cette fois-ci !');
+          api.end(true, 'Cinq vrais bonbons, zéro perle de bain : ce Noël, ton haleine sent le chocolat, pas la rose.');
         }
       } else {
-        s.soaps++;
-        s.msg = `Beurk… parfum ${it.scent.toLowerCase()} !`; s.msgT = 1.1; s.msgGood = false;
-        s.cooldown = 0.9;
-        api.sfx('ouch');
-        api.shake(8);
-        for (let i = 0; i < 6; i++) s.bubbles.push({ x: mouth.x + rand(-6, 6), y: mouth.y, vx: rand(20, 90), vy: rand(-90, -40), r: rand(4, 10), life: rand(0.8, 1.4) });
-        if (s.soaps >= MAX_SOAP) {
-          s.outcome = 'fail';
-          api.end(false, 'Deux savons avalés : tu fais des bulles en parlant et tu sens bon la lavande. Haleine fraîche garantie !');
-        }
+        s.outcome = 'fail';
+        api.sfx('ouch'); api.shake(10);
+        say(`Pfff… parfum ${d.scent} !`, 3, false);
+        for (let i = 0; i < 14; i++) s.bubbles.push({ x: mouth.x + rand(-8, 8), y: mouth.y, vx: rand(20, 140), vy: rand(-140, -40), r: rand(4, 12), life: rand(0.9, 1.6) });
+        api.end(false, `Crounch… ça mousse ! C’était une perle de bain parfum ${d.scent} : tu fais des bulles en parlant. Merci Mami !`);
       }
     }
-    let mouth = { x: 200, y: 340 };
 
     return {
       state: s,
       update(dt, input) {
         s.t += dt;
-        s.rot += dt * 0.22;
         s.msgT = Math.max(0, s.msgT - dt);
         s.chew = Math.max(0, s.chew - dt);
         s.cooldown = Math.max(0, s.cooldown - dt);
-        if (!api.ended) s.cursor = { x: input.cursor.x, y: input.cursor.y };
-
-        // bulles de savon (indice) + recharge de l'assiette
-        for (const it of s.items) {
-          if (it.refill > 0) {
-            it.refill -= dt;
-            if (it.refill <= 0) {
-              const onPlate = s.items.filter((o) => o !== it && o.refill <= 0 && o.kind === 'bonbon').length;
-              Object.assign(it, newItem(it.slot, onPlate < 4 || Math.random() > 0.45 ? 'bonbon' : 'savon'), { refill: 0 });
-            }
-            continue;
-          }
-          if (it.kind === 'savon') {
-            it.bubbleT -= dt;
-            if (it.bubbleT <= 0 && s.bubbles.length < 60) {
-              it.bubbleT = rand(1.1, 2.2);
-              const p = posOf(it);
-              s.bubbles.push({ x: p.x + rand(-8, 8), y: p.y - 10, vx: rand(-10, 10), vy: -45, r: rand(4, 7), life: 1.1 });
+        for (const d of doors) {
+          if (d.opening) { d.open = Math.min(1, d.open + dt / 0.22); if (d.open >= 1) d.opening = false; }
+          // petites bulles qui s'échappent des perles de bain ouvertes
+          if (d.kind === 'perle' && d.open >= 1 && !d.eaten) {
+            d.bubbleT -= dt;
+            if (d.bubbleT <= 0 && s.bubbles.length < 80) {
+              d.bubbleT = rand(0.7, 1.2);
+              s.bubbles.push({ x: d.x + rand(-6, 6), y: d.y - 10, vx: rand(-8, 8), vy: -38, r: rand(2.5, 4.5), life: 0.9 });
             }
           }
         }
@@ -169,86 +232,94 @@ export default {
           b.life -= dt; b.x += b.vx * dt; b.y += b.vy * dt; b.vx *= 0.98;
           if (b.life <= 0) s.bubbles.splice(i, 1);
         }
-        for (let i = s.flying.length - 1; i >= 0; i--) {
-          const f = s.flying[i];
-          f.k += dt / 0.3;
-          if (f.k >= 1) { s.flying.splice(i, 1); swallow(f.it); }
+        if (s.flying) {
+          s.flying.k += dt / 0.32;
+          if (s.flying.k >= 1) { const d = s.flying.d; s.flying = null; s.cooldown = 0.12; swallow(d); }
         }
-        // échec : Papa fait des bulles par la bouche
-        if (s.outcome === 'fail' && s.bubbles.length < 60 && Math.random() < 0.5) {
-          s.bubbles.push({ x: mouth.x + 4, y: mouth.y, vx: rand(30, 110), vy: rand(-110, -40), r: rand(5, 13), life: rand(0.8, 1.3) });
+        if (s.outcome === 'fail' && s.bubbles.length < 80 && Math.random() < 0.55) {
+          s.bubbles.push({ x: mouth.x + 4, y: mouth.y, vx: rand(30, 130), vy: rand(-130, -40), r: rand(5, 13), life: rand(0.8, 1.3) });
         }
-        if (api.ended) return;
+        if (api.ended) { s.endT += dt; return; }
 
-        if (input.pressed() && s.cooldown === 0) {
-          let best = null, bd = HIT;
-          for (const it of s.items) {
-            if (it.refill > 0) continue;
-            const p = posOf(it);
-            const d = Math.hypot(p.x - s.cursor.x, p.y - s.cursor.y);
-            if (d < bd) { bd = d; best = it; }
-          }
-          if (best) { eat(best); api.sfx('pop'); }
+        // ── sélection : flèches (grille) ou survol de la souris
+        const c = s.sel % COLS, r = Math.floor(s.sel / COLS);
+        if (input.pressed('left')) s.sel = r * COLS + (c + COLS - 1) % COLS;
+        if (input.pressed('right')) s.sel = r * COLS + (c + 1) % COLS;
+        if (input.pressed('up')) s.sel = ((r + ROWS - 1) % ROWS) * COLS + c;
+        if (input.pressed('down')) s.sel = ((r + 1) % ROWS) * COLS + c;
+        const p = input.pointer;
+        if (p.active && (!s.lastPtr || s.lastPtr.x !== p.x || s.lastPtr.y !== p.y)) {
+          const d = doorAt(p.x, p.y);
+          if (d) s.sel = d.i;
+          s.lastPtr = { x: p.x, y: p.y };
         }
+
+        // ── action
+        if (p.pressed) act(doorAt(p.x, p.y));
+        else if (input.pressed()) act(doors[s.sel]);
       },
       timeout() {
         s.outcome = 'slow';
-        api.end(false, `Seulement ${s.candies} bonbon${s.candies > 1 ? 's' : ''} sur ${GOAL} : à force de renifler chaque bonbon pour vérifier, l’assiette a fini dans la salle de bain !`);
+        api.end(false, `Seulement ${s.candies} bonbon${s.candies > 1 ? 's' : ''} sur ${GOAL} : à force de renifler chaque case, Noël est passé… et le calendrier a fini dans la salle de bain.`);
         return false;
       },
       draw(g) {
         g.drawImage(bg, 0, 0);
 
-        // ── l'assiette tournante
-        const order = s.items.filter((it) => it.refill <= 0).map((it) => ({ it, p: posOf(it) })).sort((a, b) => a.p.y - b.p.y);
-        for (const { it, p } of order) {
-          g.fillStyle = 'rgba(80, 60, 40, 0.15)'; g.beginPath(); g.ellipse(p.x + 3, p.y + 14, 20, 7, 0, 0, Math.PI * 2); g.fill();
-          drawSweet(g, it, p.x, p.y);
+        // ── contenu des cases ouvertes, puis les portes
+        for (const d of doors) {
+          if (d.open > 0.3 && !d.eaten) {
+            const k = Math.min(1, (d.open - 0.3) / 0.5);
+            drawItem(g, d, d.x, d.y - 2 + (1 - k) * 4, 0.6 + 0.4 * k);
+          } else if (d.eaten) {
+            g.fillStyle = 'rgba(122, 74, 46, 0.6)';
+            for (let k = 0; k < 3; k++) { g.beginPath(); g.arc(d.x - 6 + k * 6, d.y + 4 + (k % 2) * 2, 1.6, 0, Math.PI * 2); g.fill(); }
+          }
+          drawDoor(g, d);
+        }
+        for (const d of doors) if (d.kind === 'perle' && d.open >= 1 && !d.eaten) drawScent(g, d);
+
+        // ── sélection (clavier / survol)
+        if (!api.ended) {
+          const d = doors[s.sel];
+          const pulse = 0.5 + 0.5 * Math.sin(s.t * 6);
+          g.strokeStyle = `rgba(255, 236, 140, ${0.6 + 0.4 * pulse})`; g.lineWidth = 4;
+          api.roundRect(g, d.x - DW / 2 - 5, d.y - DH / 2 - 5, DW + 10, DH + 10, 8); g.stroke();
         }
 
-        // ── Papa, à gauche, la bouche grande ouverte
+        // ── Papa
         const lost = s.outcome === 'fail';
         const info = api.avatar(g, {
-          x: 165, y: 560, size: 96, pose: s.outcome === 'win' ? 'cheer' : 'stand', t: s.t,
-          expression: lost ? 'surprised' : s.outcome === 'win' ? 'laugh' : s.msgT > 0 && !s.msgGood ? 'ouch' : s.chew > 0 ? 'happy' : s.flying.length ? 'surprised' : 'smile',
-          lookX: 1, lookY: 0.2, blush: s.soaps * 0.4,
+          x: 140, y: 528, size: 92, pose: s.outcome === 'win' ? 'cheer' : 'stand', t: s.t,
+          expression: lost ? (s.endT > 0.4 ? 'ouch' : 'surprised') : s.outcome === 'win' ? 'laugh' : s.flying ? 'surprised' : s.chew > 0 ? 'happy' : 'smile',
+          lookX: 1, lookY: -0.2, blush: lost ? 0.8 : 0,
           tilt: s.chew > 0 ? Math.sin(s.t * 20) * 0.05 : 0,
         });
         mouth = { x: info.hx + 4, y: info.hy + 0.48 * info.r };
 
-        // bonbons / savons en vol vers la bouche
-        for (const f of s.flying) {
-          const k = Math.min(1, f.k);
-          const x = api.lerp(f.x0, mouth.x, k), y = api.lerp(f.y0, mouth.y, k) - Math.sin(k * Math.PI) * 80;
-          drawSweet(g, f.it, x, y, 1 - k * 0.6);
+        // bonbon (ou perle…) en vol vers la bouche
+        if (s.flying) {
+          const k = Math.min(1, s.flying.k), d = s.flying.d;
+          const x = api.lerp(d.x, mouth.x, k), y = api.lerp(d.y, mouth.y, k) - Math.sin(k * Math.PI) * 90;
+          drawItem(g, d, x, y, 1 - k * 0.55);
         }
         // bulles
         for (const b of s.bubbles) {
           g.globalAlpha = Math.min(1, b.life * 1.5);
-          g.fillStyle = 'rgba(220, 240, 255, 0.35)'; g.strokeStyle = 'rgba(160, 190, 230, 0.9)'; g.lineWidth = 1.5;
+          g.fillStyle = 'rgba(220, 240, 255, 0.3)'; g.strokeStyle = 'rgba(190, 215, 250, 0.95)'; g.lineWidth = 1.5;
           g.beginPath(); g.arc(b.x, b.y, b.r, 0, Math.PI * 2); g.fill(); g.stroke();
           g.fillStyle = 'rgba(255,255,255,0.9)'; g.beginPath(); g.arc(b.x - b.r * 0.35, b.y - b.r * 0.35, b.r * 0.25, 0, Math.PI * 2); g.fill();
           g.globalAlpha = 1;
         }
 
-        // ── main / cuillère au curseur
-        if (!api.ended) {
-          const c = s.cursor;
-          g.strokeStyle = s.cooldown > 0 ? 'rgba(150, 90, 60, 0.4)' : 'rgba(200, 70, 100, 0.85)'; g.lineWidth = 3;
-          g.beginPath(); g.arc(c.x, c.y, HIT - 4, 0, Math.PI * 2); g.stroke();
-          g.save(); g.translate(c.x + 10, c.y + 10); g.rotate(0.6);
-          g.fillStyle = '#c3cad2'; g.beginPath(); g.ellipse(0, 0, 8, 11, 0, 0, Math.PI * 2); g.fill();
-          g.fillRect(-2.5, 9, 5, 46);
-          g.restore();
-        }
-
         // ── messages
-        if (s.msgT > 0) api.text(g, s.msg, 300, 150, { size: 30, color: s.msgGood ? '#fff' : '#e8f4ff', stroke: s.msgGood ? '#c8486b' : '#4a6a9a' });
-        if (lost) api.text(g, 'Haleine fraîche garantie !', W / 2, 505, { size: 34, color: '#e8f4ff', stroke: '#4a6a9a', strokeWidth: 8 });
+        if (s.msgT > 0) api.text(g, s.msg, 160, 150, { size: 26, color: s.msgGood ? '#fff' : '#e8f4ff', stroke: s.msgGood ? '#a3262b' : '#3a5a8a' });
+        if (lost) api.text(g, 'C’était du savon !', 615, 470 + Math.sin(s.t * 3) * 3, { size: 36, color: '#e8f4ff', stroke: '#3a5a8a', strokeWidth: 8 });
+        if (s.outcome === 'win') api.text(g, 'Joyeux Noël, Papa !', 615, 470, { size: 36, color: '#fff6c8', stroke: '#a3262b', strokeWidth: 8 });
 
         // ── HUD
-        api.roundRect(g, 250, 22, 460, 46, 14); g.fillStyle = 'rgba(60, 25, 35, 0.72)'; g.fill();
-        api.text(g, `Bonbons : ${s.candies} / ${GOAL}   ·   Savons croqués : ${s.soaps} / ${MAX_SOAP - 1}`, 480, 46, { size: 20, color: '#ffe7f0' });
+        api.roundRect(g, 300, 24, 330, 44, 14); g.fillStyle = 'rgba(40, 12, 12, 0.75)'; g.fill();
+        api.text(g, `Bonbons mangés : ${s.candies} / ${GOAL}`, 465, 46, { size: 20, color: '#ffe7d0' });
       },
     };
   },

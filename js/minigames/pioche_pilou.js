@@ -1,11 +1,11 @@
 /**
  * Chapitre I — « Le coup de pioche de Pilou » (pioche_pilou)
- * Pilou voulait casser un bijou de Mami pour récupérer les billes… et la pioche
- * a fini sur la tête de Papa. Ça expliquerait certaines choses.
- * Mécanique : les billes jaillissent du coffret cassé et roulent dans la cour ;
+ * Pilou voulait récupérer la petite fleur cachée dans un bijou de Mami : un coup de pioche dans le bijou…
+ * et un autre sur la tête de Papa. À eux deux, le bijou de Mami n'y a pas survécu.
+ * Mécanique : pierres, éclats d'or et la fleur jaillissent du bijou brisé et glissent dans la cour ;
  * Papa court les ramasser (← → ou souris) en esquivant la pioche, annoncée par une ombre (préavis court,
  * Pilou anticipe la course de Papa, frappe parfois deux fois de suite ou feinte avant de bondir sur lui).
- * 8 billes = victoire ; 2 coups sur la tête = échec.
+ * 8 morceaux = victoire ; 2 coups sur la tête = échec.
  */
 import { drawPerson, PEOPLE } from './people.js';
 
@@ -74,13 +74,34 @@ function background(W, H) {
   for (let i = 0; i < 90; i++) { const x = (i * 97) % W, y = 350 + ((i * 53) % 185); g.beginPath(); g.ellipse(x, y, 6 + (i % 4) * 3, 2, 0, 0, Math.PI * 2); g.fill(); }
   g.fillStyle = 'rgba(90, 30, 10, 0.18)';
   for (let i = 0; i < 40; i++) { const x = (i * 151) % W, y = 360 + ((i * 71) % 170); g.beginPath(); g.arc(x, y, 2 + (i % 3), 0, Math.PI * 2); g.fill(); }
-  // natte et coffret à bijoux (déjà bien abîmé…) sur la marche
+  // natte, et le bijou de Mami fendu en deux par la pioche
   g.fillStyle = '#e8c77a'; g.fillRect(420, 336, 120, 14);
   g.strokeStyle = '#c9a556'; g.lineWidth = 2;
   for (let x = 424; x < 540; x += 8) { g.beginPath(); g.moveTo(x, 336); g.lineTo(x, 350); g.stroke(); }
-  g.fillStyle = '#7a3a6a'; g.fillRect(458, 312, 44, 26);
-  g.fillStyle = '#9c5288'; g.save(); g.translate(458, 312); g.rotate(-0.5); g.fillRect(0, -6, 44, 6); g.restore();
-  g.fillStyle = '#ffd34d'; g.fillRect(476, 322, 8, 6);
+  // la chaîne qui pend
+  g.strokeStyle = '#d9b04a'; g.lineWidth = 2; g.setLineDash([3, 2]);
+  g.beginPath(); g.moveTo(452, 330); g.bezierCurveTo(430, 346, 412, 338, 404, 348); g.stroke();
+  g.beginPath(); g.moveTo(508, 330); g.bezierCurveTo(528, 344, 548, 336, 556, 347); g.stroke();
+  g.setLineDash([]);
+  for (const [cx, rot, dir] of [[466, -0.35, -1], [494, 0.35, 1]]) {
+    const a0 = dir < 0 ? Math.PI / 2 : -Math.PI / 2, a1 = dir < 0 ? Math.PI * 1.5 : Math.PI / 2;
+    g.save(); g.translate(cx, 330); g.rotate(rot);
+    // demi-médaillon en or (bord dentelé côté cassure)
+    g.fillStyle = '#c8902a';
+    g.beginPath(); g.ellipse(0, 0, 15, 12, 0, a0, a1);
+    for (let k = 0; k <= 4; k++) g.lineTo(-dir * (k % 2 ? 4 : 0), (dir < 0 ? -12 : 12) + (dir < 0 ? k : -k) * 6);
+    g.closePath(); g.fill();
+    g.fillStyle = '#f2c14e';
+    g.beginPath(); g.ellipse(dir * 2, 0, 11, 8.5, 0, a0, a1); g.closePath(); g.fill();
+    // une pierre encore sertie
+    g.fillStyle = dir < 0 ? '#e0245e' : '#3f6fe0';
+    g.beginPath(); g.arc(dir * 8, -1, 3.5, 0, Math.PI * 2); g.fill();
+    g.fillStyle = 'rgba(255,255,255,0.7)'; g.beginPath(); g.arc(dir * 8 - 1, -2, 1.2, 0, Math.PI * 2); g.fill();
+    g.restore();
+  }
+  // la fêlure dans la marche, souvenir du coup de pioche
+  g.strokeStyle = 'rgba(90, 60, 30, 0.6)'; g.lineWidth = 1.5;
+  g.beginPath(); g.moveTo(480, 342); g.lineTo(474, 347); g.lineTo(479, 350); g.moveTo(480, 342); g.lineTo(488, 349); g.stroke();
   BG = c;
   return c;
 }
@@ -95,18 +116,53 @@ function star(g, x, y, r, rot) {
   g.closePath(); g.fill(); g.restore();
 }
 
-const MARBLE_COLORS = ['#3fa7f5', '#f5503f', '#4fd17a', '#ffd34d', '#b46cf0', '#ff8ac2'];
+// ce qui jaillit du bijou : pierres précieuses, éclats d'or… et la petite fleur cachée à l'intérieur
+const KINDS = [
+  { kind: 'gem', c: '#e0245e' }, { kind: 'gold', c: '#f2c14e' }, { kind: 'flower', c: '#ff8ac2' },
+  { kind: 'gem', c: '#3f6fe0' }, { kind: 'gem', c: '#2f9e6e' }, { kind: 'gold', c: '#f2c14e' },
+  { kind: 'flower', c: '#ff8ac2' }, { kind: 'gem', c: '#9b4fd8' },
+];
+
+/** Un morceau du bijou (ou la fleur), centré sur (x, y). */
+function drawPiece(g, m) {
+  g.save(); g.translate(m.x, m.y); g.rotate(m.spin);
+  if (m.kind === 'gem') {
+    // pierre taillée
+    g.fillStyle = m.c;
+    g.beginPath(); g.moveTo(0, -10); g.lineTo(9, -3); g.lineTo(6, 8); g.lineTo(-6, 8); g.lineTo(-9, -3); g.closePath(); g.fill();
+    g.fillStyle = 'rgba(255,255,255,0.35)';
+    g.beginPath(); g.moveTo(0, -10); g.lineTo(9, -3); g.lineTo(0, 0); g.lineTo(-9, -3); g.closePath(); g.fill();
+    g.fillStyle = 'rgba(255,255,255,0.9)'; g.beginPath(); g.arc(-3, -4, 2, 0, Math.PI * 2); g.fill();
+  } else if (m.kind === 'gold') {
+    // éclat d'or du médaillon
+    g.fillStyle = '#c8902a';
+    g.beginPath(); g.moveTo(-10, 6); g.lineTo(-3, -9); g.lineTo(4, -4); g.lineTo(10, -8); g.lineTo(8, 7); g.closePath(); g.fill();
+    g.fillStyle = m.c;
+    g.beginPath(); g.moveTo(-7, 4); g.lineTo(-2, -6); g.lineTo(4, -2); g.lineTo(7, 4); g.closePath(); g.fill();
+    g.fillStyle = 'rgba(255,255,255,0.8)'; g.fillRect(-1, -3, 4, 2);
+  } else {
+    // la petite fleur cachée dans le bijou
+    g.fillStyle = '#4f9a3e'; g.fillRect(-1, 3, 2, 9);
+    g.fillStyle = m.c;
+    for (let k = 0; k < 5; k++) {
+      const a = (k / 5) * Math.PI * 2;
+      g.beginPath(); g.ellipse(Math.cos(a) * 6, Math.sin(a) * 6, 5, 3.4, a, 0, Math.PI * 2); g.fill();
+    }
+    g.fillStyle = '#ffd34d'; g.beginPath(); g.arc(0, 0, 3.6, 0, Math.PI * 2); g.fill();
+  }
+  g.restore();
+}
 
 export default {
   id: 'pioche_pilou',
   title: 'Le coup de pioche de Pilou',
-  instructions: 'Les billes du bijou de Mami roulent partout : ramasses-en 8, et file dès que l’ombre de la pioche apparaît — Pilou vise là où tu vas, et il triche !',
+  instructions: 'Pilou a cassé le bijou de Mami pour la fleur cachée dedans : ramasse 8 morceaux, et file dès que l’ombre de la pioche apparaît — il vise là où tu vas, et il triche !',
   controls: '← → / souris : courir',
   duration: 12,
   introExpression: 'worried',
-  successTitle: 'Billes sauvées, crâne intact !',
+  successTitle: 'Bijou ramassé, crâne intact !',
   failTitle: 'BONG !',
-  successText: 'Huit billes dans la poche et pas une bosse : Pilou en reste bouche bée, pioche à la main.',
+  successText: 'Huit morceaux du bijou dans ta poche, la petite fleur sauvée et pas une bosse. Reste à expliquer tout ça à Mami…',
   failText: 'Un coup de pioche sur la tête… Ça expliquerait certaines choses.',
 
   create(api) {
@@ -115,7 +171,7 @@ export default {
     const s = {
       t: 0, px: 300, vx: 0, target: 300, lastPointerX: null, face: 1,
       got: 0, hits: 0, dizzy: 0, flash: 0,
-      marbles: [], spawnT: 0.5, n: 0,
+      pieces: [], spawnT: 0.5, n: 0,
       // cycle de la pioche : wait → aim (ombre) → strike → rest
       phase: 'wait', phaseT: 0.8, tx: 600, pilouX: 760, pilouFrom: 760, side: 1, swing: 0,
       aimAge: 0, feint: false, double: false,
@@ -136,13 +192,16 @@ export default {
       api.sfx('whoosh');
     }
 
-    function spawnMarble() {
+    function spawnPiece() {
       const tx = rand(70, 890);
       const flight = rand(0.65, 0.95);
-      s.marbles.push({
+      const k = KINDS[s.n++ % KINDS.length];
+      s.pieces.push({
         x: 480, y: 322, vx: (tx - 480) / flight, vy: -380 + rand(-60, 40),
-        rolling: false, life: 2.6, r: 9, c: MARBLE_COLORS[s.n++ % MARBLE_COLORS.length], spin: 0,
+        rolling: false, life: 2.6, r: 9, kind: k.kind, c: k.c, spin: rand(0, 6),
       });
+      // le bijou crache un éclat (et quelques pétales quand c'est la fleur)
+      api.burst(480, 326, { n: 4, color: k.kind === 'flower' ? ['#ff8ac2', '#ffc0dc'] : ['#ffe9a0', '#ffffff'], speed: 120, gravity: 250, size: 3, angle: -Math.PI / 2, spread: 1.4 });
     }
 
     function impact() {
@@ -194,13 +253,13 @@ export default {
         s.vx = v;
         if (v > 10) s.face = 1; else if (v < -10) s.face = -1;
 
-        // ── billes : jaillissent du coffret, rebondissent, roulent, puis se perdent dans le sable
+        // ── morceaux du bijou : jaillissent, rebondissent, glissent, puis se perdent dans la latérite
         if (!api.ended) {
           s.spawnT -= dt;
-          if (s.spawnT <= 0) { spawnMarble(); s.spawnT = rand(0.66, 0.92); }
+          if (s.spawnT <= 0) { spawnPiece(); s.spawnT = rand(0.66, 0.92); }
         }
-        for (let i = s.marbles.length - 1; i >= 0; i--) {
-          const m = s.marbles[i];
+        for (let i = s.pieces.length - 1; i >= 0; i--) {
+          const m = s.pieces[i];
           if (!m.rolling) {
             m.vy += 1100 * dt;
             m.x += m.vx * dt; m.y += m.vy * dt;
@@ -214,17 +273,17 @@ export default {
             m.x += m.vx * dt;
           }
           if (m.x < 20 || m.x > W - 20) m.vx = -m.vx * 0.5, m.x = clamp(m.x, 20, W - 20);
-          m.spin += m.vx * dt / m.r;
+          m.spin += (m.rolling ? 0.35 : 1) * m.vx * dt / m.r;
           if (!api.ended && m.y > GROUND - 40 && Math.abs(m.x - s.px) < 34 && s.dizzy <= 0) {
-            s.marbles.splice(i, 1);
+            s.pieces.splice(i, 1);
             s.got++;
             api.sfx('catch');
             api.burst(m.x, m.y, { n: 8, color: [m.c, '#ffffff'], speed: 160, gravity: 300, size: 4 });
             s.pops.push({ x: m.x, y: m.y - 30, t: 0 });
-            if (s.got >= GOAL) api.end(true, s.hits ? 'Huit billes ramassées, et une seule bosse comme souvenir. Pilou n’a plus qu’à reposer la pioche !' : undefined);
+            if (s.got >= GOAL) api.end(true, s.hits ? 'Huit morceaux du bijou ramassés, la fleur sauvée… et une seule bosse comme souvenir. Reste à tout expliquer à Mami !' : undefined);
             continue;
           }
-          if (m.life <= 0) s.marbles.splice(i, 1);
+          if (m.life <= 0) s.pieces.splice(i, 1);
         }
 
         // ── Pilou et sa pioche
@@ -278,7 +337,7 @@ export default {
         if (s.phase === 'rest') s.swing = Math.max(0, s.swing - dt * 2.5);
       },
       timeout() {
-        if (s.got < GOAL) api.end(false, `Seulement ${s.got} billes sauvées : le reste a roulé sous la maison. Pilou, lui, cherche encore où taper.`);
+        if (s.got < GOAL) api.end(false, `Seulement ${s.got} morceaux du bijou retrouvés : le reste a filé sous la maison. Mami va forcément remarquer…`);
         return s.got >= GOAL;
       },
       draw(g) {
@@ -294,18 +353,17 @@ export default {
           if (!api.ended) api.text(g, '!', s.tx, GROUND + 40, { size: 30, color: '#ffe14d', stroke: '#7a1d0a', weight: 900 });
         }
 
-        // billes
-        for (const m of s.marbles) {
+        // morceaux du bijou (et la fleur)
+        for (const m of s.pieces) {
           const blink = m.rolling && m.life < 0.7 && Math.sin(m.life * 30) > 0;
           if (blink) continue;
           g.fillStyle = 'rgba(60, 20, 5, 0.3)';
           g.beginPath(); g.ellipse(m.x, GROUND + 1, m.r, 3, 0, 0, Math.PI * 2); g.fill();
-          g.fillStyle = m.c;
-          g.beginPath(); g.arc(m.x, m.y, m.r, 0, Math.PI * 2); g.fill();
-          g.strokeStyle = 'rgba(255,255,255,0.55)'; g.lineWidth = 2;
-          g.beginPath(); g.arc(m.x, m.y, m.r * 0.55, m.spin, m.spin + 1.6); g.stroke();
-          g.fillStyle = 'rgba(255,255,255,0.85)';
-          g.beginPath(); g.arc(m.x - 3, m.y - 3, 2.6, 0, Math.PI * 2); g.fill();
+          drawPiece(g, m);
+          // petit scintillement pour qu'on les repère sur la latérite
+          if (m.kind !== 'flower' && Math.sin(s.t * 7 + m.x * 0.05) > 0.85) {
+            g.fillStyle = '#fffbe0'; star(g, m.x + 6, m.y - 8, 4, s.t * 3);
+          }
         }
 
         // Pilou (derrière) avec sa pioche
@@ -380,7 +438,7 @@ export default {
         if (api.ended && s.hits >= 2) api.text(g, 'Ça expliquerait certaines choses…', W / 2, 200, { size: 32, color: '#fff', stroke: '#5a1a0a', strokeWidth: 7 });
 
         // HUD
-        api.text(g, `Billes : ${s.got} / ${GOAL}`, 40, 42, { size: 26, align: 'left', color: '#fff6dc', stroke: '#000a' });
+        api.text(g, `Morceaux : ${s.got} / ${GOAL}`, 40, 42, { size: 26, align: 'left', color: '#fff6dc', stroke: '#000a' });
         api.text(g, s.hits ? 'Bosses : ●' + (s.hits > 1 ? '●' : '○') : 'Bosses : ○○', 40, 76, { size: 20, align: 'left', color: s.hits ? '#ffb0a0' : '#fff6dc', stroke: '#000a', strokeWidth: 5 });
       },
     };

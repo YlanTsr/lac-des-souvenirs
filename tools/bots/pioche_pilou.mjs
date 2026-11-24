@@ -1,4 +1,4 @@
-// Robot : court vers la bille la plus proche, mais s'écarte dès qu'il a VU l'ombre de la pioche sous ses pieds.
+// Robot : court vers le morceau de bijou le plus proche, mais s'écarte dès qu'il a VU l'ombre de la pioche sous ses pieds.
 // Temps de réaction humain : il ne prend en compte une ombre (nouvelle ou qui vient de bondir) qu'au bout de 0,25 s ;
 // avant ça, il continue ce qu'il faisait.
 const REACTION = 0.25;
@@ -16,7 +16,7 @@ export default function bot(s, t) {
     if (goal < 50 || goal > 910) goal = s.tx - dir * 130;
   } else {
     let best = Infinity;
-    for (const m of s.marbles) {
+    for (const m of s.pieces) {
       if (!m.rolling && m.y < 380) continue;
       const d = Math.abs(m.x - s.px);
       const inShadow = seen && Math.abs(m.x - s.tx) < 75;

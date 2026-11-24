@@ -1,6 +1,6 @@
 /**
  * « Les truites de Megève » (truites_megeve)
- * Après un lâcher de truites dans le lac, Papa et ses cousins les ont « pêchées »
+ * Après un lâcher de truites dans le lac, Papa et son ami Richard les ont « pêchées »
  * à coups de pierres pour les ramener à Papi et Mami. Version cartoon : les truites
  * sont juste étourdies (des étoiles autour de la tête) et filent dans le seau.
  * Mécanique : viser une truite qui saute (souris ou flèches) et lancer (clic / Espace).
@@ -9,17 +9,20 @@
  */
 import { drawPerson, PEOPLE } from './people.js';
 
+// Richard, le copain de Papa (un ado roux en t-shirt rouge)
+const RICHARD = { ...PEOPLE.ylan, hair: 'curly', hairColor: '#b8692e', shirt: '#d9503a', pants: '#3a4a6a' };
+
 export default {
   id: 'truites_megeve',
   title: 'Les truites de Megève',
-  instructions: 'Lâcher de truites au lac de Megève ! Vise celles qui sautent et lance tes cailloux : 6 truites dans le seau pour Papi et Mami.',
+  instructions: 'Lâcher de truites au lac de Megève ! Avec ton ami Richard, vise celles qui sautent et lance tes cailloux : 6 truites dans le seau pour Papi et Mami.',
   controls: 'Souris / ← → ↑ ↓ : viser · Clic / Espace : lancer',
   duration: 12,
   introExpression: 'focus',
   successTitle: 'Seau rempli !',
   failTitle: 'Les truites ont filé !',
-  successText: 'Six truites dans le seau ! Tu rentres en héros chez Papi et Mami.',
-  failText: 'Les truites ont été plus rapides que tes cailloux. Ce soir chez Papi et Mami, ce sera coquillettes !',
+  successText: 'Six truites dans le seau ! Richard et toi rentrez en héros chez Papi et Mami.',
+  failText: 'Les truites ont été plus rapides que tes cailloux. Richard rigole, et ce soir chez Papi et Mami, ce sera coquillettes !',
 
   create(api) {
     const { W, H, rand, clamp } = api;
@@ -32,6 +35,7 @@ export default {
     const s = {
       t: 0, hits: 0, inBucket: 0, throws: 0, reload: 0, throwAnim: 0, nextSpawn: 0.35,
       fish: [], stones: [], ripples: [], msg: '', msgT: 0, cheer: 0, cx: W / 2, cy: 330,
+      say: 'Vas-y !', sayT: 1.4, lastHit: 0,
     };
     const persp = (y) => 0.6 + clamp((y - LAKE_TOP) / (LAKE_BOT - LAKE_TOP), 0, 1) * 0.6;
 
@@ -117,11 +121,13 @@ export default {
         s.hits++;
         s.msg = ['Bonk !', 'Toc !', 'Dans le mille !', 'Bing !'][s.hits % 4]; s.msgT = 0.7;
         s.cheer = 0.8;
+        s.lastHit = s.t;
+        s.say = ['Bien vu !', 'Encore une !', 'Quel bras !', 'Au seau !'][s.hits % 4]; s.sayT = 0.9;
         api.sfx('clang');
         api.burst(best.x, best.y - 10, { n: 10, shape: 'star', color: ['#ffe14d', '#ffffff'], speed: 170, gravity: 120, size: 8 });
         if (s.hits >= GOAL) api.end(true, s.throws <= GOAL + 2
           ? 'Six truites, presque six cailloux : quel bras ! Papi et Mami n’en reviennent pas.'
-          : 'Six truites dans le seau ! Tu rentres en héros chez Papi et Mami.');
+          : 'Six truites dans le seau ! Richard et toi rentrez en héros chez Papi et Mami.');
       } else if (st.y1 > LAKE_TOP) {
         api.sfx('splat');
         const k = persp(st.y1);
@@ -140,6 +146,8 @@ export default {
         s.throwAnim = Math.max(0, s.throwAnim - dt);
         s.msgT = Math.max(0, s.msgT - dt);
         s.cheer = Math.max(0, s.cheer - dt);
+        s.sayT = Math.max(0, s.sayT - dt);
+        if (!api.ended && s.sayT === 0 && s.t - s.lastHit > 3.2) { s.lastHit = s.t; s.say = ['Vas-y !', 'Là, à droite !', 'Vise devant !'][Math.floor(s.t) % 3]; s.sayT = 1.1; }
 
         if (!api.ended) {
           s.cx = clamp(input.cursor.x, 0, W); s.cy = clamp(input.cursor.y, 20, H);
@@ -178,7 +186,7 @@ export default {
       timeout() {
         api.end(false, s.hits >= 4
           ? `${s.hits} truites sur 6… Presque ! Papi et Mami auront de quoi faire une belle entrée.`
-          : 'Les truites ont été plus rapides que tes cailloux. Ce soir chez Papi et Mami, ce sera coquillettes !');
+          : 'Les truites ont été plus rapides que tes cailloux. Richard rigole, et ce soir chez Papi et Mami, ce sera coquillettes !');
         return false;
       },
       draw(g) {
@@ -193,8 +201,20 @@ export default {
         // truites
         for (const f of s.fish) drawTrout(g, f);
 
-        // le cousin qui encourage
-        drawPerson(g, { ...PEOPLE.cousine, x: 830, y: 532, size: 54, t: s.t, expression: s.cheer > 0 ? 'laugh' : 'smile', pose: s.cheer > 0 ? 'arms_up' : 'stand' });
+        // Richard, le copain qui encourage
+        const rich = drawPerson(g, {
+          ...RICHARD, x: 830, y: 532, size: 54, t: s.t, flipX: true,
+          expression: api.ended || s.cheer > 0 ? 'laugh' : 'smile',
+          pose: s.cheer > 0 || (api.ended && s.hits >= GOAL) ? 'arms_up' : s.sayT > 0 ? 'point' : 'stand',
+        });
+        if (s.sayT > 0 && !api.ended) {
+          const txt = `Richard : ${s.say}`;
+          g.font = '800 17px "Nunito Sans", system-ui, sans-serif';
+          const bw = Math.max(120, g.measureText(txt).width + 24), bx = clamp(rich.hx - 20, bw / 2 + 10, W - bw / 2 - 10), by = rich.hy - 56;
+          api.roundRect(g, bx - bw / 2, by - 17, bw, 32, 12); g.fillStyle = 'rgba(255, 255, 255, 0.92)'; g.fill();
+          g.beginPath(); g.moveTo(rich.hx - 6, by + 14); g.lineTo(rich.hx + 4, by + 26); g.lineTo(rich.hx + 8, by + 14); g.fill();
+          api.text(g, txt, bx, by - 1, { size: 17, color: '#2f5a7a', weight: 800 });
+        }
 
         // le seau
         const bx = BUCKET.x, by = BUCKET.y;
