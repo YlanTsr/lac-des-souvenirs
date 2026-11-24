@@ -10,7 +10,7 @@ import { drawPerson, PEOPLE } from './people.js';
 export default {
   id: 'operation_fesses',
   title: 'Opéré des fesses',
-  instructions: 'À la sortie de l’école, Iordan raconte ta petite opération aux autres parents : couvre-lui la bouche juste après « opérer… », pas avant !',
+  instructions: 'À la sortie de l’école, Iordan raconte ta petite opération à l’animatrice : couvre-lui la bouche juste après « opérer… », pas avant !',
   controls: 'Espace / clic / tap : couvrir la bouche de Iordan',
   duration: 13,
   introExpression: 'worried',

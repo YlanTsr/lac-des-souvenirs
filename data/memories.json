@@ -476,7 +476,7 @@
     "caption": "Au travail, tu étais goûteur de gâteaux. Chaque trimestre, tu rapportais à la maison toutes les nouveautés des marques pour qu’on les goûte. Le meilleur métier du monde (pour nous).",
     "minigame": "gouteur_gateaux",
     "outcomeText": null,
-    "funnyNote": "Le jury familial : exigeant, mais surtout gourmand.",
+    "funnyNote": "Ils étaient tous jaloux à l'école.",
     "position": {
       "x": 14.1,
       "z": -175.8
@@ -492,9 +492,9 @@
     "caption": "Tu as failli gagner le tournoi de tennis de Lévis-Saint-Nom… et tu es devenu la star locale.",
     "minigame": "tennis_levis",
     "outcomeText": null,
-    "funnyNote": "Presque champion, totalement célèbre.",
+    "funnyNote": "Presque champion, totalement célèbre. Anne est devenue ta fan numéro 1",
     "position": {
-      "x": 12.6,
+      "x": 12.6, 
       "z": -161.9
     }
   },
@@ -505,7 +505,7 @@
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Ta 20e tendinite au pied. À ce stade, ce n’est plus une blessure, c’est un abonnement.",
+    "caption": "Tant pis pour le titre de champion international de tennis... Ta 20e tendinite au pied. Tu le fais exprès ?",
     "minigame": "tendinite_20",
     "outcomeText": null,
     "funnyNote": "La 21e est déjà en route.",
@@ -521,10 +521,10 @@
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Entendant bricoler dans le bureau, Mami lançait de tendres « mon chéri, mon chéri »… persuadée que c’était toi. C’était José, le bricoleur. Et nous : « Mais Mami, c’est José ! »",
+    "caption": "Entendant quelqu'un bricoler dans le bureau, Mami criait dans le jardin « mon chéri, mon chéri »… persuadée que c’était toi. C’était José, le bricoleur. Et nous : « Mais Mami, c’est José ! »",
     "minigame": "mami_jose",
     "outcomeText": null,
-    "funnyNote": "José, lui, ne s’est jamais plaint.",
+    "funnyNote": "José, ça ne lui a pas déplu !",
     "position": {
       "x": 31.6,
       "z": -144
@@ -569,7 +569,7 @@
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Tu jouais à Candy Crush sur l’iPad toute la journée… alors que nous, on n’avait pas le droit de jouer au téléphone.",
+    "caption": "Tu jouais à Candy Crush sur l’iPad en douce… alors que nous, on n’avait pas le droit de jouer au téléphone.",
     "minigame": "candy_crush",
     "outcomeText": null,
     "funnyNote": "Faites ce que je dis, pas ce que je fais.",
