@@ -652,7 +652,7 @@
     "caption": "Sur la route de la Bulgarie, la voiture est tombée en panne en Allemagne. Face au garagiste, ton anglais a tenu jusqu’à cette phrase historique : « The nouvelle vanne EGR ».",
     "minigame": "vanne_egr",
     "outcomeText": null,
-    "funnyNote": "Langue officielle : le franglais mécanique.",
+    "funnyNote": "Tu métonnes qu'on soit resté plusieurs jours en panne...",
     "position": {
       "x": -74.8,
       "z": -166.3
@@ -665,10 +665,10 @@
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Pour faire une blague à Séléna, tu as envoyé « Beaux nénés 👙 »… à un parfait inconnu sur Le Bon Coin.",
+    "caption": "Pour faire une blague à Séléna avec « Bonne année ! », tu as envoyé « Beaux nénés 👙 »… à un parfait inconnu sur Le Bon Coin. Il s'est fait tout beau pour toi quand tu es allé le voir",
     "minigame": "beaux_nenes",
     "outcomeText": null,
-    "funnyNote": "L’inconnu n’a jamais répondu.",
+    "funnyNote": "Il avait quand même apprécié le compliement.",
     "position": {
       "x": -63.4,
       "z": -173.6
@@ -681,10 +681,10 @@
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Tu courais dans le verger quand tu t’es pris le fil barbelé dans le visage. Tu as crié à Maman « Je saigne, je saigne ! »… et elle a entendu « Un cerf, un cerf ! ». Elle a donc cherché le cerf du regard.",
+    "caption": "Tu courais dans le verger quand tu t’es pris le fil barbelé dans le visage. Tu as crié à Maman « Je saigne, je saigne ! »… et elle a entendu « Un cerf, un cerf ! ». Elle a cherché le cerf du regard avant de venir t'aider.",
     "minigame": "fil_barbele",
     "outcomeText": null,
-    "funnyNote": "Score final : le verger 1 – Papa 0. Revanche prévue.",
+    "funnyNote": "On raconte que maman est encore en train de chercher le cerf.",
     "position": {
       "x": -50.9,
       "z": -173.1
@@ -700,7 +700,7 @@
     "caption": "Dans le verger, tu as ramassé ce qui ressemblait à une belle fourrure d’animal, pleine de poils… C’était un vieux caca moisi.",
     "minigame": "fourrure_verger",
     "outcomeText": null,
-    "funnyNote": "Le nez, lui, avait compris tout de suite.",
+    "funnyNote": "Quelle belle trouvaille !",
     "position": {
       "x": -38.3,
       "z": -167.5
