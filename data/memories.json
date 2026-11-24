@@ -585,10 +585,10 @@
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Maman t’a dicté la recette : « deux cuillères à café de bicarbonate de soude ». Tu as compris « deux cuillères à soupe ». Résultat : un gâteau au Botox.",
+    "caption": "Maman t’a dicté la recette : « deux cuillères à café de bicarbonate de soude ». Tu as compris « deux cuillères à soupe ». Résultat : un gâteau botoxé au goût de bicarbonate.",
     "minigame": "gateau_bicarbonate",
     "outcomeText": null,
-    "funnyNote": "Une cuillère à soupe, c’est juste une cuillère à café qui a de l’ambition.",
+    "funnyNote": "Une cuillère à soupe, c’est juste une grosse cuillère à café.",
     "position": {
       "x": -55.2,
       "z": -129.3
