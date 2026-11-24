@@ -44,12 +44,11 @@ export const WORLD = {
 /** Scène finale, déclenchée quand les 55 lanternes sont allumées. */
 export const FINALE = {
   title: 'Joyeux anniversaire, Papa',
-  subtitle: '55 ans · 55 lanternes · une infinité de souvenirs',
+  subtitle: '55 ans, et encore plein de nouvelles anecdotes à créer ensemble !',
   message:
-    "Chaque lanterne est un moment de ta vie qui continue de nous éclairer.\n" +
-    "Merci pour tout ce que tu nous as donné, appris et transmis.\n" +
-    "Que la route devant toi soit aussi lumineuse que celle que tu as tracée.",
-  signature: 'Avec tout notre amour ♥',
+    "Merci pour tous ces fous rires et ces larmes de joies.\n" +
+    "Même si t’es parfois maladroit, râleur, gaffeur... t'es le meilleur papa du monde !",
+  signature: 'On t’aime très fort',
 };
 
 /**
