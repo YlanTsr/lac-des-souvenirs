@@ -246,13 +246,13 @@
     "date": "",
     "type": "image",
     "media": "",
-    "caption": "Aux Beaux-Arts, toujours pressé, tu as foncé dans le métro… et les portes se sont refermées sur tes poches. Les pots de yaourt ont explosé dans ton pantalon.",
+    "caption": "Aux Beaux-Arts, toujours pressé, tu as foncé dans le métro avec ta grande pochette… et les portes se sont refermées sur tes poches de manteau pleines de yaourt. SPLASH !",
     "minigame": "yaourt_metro",
     "outcomeText": {
       "success": "Il est monté dans la rame, digne, les deux yaourts intacts. Ce jour-là, l’histoire aurait été bien moins drôle…",
-      "fail": "Les portes ont refermé leurs mâchoires sur les poches : yaourt sur le pantalon, sur les portes, sur les voisins. Exactement comme le vrai jour !"
+      "fail": "Les portes ont refermé leurs mâchoires sur les poches : yaourt sur le manteau, sur les portes, sur les voisins. Une imporession de déjà-vu ?"
     },
-    "funnyNote": "Depuis, les yaourts voyagent dans un sac. Ou directement dans le ventre.",
+    "funnyNote": "De toute façon les tâches de yaourt, c'est artistique !",
     "position": {
       "x": 77.1,
       "z": -105.3
